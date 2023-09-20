@@ -90,7 +90,7 @@ public class CourseDAOTest {
     public void deleteCourseSuccessfulTest() {
         int id = 1;
         boolean expected = true;
-        boolean actual = teacherDAO.deleteCourse(id);
+        boolean actual = courseDAO.deleteCourse(id);
         Assert.assertEquals(expected, actual);
     }
 
@@ -98,7 +98,7 @@ public class CourseDAOTest {
     public void deleteCourseUnsuccessfulTest() {
         int id = -1;
         boolean expected = false;
-        boolean actual = teacherDAO.deleteCourse(id);
+        boolean actual = courseDAO.deleteCourse(id);
         Assert.assertEquals(expected, actual);
     }
 }
