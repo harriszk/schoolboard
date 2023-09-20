@@ -1,12 +1,14 @@
 package Model;
 
+import java.util.Objects;
+
 public class Course {
     private int id;
-    private String course;
+    private String name;
 
-    public Course(int id, String course) {
+    public Course(int id, String name) {
         this.id = id;
-        this.course = course;
+        this.name = name;
     }
 
     public int getId() {
@@ -17,19 +19,33 @@ public class Course {
         this.id = id;
     }
 
-    public String getCourse() {
-        return course;
+
+    public String getName() {
+        return name;
     }
 
-    public void setCourse(String course) {
-        this.course = course;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Course course = (Course) o;
+        return id == course.id && Objects.equals(name, course.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 
     @Override
     public String toString() {
         return "Course{" +
                 "id=" + id +
-                ", course='" + course + '\'' +
+                ", course='" + name + '\'' +
                 '}';
     }
 }
