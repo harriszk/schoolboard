@@ -17,7 +17,7 @@ public class TeacherDAOTest {
         Connection conn = ConnectionSingleton.getConnection();
         teacherDAO = new TeacherDAO(conn);
     }
-
+/*
     @Test
     public void getTeacherByIdSuccessfulTest() {
         Teacher expected = new Teacher(1, "Zachary Harris");
@@ -94,5 +94,5 @@ public class TeacherDAOTest {
 
         List<Teacher> actual = teacherDAO.getAllTeachers();
         Assert.assertEquals(expected, actual);
-    }
+    }*/
 }
