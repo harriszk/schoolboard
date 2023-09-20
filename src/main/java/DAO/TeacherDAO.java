@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class TeacherDAO {
     Connection conn;
@@ -29,4 +30,19 @@ public class TeacherDAO {
         return null;
     }
 
+    public boolean addTeacher(Teacher teacher){
+        return false;
+    }
+
+    public  boolean update(int id, String name){
+        return false;
+    }
+
+    public boolean remove(int id){
+        return false;
+    }
+
+    public List<Teacher> getAllTeachers(){
+        return null;
+    }
 }

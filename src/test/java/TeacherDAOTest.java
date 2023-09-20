@@ -17,7 +17,7 @@ public class TeacherDAOTest {
         Connection conn = ConnectionSingleton.getConnection();
         teacherDAO = new TeacherDAO(conn);
     }
-/*
+
     @Test
     public void getTeacherByIdSuccessfulTest() {
         Teacher expected = new Teacher(1, "Zachary Harris");
@@ -55,7 +55,7 @@ public class TeacherDAOTest {
         String name = "New name";
         Teacher expected = new Teacher(id, name);
 
-        teacherDAO.updateTeacher(id, name);
+        teacherDAO.update(id, name);
         Teacher actual = teacherDAO.getTeacherById(id);
         Assert.assertEquals(expected, actual);
     }
@@ -74,7 +74,7 @@ public class TeacherDAOTest {
     public void deleteTeacherSuccessfulTest() {
         int id = 1;
         boolean expected = true;
-        boolean actual = teacherDAO.removeTeacher(id);
+        boolean actual = teacherDAO.remove(id);
         Assert.assertEquals(expected, actual);
     }
 
@@ -82,7 +82,7 @@ public class TeacherDAOTest {
     public void deleteTeacherUnsuccessfulTest() {
         int id = -1;
         boolean expected = false;
-        boolean actual = teacherDAO.removeTeacher(id);
+        boolean actual = teacherDAO.remove(id);
         Assert.assertEquals(expected, actual);
     }
 
@@ -94,5 +94,5 @@ public class TeacherDAOTest {
 
         List<Teacher> actual = teacherDAO.getAllTeachers();
         Assert.assertEquals(expected, actual);
-    }*/
+    }
 }
