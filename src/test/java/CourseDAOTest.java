@@ -50,31 +50,55 @@ public class CourseDAOTest {
 
     @Test
     public void addNewCourseTest() {
-
+        int newId = 6;
+        String courseName = "History";
+        Course newCourse = new Course(newId, courseName);
+        boolean expected = true;
+        boolean actual = courseDAO.addCourse(newCourse);
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void addCourseWithSameIdTest() {
-
+        int newId = 3;
+        String courseName = "History";
+        Course newCourse = new Course(newId, courseName);
+        boolean expected = false;
+        boolean actual = courseDAO.addCourse(newCourse);
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void updateExistingCourseNameTest() {
-
+        int id = 3;
+        String courseName = "History";
+        boolean expected = true;
+        boolean actual = courseDAO.updateCourse(id, courseName);
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void updateNonexistentCourseNameTest() {
-
+        int id = -1;
+        String courseName = "History";
+        boolean expected = false;
+        boolean actual = courseDAO.updateCourse(id, courseName);
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void deleteCourseSuccessfulTest() {
-
+        int id = 1;
+        boolean expected = true;
+        boolean actual = courseDAO.deleteCourse(id);
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void deleteCourseUnsuccessfulTest() {
-
+        int id = -1;
+        boolean expected = false;
+        boolean actual = courseDAO.deleteCourse(id);
+        Assert.assertEquals(expected, actual);
     }
 }
