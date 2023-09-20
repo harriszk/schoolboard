@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TeacherDAOTest {
     private TeacherDAO teacherDAO;
@@ -27,36 +29,70 @@ public class TeacherDAOTest {
     public void getTeacherByIdUnsuccessfulTest() {
         Teacher actual = teacherDAO.getTeacherById(-1);
         Assert.assertNull(actual);
-        //Assert.assertThrows(Exception.class, ()->teacherDAO.getTeacherById(-1));
     }
 
     @Test
     public void addNewTeacherTest() {
-
+        int newId = 3;
+        Teacher expected = new Teacher(newId, "John Doe");
+        teacherDAO.addTeacher(expected);
+        Teacher actual = teacherDAO.getTeacherById(newId);
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void addTeacherWithSameIdTest() {
-
+        int newId = 1;
+        Teacher newTeacher = new Teacher(newId, "John Doe");
+        boolean expected = false;
+        boolean actual = teacherDAO.addTeacher(newTeacher);
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void updateExistingTeacherNameTest() {
+        int id = 1;
+        String name = "New name";
+        Teacher expected = new Teacher(id, name);
 
+        teacherDAO.updateTeacher(id, name);
+        Teacher actual = teacherDAO.getTeacherById(id);
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void updateNonexistentTeacherNameTest() {
+        int id = -1;
+        String name = "New name";
 
+        boolean expected = false;
+        boolean actual = teacherDAO.update(id, name);
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void deleteTeacherSuccessfulTest() {
-
+        int id = 1;
+        boolean expected = true;
+        boolean actual = teacherDAO.removeTeacher(id);
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void deleteTeacherUnsuccessfulTest() {
-        
+        int id = -1;
+        boolean expected = false;
+        boolean actual = teacherDAO.removeTeacher(id);
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void getAllTeachersTest() {
+        List<Teacher> expected = new ArrayList<Teacher>();
+        expected.add(new Teacher(1, "Zachary Harris"));
+        expected.add(new Teacher(2, "Ralph Fatkullin"));
+
+        List<Teacher> actual = teacherDAO.getAllTeachers();
+        Assert.assertEquals(expected, actual);
     }
 }
