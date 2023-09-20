@@ -30,5 +30,33 @@ public class TeacherDAOTest {
         //Assert.assertThrows(Exception.class, ()->teacherDAO.getTeacherById(-1));
     }
 
+    @Test
+    public void addNewTeacherTest() {
 
+    }
+
+    @Test
+    public void addTeacherWithSameIdTest() {
+
+    }
+
+    @Test
+    public void updateExistingTeacherNameTest() {
+
+    }
+
+    @Test
+    public void updateNonexistentTeacherNameTest() {
+
+    }
+
+    @Test
+    public void deleteTeacherSuccessfulTest() {
+
+    }
+
+    @Test
+    public void deleteTeacherUnsuccessfulTest() {
+        
+    }
 }
