@@ -1,6 +1,6 @@
 # Read Me
 
-Tables
+## Tables
 - Students
   - id
   - name
