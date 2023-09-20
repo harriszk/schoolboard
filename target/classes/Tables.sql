@@ -2,6 +2,14 @@
 --first, drop your tables (to reset your database for testing)
 --then create your tables
 
+
+drop table StudentCourses if exists;
+drop table TeacherCourses if exists;
+drop table Student if exists;
+drop table Teacher if exists;
+drop table Course if exists;
+
+
 CREATE TABLE Student
 (
   id INT PRIMARY KEY,
@@ -30,7 +38,7 @@ CREATE TABLE StudentCourses
   course_id INT NOT NULL,
   PRIMARY KEY (student_id, course_id),
   FOREIGN KEY (student_id) REFERENCES Student(id),
-  FOREIGN KEY (course_id) REFERENCES Courses(id)
+  FOREIGN KEY (course_id) REFERENCES Course(id)
 );
 
 CREATE TABLE TeacherCourses
@@ -38,6 +46,6 @@ CREATE TABLE TeacherCourses
   teacher_id INT NOT NULL,
   course_id INT NOT NULL,
   PRIMARY KEY (teacher_id, course_id),
-  FOREIGN KEY (course_id) REFERENCES Courses(id),
+  FOREIGN KEY (course_id) REFERENCES Course(id),
   FOREIGN KEY (teacher_id) REFERENCES Teacher(id)
 );

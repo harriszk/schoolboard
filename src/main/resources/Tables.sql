@@ -2,6 +2,14 @@
 --first, drop your tables (to reset your database for testing)
 --then create your tables
 
+
+drop table StudentCourses if exists;
+drop table TeacherCourses if exists;
+drop table Student if exists;
+drop table Teacher if exists;
+drop table Course if exists;
+
+
 CREATE TABLE Student
 (
   id INT PRIMARY KEY,

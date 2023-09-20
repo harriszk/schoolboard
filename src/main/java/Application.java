@@ -7,7 +7,7 @@ public class Application {
 //        if not, you'll get a stack trace
         ConnectionSingleton.getConnection();
 //        this line is for starting the javalin server
-        Controller controller = new Controller();
-        controller.getAPI().start();
+        //Controller controller = new Controller();
+       // controller.getAPI().start();
     }
 }

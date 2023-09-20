@@ -15,3 +15,23 @@ CREATE TABLE StudentCourses
   PRIMARY KEY (student_id, course_id),
   FOREIGN KEY (student_id) REFERENCES Student(id),
   FOREIGN KEY (course_id) REFERENCES Courses(id [42102-214]
+2023-09-20 15:43:46 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "STUDENT" already exists; SQL statement:
+--h2 is typically used to setup a test database, not a prod database.
+--first, drop your tables (to reset your database for testing [42101-214]
+2023-09-20 15:46:22 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Cannot drop "STUDENT" because "CONSTRAINT_17" depends on it; SQL statement:
+--h2 is typically used to se [90107-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:632)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.command.ddl.DropTable.prepareDrop(DropTable.java:97)
+	at org.h2.command.ddl.DropTable.update(DropTable.java:121)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:169)
+	at org.h2.command.Command.executeUpdate(Command.java:252)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:252)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:223)
+	at org.h2.tools.RunScript.execute(RunScript.java:169)
+	at Util.ConnectionSingleton.resetTestDatabase(ConnectionSingleton.java:64)
+	at Util.ConnectionSingleton.getConnection(ConnectionSingleton.java:44)
+	at Application.main(Application.java:8)
