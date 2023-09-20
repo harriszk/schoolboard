@@ -54,5 +54,15 @@ CREATE TABLE TeacherCourses
 
 -- Fill a data
 
+-- Teacher table
 insert into teacher (id, name) values (1, 'Zachary Harris');
 insert into teacher (id, name) values (2, 'Ralph Fatkullin');
+
+-- Course table
+insert into course (id, name) values (1, 'Math');
+insert into course (id, name) values (2, 'Science');
+insert into course (id, name) values (3, 'Databases');
+insert into course (id, name) values (4, 'English');
+insert into course (id, name) values (5, 'Physics');
+
+--
