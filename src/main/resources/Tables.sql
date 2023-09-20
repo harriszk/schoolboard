@@ -9,6 +9,7 @@ drop table Student if exists;
 drop table Teacher if exists;
 drop table Course if exists;
 
+-- Create a schema
 
 CREATE TABLE Student
 (
@@ -49,3 +50,9 @@ CREATE TABLE TeacherCourses
   FOREIGN KEY (course_id) REFERENCES Course(id),
   FOREIGN KEY (teacher_id) REFERENCES Teacher(id)
 );
+
+
+-- Fill a data
+
+insert into teacher (id, name) values (1, 'Zachary Harris');
+insert into teacher (id, name) values (2, 'Ralph Fatkullin');

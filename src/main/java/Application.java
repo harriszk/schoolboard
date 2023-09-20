@@ -1,4 +1,5 @@
 import Controller.Controller;
+import DAO.TeacherDAO;
 import Util.ConnectionSingleton;
 
 public class Application {
@@ -9,5 +10,10 @@ public class Application {
 //        this line is for starting the javalin server
         //Controller controller = new Controller();
        // controller.getAPI().start();
+
+        /*
+        TeacherDAO teacherDAO = new TeacherDAO(ConnectionSingleton.getConnection());
+        System.out.println("Teacher with id=1"+ teacherDAO.getTeacherById(1));*/
+
     }
 }
