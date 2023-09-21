@@ -115,28 +115,21 @@ public class CourseDAOTest {
     public void deleteCourseSuccessfulTest() {
         int id = 1;
 
-        /*
         boolean expected = true;
         boolean actual = courseDAO.deleteCourse(id);
         Assert.assertEquals(expected, actual);
-        */
 
-        try {
-            courseDAO.deleteCourse(id);
-        } catch(Exception e) {
-            Assert.fail();
-        }
     }
 
     @Test
     public void deleteCourseUnsuccessfulTest() {
         int id = -1;
-        /*
+
         boolean expected = false;
         boolean actual = courseDAO.deleteCourse(id);
         Assert.assertEquals(expected, actual);
-         */
 
-        Assert.assertThrows(Exception.class, () -> courseDAO.deleteCourse(id));
+
+        //Assert.assertThrows(Exception.class, () -> courseDAO.deleteCourse(id));
     }
 }

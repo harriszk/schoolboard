@@ -64,13 +64,23 @@ public class CourseDAO {
         }
     }
 
-    public void deleteCourse(int id) throws SQLException {
+    public boolean deleteCourse(int id) {
+
+        boolean result = false;
+        try{
         PreparedStatement ps = conn.prepareStatement("delete from course where course.id=?");
         ps.setInt(1, id);
 
-        if(ps.executeUpdate() == 0) {
-            throw new SQLException();
+        if(ps.executeUpdate() != 0){
+            result = true;
         }
+
+        }catch (SQLException e){
+
+        }
+
+        return result;
+
         /*
         try {
             PreparedStatement ps = conn.prepareStatement("select * from course where course.id=?");
@@ -99,6 +109,7 @@ public class CourseDAO {
         }
 
         */
+
     }
 
     public void updateCourse(int id, String courseName) throws SQLException {
