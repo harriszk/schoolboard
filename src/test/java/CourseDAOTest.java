@@ -84,18 +84,31 @@ public class CourseDAOTest {
     public void updateExistingCourseNameTest() {
         int id = 3;
         String courseName = "History";
+        /*
         boolean expected = true;
         boolean actual = courseDAO.updateCourse(id, courseName);
         Assert.assertEquals(expected, actual);
+        */
+
+        try {
+            courseDAO.updateCourse(id, courseName);
+        } catch(Exception e) {
+            Assert.fail();
+        }
     }
 
     @Test
     public void updateNonexistentCourseNameTest() {
         int id = -1;
         String courseName = "History";
+
+        /*
         boolean expected = false;
         boolean actual = courseDAO.updateCourse(id, courseName);
         Assert.assertEquals(expected, actual);
+        */
+
+        Assert.assertThrows(Exception.class, () -> courseDAO.updateCourse(id, courseName));
     }
 
     @Test
