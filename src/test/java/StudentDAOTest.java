@@ -49,4 +49,38 @@ public class StudentDAOTest {
 
         Assert.assertEquals(expected, actual);
     }
+
+    @Test
+    public void addStudentSuccessfulTest(){
+        boolean expected = true;
+        Student student = new Student(4,"Brian Jones","BrianJones@@CrystalEngineer.com")
+        boolean actual = studentDAO.addStudent(student);
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void addStudentUnsuccessfulTest(){
+        boolean expected = false;
+        Student student = new Student(1,"Brian Jones","BrianJones@@CrystalEngineer.com")
+        boolean actual = studentDAO.addStudent(student);
+        Assert.assertEquals(expected, actual);
+    }
+
+
+    @Test
+    public void deleteStudentByIdSuccessfulTest(){
+        int id =1;
+        boolean expected = true;
+        boolean actual = studentDAO.deleteStudentById(id);
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void deleteStudentByIdUnsuccessfulTest(){
+        int id =-1;
+        boolean expected = true;
+        boolean actual = studentDAO.deleteStudentById(id);
+        Assert.assertEquals(expected, actual);
+    }
+
 }
