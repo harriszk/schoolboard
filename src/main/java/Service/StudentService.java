@@ -13,8 +13,12 @@ public class StudentService {
         this.studentDAO = studentDAO;
     }
 
+    public StudentService(Connection conn){
+        studentDAO = new StudentDAO(conn);
+    }
+
     public List<Student> getAllStudents(){
-        return studentDAO.getAllStudents();
+        return this.studentDAO.getAllStudents();
     }
 
     public Student getStudentById(int Id){

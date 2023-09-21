@@ -1,6 +1,7 @@
 import Controller.Controller;
 import DAO.TeacherDAO;
 import Service.CourseService;
+import Service.StudentService;
 import Util.ConnectionSingleton;
 
 import java.util.List;
@@ -13,8 +14,9 @@ public class Application {
         ConnectionSingleton.getConnection();
 //        this line is for starting the javalin server
         CourseService courseService = new CourseService(ConnectionSingleton.getConnection());
+        StudentService studentService = new StudentService(ConnectionSingleton.getConnection());
 
-        Controller controller = new Controller(courseService);
+        Controller controller = new Controller(courseService, studentService);
         controller.getAPI().start();
 
         /*

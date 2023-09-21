@@ -28,8 +28,9 @@ public class Controller {
     private CourseService courseService;
     private StudentService studentService;
 
-    public Controller(CourseService courseService) {
+    public Controller(CourseService courseService, StudentService studentService ) {
         this.courseService = courseService;
+        this.studentService = studentService;
     }
 
     public Javalin getAPI() {
@@ -103,7 +104,7 @@ public class Controller {
 
     // ========== STUDENTS HANDLERS ==========
     private void getAllStudentsHandler(Context context) {
-        List<Student> students = studentService.getAllStudents();
+        List<Student> students = this.studentService.getAllStudents();
         context.json(students);
     }
 
