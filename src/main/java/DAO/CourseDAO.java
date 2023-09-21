@@ -75,36 +75,6 @@ public class CourseDAO {
         }
 
         return result;
-
-        /*
-        try {
-            PreparedStatement ps = conn.prepareStatement("select * from course where course.id=?");
-            ps.setInt(1,id);
-            ResultSet rs = ps.executeQuery();
-
-            if(rs.next()){ //if exist -> delete it
-                ps = conn.prepareStatement("delete from course where course.id=?");
-                ps.setInt(1,id);
-                ps.executeUpdate();
-
-                //Check nonexistence anymore
-                ps = conn.prepareStatement("select * from course where course.id=?");
-                ps.setInt(1,id);
-                rs = ps.executeQuery();
-            }else {//if course didn't exist
-                //result = rs.next();
-            }
-
-           /* if(rs.next()){
-                result =  true;
-            }*
-        }catch(SQLException e){
-            e.printStackTrace();
-            throw e;
-        }
-
-        */
-
     }
     public void updateCourse(int id, String courseName) throws SQLException {
         PreparedStatement ps = conn.prepareStatement("update course set course.name=? where course.id=?");
