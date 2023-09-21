@@ -110,12 +110,13 @@ public class Controller {
     }
 
     private void getStudentByIdHandler(Context context) {
-        Student student = this.studentService.getStudentById(
-                Integer.parseInt(context.pathParam("id")));
+        Student student = this.studentService.getStudentById(Integer.parseInt(context.pathParam("id")));
         if (student==null){
             context.html("No students with this id");
             context.status(404);
+            return;
         }
+        context.json(student);
     }
 
     private void addNewStudentHandler(Context context) {
