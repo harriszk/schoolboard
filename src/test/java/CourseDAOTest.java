@@ -1,7 +1,7 @@
 import DAO.CourseDAO;
-import DAO.TeacherDAO;
 import Model.Course;
-import Model.Teacher;
+import Exception.CourseAlreadyExistsException;
+import Exception.CourseDoesNotExistException;
 import Util.ConnectionSingleton;
 import org.junit.Assert;
 import org.junit.Before;
@@ -16,8 +16,8 @@ public class CourseDAOTest {
 
     @Before
     public void setUp() {
-        Connection conn = ConnectionSingleton.getConnection();
-        courseDAO = new CourseDAO(conn);
+        ConnectionSingleton.resetTestDatabase();
+        courseDAO = new CourseDAO(ConnectionSingleton.getConnection());
     }
 
     @Test
@@ -49,87 +49,57 @@ public class CourseDAOTest {
     }
 
     @Test
-    public void addNewCourseTest() {
-        int newId = 6;
+    public void addNewCourseTest() throws CourseAlreadyExistsException {
+        int id = 6;
         String courseName = "History";
-        Course newCourse = new Course(newId, courseName);
-        /*
-        boolean expected = true;
-        boolean actual = courseDAO.addCourse(newCourse);
-        Assert.assertEquals(expected, actual);
-         */
+        Course expected = new Course(id, courseName);
+        courseDAO.addCourse(expected);
 
-        try {
-            courseDAO.addCourse(newCourse);
-        } catch(Exception e) {
-            Assert.fail();
-        }
+        Course actual = courseDAO.getCourseById(id);
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void addCourseWithSameIdTest() {
-        int newId = 3;
-        String courseName = "History";
-        Course newCourse = new Course(newId, courseName);
-        /*
-        boolean expected = false;
-        boolean actual = courseDAO.addCourse(newCourse);
-        Assert.assertEquals(expected, actual);
-        */
+        int id = 1;
+        String courseName = "Some Course";
+        Course newCourse = new Course(id, courseName);
 
-        Assert.assertThrows(Exception.class, () -> courseDAO.addCourse(newCourse));
+        Assert.assertThrows(CourseAlreadyExistsException.class, () -> courseDAO.addCourse(newCourse));
     }
 
     @Test
-    public void updateExistingCourseNameTest() {
+    public void updateExistingCourseNameTest() throws CourseDoesNotExistException {
         int id = 3;
-        String courseName = "History";
-        /*
-        boolean expected = true;
-        boolean actual = courseDAO.updateCourse(id, courseName);
-        Assert.assertEquals(expected, actual);
-        */
+        String courseName = "New Course Name";
+        courseDAO.updateCourse(id, courseName);
 
-        try {
-            courseDAO.updateCourse(id, courseName);
-        } catch(Exception e) {
-            Assert.fail();
-        }
+        Course expected = new Course(id, courseName);
+        Course actual = courseDAO.getCourseById(id);
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void updateNonexistentCourseNameTest() {
         int id = -1;
-        String courseName = "History";
+        String courseName = "New Course Name";
 
-        /*
-        boolean expected = false;
-        boolean actual = courseDAO.updateCourse(id, courseName);
-        Assert.assertEquals(expected, actual);
-        */
-
-        Assert.assertThrows(Exception.class, () -> courseDAO.updateCourse(id, courseName));
+        Assert.assertThrows(CourseDoesNotExistException.class, () -> courseDAO.updateCourse(id, courseName));
     }
 
     @Test
-    public void deleteCourseSuccessfulTest() {
+    public void deleteCourseSuccessfulTest() throws CourseDoesNotExistException {
         int id = 1;
 
-        boolean expected = true;
-        boolean actual = courseDAO.deleteCourse(id);
-        Assert.assertEquals(expected, actual);
-
+        courseDAO.deleteCourse(id);
+        Course actual = courseDAO.getCourseById(id);
+        Assert.assertNull(actual);
     }
 
     @Test
     public void deleteCourseUnsuccessfulTest() {
         int id = -1;
 
-        boolean expected = false;
-        boolean actual = courseDAO.deleteCourse(id);
-        Assert.assertEquals(expected, actual);
-
-
-        //Assert.assertThrows(Exception.class, () -> courseDAO.deleteCourse(id));
+        Assert.assertThrows(CourseDoesNotExistException.class, () -> courseDAO.deleteCourse(id));
     }
 }
