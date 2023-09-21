@@ -38,6 +38,7 @@ public class StudentDAO {
 
         try{
             PreparedStatement ps = conn.prepareStatement("select * from student where id=?");
+            ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
                 student = new Student(rs.getInt("id"), rs.getString("name"), rs.getString("email"));
