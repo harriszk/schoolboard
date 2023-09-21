@@ -51,36 +51,21 @@ public class CourseDAO {
         return course;
     }
 
-    public boolean addCourse(Course course){
-        boolean result = false;
-
+    public void addCourse(Course course) throws SQLException {
         try {
             String sql = "INSERT INTO course (id, name) VALUES (?, ?);";
-            PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1,course.getId());
             ps.setString(2,course.getName());
             ps.executeUpdate();
-
-            ResultSet rs = ps.getGeneratedKeys();
-
-            // If there is something in the result set, then we were successfully able
-            // to add a course!
-            if(rs.next()) {
-                result = true;
-            }
         } catch(SQLException e) {
             e.printStackTrace();
+            throw e;
         }
-
-        return result;
     }
 
-    public boolean deleteCourse(int id){
-
-        boolean result = false;
-
+    public void deleteCourse(int id) throws SQLException {
         try {
-
             PreparedStatement ps = conn.prepareStatement("select * from course where course.id=?");
             ps.setInt(1,id);
             ResultSet rs = ps.executeQuery();
@@ -94,24 +79,17 @@ public class CourseDAO {
                 ps = conn.prepareStatement("select * from course where course.id=?");
                 ps.setInt(1,id);
                 rs = ps.executeQuery();
-                result =  !rs.next();
             }else {//if course didn't exist
-                result = rs.next();
+                //result = rs.next();
             }
-
-
-
-
-
 
            /* if(rs.next()){
                 result =  true;
             }*/
-
         }catch(SQLException e){
             e.printStackTrace();
+            throw e;
         }
-        return result;
     }
 
     public boolean updateCourse(int id, String courseName){

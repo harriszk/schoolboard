@@ -53,9 +53,17 @@ public class CourseDAOTest {
         int newId = 6;
         String courseName = "History";
         Course newCourse = new Course(newId, courseName);
+        /*
         boolean expected = true;
         boolean actual = courseDAO.addCourse(newCourse);
         Assert.assertEquals(expected, actual);
+         */
+
+        try {
+            courseDAO.addCourse(newCourse);
+        } catch(Exception e) {
+            Assert.fail();
+        }
     }
 
     @Test
@@ -63,9 +71,13 @@ public class CourseDAOTest {
         int newId = 3;
         String courseName = "History";
         Course newCourse = new Course(newId, courseName);
+        /*
         boolean expected = false;
         boolean actual = courseDAO.addCourse(newCourse);
         Assert.assertEquals(expected, actual);
+        */
+
+        Assert.assertThrows(Exception.class, () -> courseDAO.addCourse(newCourse));
     }
 
     @Test
@@ -89,16 +101,29 @@ public class CourseDAOTest {
     @Test
     public void deleteCourseSuccessfulTest() {
         int id = 1;
+
+        /*
         boolean expected = true;
         boolean actual = courseDAO.deleteCourse(id);
         Assert.assertEquals(expected, actual);
+        */
+
+        try {
+            courseDAO.deleteCourse(id);
+        } catch(Exception e) {
+            Assert.fail();
+        }
     }
 
     @Test
     public void deleteCourseUnsuccessfulTest() {
         int id = -1;
+        /*
         boolean expected = false;
         boolean actual = courseDAO.deleteCourse(id);
         Assert.assertEquals(expected, actual);
+         */
+
+        Assert.assertThrows(Exception.class, () -> courseDAO.deleteCourse(id));
     }
 }
