@@ -1,7 +1,8 @@
 package DAO;
 
 import Model.Course;
-import Model.Teacher;
+import Exception.CourseAlreadyExistsException;
+import Exception.CourseDoesNotExistException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -46,95 +47,44 @@ public class CourseDAO {
         return course;
     }
 
-    public void addCourse(Course course) throws SQLException {
+    public void addCourse(Course course) throws CourseAlreadyExistsException {
         try {
             String sql = "INSERT INTO course (id, name) VALUES (?, ?);";
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1,course.getId());
-            ps.setString(2,course.getName());
+            ps.setInt(1, course.getId());
+            ps.setString(2, course.getName());
             ps.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
-            throw e;
+            throw new CourseAlreadyExistsException();
         }
     }
 
-    public boolean deleteCourse(int id) {
-
-        boolean result = false;
-        try{
-            PreparedStatement ps = conn.prepareStatement("delete from course where course.id=?");
+    public void deleteCourse(int id) throws CourseDoesNotExistException {
+        try {
+            String sql = "DELETE FROM course WHERE course.id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
 
-            if(ps.executeUpdate() != 0){
-                result = true;
+            if(ps.executeUpdate() == 0) {
+                throw new CourseDoesNotExistException();
             }
-
-        }catch (SQLException e){
-
-        }
-
-        return result;
-
-        /*
-        try {
-            PreparedStatement ps = conn.prepareStatement("select * from course where course.id=?");
-            ps.setInt(1,id);
-            ResultSet rs = ps.executeQuery();
-
-            if(rs.next()){ //if exist -> delete it
-                ps = conn.prepareStatement("delete from course where course.id=?");
-                ps.setInt(1,id);
-                ps.executeUpdate();
-
-                //Check nonexistence anymore
-                ps = conn.prepareStatement("select * from course where course.id=?");
-                ps.setInt(1,id);
-                rs = ps.executeQuery();
-            }else {//if course didn't exist
-                //result = rs.next();
-            }
-
-           /* if(rs.next()){
-                result =  true;
-            }*
-        }catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
-            throw e;
         }
-
-        */
-
     }
-    public void updateCourse(int id, String courseName) throws SQLException {
-        PreparedStatement ps = conn.prepareStatement("update course set course.name=? where course.id=?");
-        ps.setString(1,courseName);
-        ps.setInt(2,id);
-
-        if(ps.executeUpdate() == 0) {
-            throw new SQLException();
-        }
-
-        /*
+    public void updateCourse(int id, String courseName) throws CourseDoesNotExistException {
         try {
-            PreparedStatement ps = conn.prepareStatement("update course set course.name=? where course.id=?");
-            ps.setString(1,courseName);
-            ps.setInt(2,id);
+            String sql = "UPDATE course SET course.name = ? WHERE course.id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, courseName);
+            ps.setInt(2, id);
 
             if(ps.executeUpdate() == 0) {
-                throw new SQLException();
+                throw new CourseDoesNotExistException();
             }
-
-            ps = conn.prepareStatement("select * from course where course.id=?");
-            ps.setInt(1,id);
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-                //result = courseName.equals(rs.getString("name"));
-            }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
-            throw e;
         }
-        */
     }
 }
