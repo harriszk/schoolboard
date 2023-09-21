@@ -2,17 +2,26 @@ package Controller;
 
 import DAO.StudentDAO;
 import Model.Course;
+<<<<<<< HEAD
 
 import Model.Student;
 import Service.CourseService;
 import Service.StudentService;
 
+=======
+import Model.Student;
+import Service.CourseService;
+import Service.StudentService;
+>>>>>>> 16f59f69121774634f6be0897a854bb05cfaf345
 import Exception.CourseAlreadyExistsException;
 import Exception.CourseDoesNotExistException;
 import Service.CourseService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 16f59f69121774634f6be0897a854bb05cfaf345
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
