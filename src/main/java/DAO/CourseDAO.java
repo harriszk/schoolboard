@@ -41,6 +41,11 @@ public class CourseDAO {
             ps.setInt(1,id);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
+                /*
+                * if(!rs.next()){
+                *
+                * } else return null
+                * */
                 course.setId(rs.getInt("id"));
                 course.setName(rs.getString("name"));
             }
