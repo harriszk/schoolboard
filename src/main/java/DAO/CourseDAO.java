@@ -106,7 +106,24 @@ public class CourseDAO {
     }
 
     public boolean updateCourse(int id, String courseName){
-        return false;
+        boolean result = false;
+        try {
+            PreparedStatement ps = conn.prepareStatement("update course set course.name=? where course.id=?");
+            ps.setString(1,courseName);
+            ps.setInt(2,id);
+            ps.executeUpdate();
+
+            ps = conn.prepareStatement("select * from course where course.id=?");
+            ps.setInt(1,id);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                result = courseName.equals(rs.getString("name"));
+            }
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return result;
     }
 
 
