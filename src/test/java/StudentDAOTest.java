@@ -53,7 +53,7 @@ public class StudentDAOTest {
     @Test
     public void addStudentSuccessfulTest(){
         boolean expected = true;
-        Student student = new Student(4,"Brian Jones","BrianJones@@CrystalEngineer.com")
+        Student student = new Student(4,"Brian Jones","BrianJones@@CrystalEngineer.com");
         boolean actual = studentDAO.addStudent(student);
         Assert.assertEquals(expected, actual);
     }
@@ -61,7 +61,7 @@ public class StudentDAOTest {
     @Test
     public void addStudentUnsuccessfulTest(){
         boolean expected = false;
-        Student student = new Student(1,"Brian Jones","BrianJones@@CrystalEngineer.com")
+        Student student = new Student(1,"Brian Jones","BrianJones@@CrystalEngineer.com");
         boolean actual = studentDAO.addStudent(student);
         Assert.assertEquals(expected, actual);
     }
