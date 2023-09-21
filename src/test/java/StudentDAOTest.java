@@ -1,6 +1,9 @@
+import DAO.CourseDAO;
 import DAO.StudentDAO;
 import Model.Student;
+import Util.ConnectionSingleton;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Connection;
@@ -10,6 +13,12 @@ import java.util.List;
 public class StudentDAOTest {
 
     private StudentDAO studentDAO;
+
+    @Before
+    public void setUp() {
+        Connection conn = ConnectionSingleton.getConnection();
+        studentDAO = new StudentDAO(conn);
+    }
 
     @Test
     public void getAllStudentsTest(){
