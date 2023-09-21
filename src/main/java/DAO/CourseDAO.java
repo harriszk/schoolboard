@@ -86,13 +86,13 @@ public class CourseDAO {
         try {
             PreparedStatement ps = conn.prepareStatement("delete from course where course.id=?");
             ps.setInt(1,id);
-            ResultSet rs = ps.executeQuery();
+            ps.executeUpdate();
 
 
             ps = conn.prepareStatement("select * from course where course.id=?");
             ps.setInt(1,id);
-            rs = ps.executeQuery();
-            result =  rs.next();
+            ResultSet rs = ps.executeQuery();
+            result =  !rs.next();
 
             /*while(rs.next()){
                 course.setId(rs.getInt("id"));
