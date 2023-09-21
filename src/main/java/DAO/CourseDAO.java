@@ -35,15 +35,74 @@ public class CourseDAO {
     }
 
     public Course getCourseById(int id){
-        return null;
+        Course course = new Course();
+        try {
+            PreparedStatement ps = conn.prepareStatement("select * from course where course.id=?");
+            ps.setInt(1,id);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                course.setId(rs.getInt("id"));
+                course.setName(rs.getString("name"));
+            }
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return course;
     }
 
     public boolean addCourse(Course course){
-        return false;
+
+        boolean result = false;
+        try {
+            PreparedStatement ps = conn.prepareStatement("insert into course (id, name) values (?,?)");
+            ps.setInt(1,course.getId());
+            ps.setString(2,course.getName());
+            ResultSet rs = ps.executeQuery();
+
+            //Check existence
+            ps = conn.prepareStatement("select * from course where course.id=?");
+            ps.setInt(1,course.getId());
+            rs = ps.executeQuery();
+
+            Course newCourse = new Course();
+            while(rs.next()){
+                newCourse.setId(rs.getInt("id"));
+                newCourse.setName(rs.getString("name"));
+            }
+            //compare parametr with retrived from DB
+            result = course.equals(newCourse);
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return result;
     }
 
     public boolean deleteCourse(int id){
-        return false;
+
+        boolean result = false;
+
+        try {
+            PreparedStatement ps = conn.prepareStatement("delete from course where course.id=?");
+            ps.setInt(1,id);
+            ResultSet rs = ps.executeQuery();
+
+
+            ps = conn.prepareStatement("select * from course where course.id=?");
+            ps.setInt(1,id);
+            rs = ps.executeQuery();
+            result =  rs.next();
+
+            /*while(rs.next()){
+                course.setId(rs.getInt("id"));
+                course.setName(rs.getString("name"));
+            }*/
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return result;
     }
 
     public boolean updateCourse(int id, String courseName){
