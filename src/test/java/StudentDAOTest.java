@@ -78,7 +78,7 @@ public class StudentDAOTest {
     @Test
     public void deleteStudentByIdUnsuccessfulTest(){
         int id =-1;
-        boolean expected = true;
+        boolean expected = false;
         boolean actual = studentDAO.deleteStudentById(id);
         Assert.assertEquals(expected, actual);
     }

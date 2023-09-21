@@ -1,0 +1,198 @@
+Index: src/main/java/DAO/CourseDAO.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package DAO;\r\n\r\npublic class CourseDAO {\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/DAO/CourseDAO.java b/src/main/java/DAO/CourseDAO.java
+--- a/src/main/java/DAO/CourseDAO.java	(revision a552450aa0965f82aab0741b9539cb7514a2239e)
++++ b/src/main/java/DAO/CourseDAO.java	(date 1695247008218)
+@@ -1,4 +1,42 @@
+ package DAO;
+ 
++import Model.Course;
++import Model.Teacher;
++
++import java.sql.Connection;
++import java.sql.PreparedStatement;
++import java.sql.ResultSet;
++import java.sql.SQLException;
++import java.util.ArrayList;
++import java.util.List;
++
+ public class CourseDAO {
++
++    Connection conn;
++    public CourseDAO(Connection conn){
++        this.conn = conn;
++    }
++
++    public List<Course> getAllCourses(){
++        List<Course> courses = new ArrayList<Course>();
++        try {
++
++
++            PreparedStatement ps = conn.prepareStatement("select * from course");
++            ResultSet rs = ps.executeQuery();
++            while(rs.next()){
++                 courses.add(new Course(rs.getInt("id"),rs.getString("name")));
++            }
++
++        }catch(SQLException e){
++            e.printStackTrace();
++        }
++        return courses;
++    }
++
++    public Course getCourseById(int id){
++        return null;
++    }
++
++
+ }
+Index: src/main/resources/Tables.sql
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>--h2 is typically used to setup a test database, not a prod database.\r\n--first, drop your tables (to reset your database for testing)\r\n--then create your tables\r\n\r\n\r\ndrop table StudentCourses if exists;\r\ndrop table TeacherCourses if exists;\r\ndrop table Student if exists;\r\ndrop table Teacher if exists;\r\ndrop table Course if exists;\r\n\r\n-- Create a schema\r\n\r\nCREATE TABLE Student\r\n(\r\n  id INT PRIMARY KEY,\r\n  name VARCHAR(255) NOT NULL,\r\n  email VARCHAR(255) NOT NULL,\r\n  PRIMARY KEY (id)\r\n);\r\n\r\nCREATE TABLE Teacher\r\n(\r\n  id INT PRIMARY KEY,\r\n  name VARCHAR(255) NOT NULL,\r\n  PRIMARY KEY (id)\r\n);\r\n\r\nCREATE TABLE Course\r\n(\r\n  id INT PRIMARY KEY,\r\n  name VARCHAR(255) NOT NULL,\r\n  PRIMARY KEY (id)\r\n);\r\n\r\nCREATE TABLE StudentCourses\r\n(\r\n  student_id INT NOT NULL,\r\n  course_id INT NOT NULL,\r\n  PRIMARY KEY (student_id, course_id),\r\n  FOREIGN KEY (student_id) REFERENCES Student(id),\r\n  FOREIGN KEY (course_id) REFERENCES Course(id)\r\n);\r\n\r\nCREATE TABLE TeacherCourses\r\n(\r\n  teacher_id INT NOT NULL,\r\n  course_id INT NOT NULL,\r\n  PRIMARY KEY (teacher_id, course_id),\r\n  FOREIGN KEY (course_id) REFERENCES Course(id),\r\n  FOREIGN KEY (teacher_id) REFERENCES Teacher(id)\r\n);\r\n\r\n\r\n-- Fill a data\r\n\r\ninsert into teacher (id, name) values (1, 'Zachary Harris');\r\ninsert into teacher (id, name) values (2, 'Ralph Fatkullin');\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/Tables.sql b/src/main/resources/Tables.sql
+--- a/src/main/resources/Tables.sql	(revision a552450aa0965f82aab0741b9539cb7514a2239e)
++++ b/src/main/resources/Tables.sql	(date 1695246664568)
+@@ -54,5 +54,15 @@
+ 
+ -- Fill a data
+ 
++-- Teacher table
+ insert into teacher (id, name) values (1, 'Zachary Harris');
+ insert into teacher (id, name) values (2, 'Ralph Fatkullin');
++
++-- Course table
++insert into course (id, name) values (1, 'Math');
++insert into course (id, name) values (2, 'Science');
++insert into course (id, name) values (3, 'Databases');
++insert into course (id, name) values (4, 'English');
++insert into course (id, name) values (5, 'Physics');
++
++--
+Index: src/test/java/TeacherDAOTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import DAO.TeacherDAO;\r\nimport Model.Teacher;\r\nimport Util.ConnectionSingleton;\r\nimport org.junit.Assert;\r\nimport org.junit.Before;\r\nimport org.junit.Test;\r\n\r\nimport java.sql.Connection;\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\npublic class TeacherDAOTest {\r\n    private TeacherDAO teacherDAO;\r\n\r\n    @Before\r\n    public void setUp() {\r\n        Connection conn = ConnectionSingleton.getConnection();\r\n        teacherDAO = new TeacherDAO(conn);\r\n    }\r\n\r\n    @Test\r\n    public void getTeacherByIdSuccessfulTest() {\r\n        Teacher expected = new Teacher(1, \"Zachary Harris\");\r\n        Teacher actual = teacherDAO.getTeacherById(1);\r\n        Assert.assertEquals(expected, actual);\r\n    }\r\n\r\n    @Test\r\n    public void getTeacherByIdUnsuccessfulTest() {\r\n        Teacher actual = teacherDAO.getTeacherById(-1);\r\n        Assert.assertNull(actual);\r\n    }\r\n\r\n    @Test\r\n    public void addNewTeacherTest() {\r\n        int newId = 3;\r\n        Teacher expected = new Teacher(newId, \"John Doe\");\r\n        teacherDAO.addTeacher(expected);\r\n        Teacher actual = teacherDAO.getTeacherById(newId);\r\n        Assert.assertEquals(expected, actual);\r\n    }\r\n\r\n    @Test\r\n    public void addTeacherWithSameIdTest() {\r\n        int newId = 1;\r\n        Teacher newTeacher = new Teacher(newId, \"John Doe\");\r\n        boolean expected = false;\r\n        boolean actual = teacherDAO.addTeacher(newTeacher);\r\n        Assert.assertEquals(expected, actual);\r\n    }\r\n\r\n    @Test\r\n    public void updateExistingTeacherNameTest() {\r\n        int id = 1;\r\n        String name = \"New name\";\r\n        Teacher expected = new Teacher(id, name);\r\n\r\n        teacherDAO.updateTeacher(id, name);\r\n        Teacher actual = teacherDAO.getTeacherById(id);\r\n        Assert.assertEquals(expected, actual);\r\n    }\r\n\r\n    @Test\r\n    public void updateNonexistentTeacherNameTest() {\r\n        int id = -1;\r\n        String name = \"New name\";\r\n\r\n        boolean expected = false;\r\n        boolean actual = teacherDAO.update(id, name);\r\n        Assert.assertEquals(expected, actual);\r\n    }\r\n\r\n    @Test\r\n    public void deleteTeacherSuccessfulTest() {\r\n        int id = 1;\r\n        boolean expected = true;\r\n        boolean actual = teacherDAO.removeTeacher(id);\r\n        Assert.assertEquals(expected, actual);\r\n    }\r\n\r\n    @Test\r\n    public void deleteTeacherUnsuccessfulTest() {\r\n        int id = -1;\r\n        boolean expected = false;\r\n        boolean actual = teacherDAO.removeTeacher(id);\r\n        Assert.assertEquals(expected, actual);\r\n    }\r\n\r\n    @Test\r\n    public void getAllTeachersTest() {\r\n        List<Teacher> expected = new ArrayList<Teacher>();\r\n        expected.add(new Teacher(1, \"Zachary Harris\"));\r\n        expected.add(new Teacher(2, \"Ralph Fatkullin\"));\r\n\r\n        List<Teacher> actual = teacherDAO.getAllTeachers();\r\n        Assert.assertEquals(expected, actual);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/java/TeacherDAOTest.java b/src/test/java/TeacherDAOTest.java
+--- a/src/test/java/TeacherDAOTest.java	(revision a552450aa0965f82aab0741b9539cb7514a2239e)
++++ b/src/test/java/TeacherDAOTest.java	(date 1695246441047)
+@@ -17,7 +17,7 @@
+         Connection conn = ConnectionSingleton.getConnection();
+         teacherDAO = new TeacherDAO(conn);
+     }
+-
++/*
+     @Test
+     public void getTeacherByIdSuccessfulTest() {
+         Teacher expected = new Teacher(1, "Zachary Harris");
+@@ -94,5 +94,5 @@
+ 
+         List<Teacher> actual = teacherDAO.getAllTeachers();
+         Assert.assertEquals(expected, actual);
+-    }
++    }*/
+ }
+Index: target/classes/Tables.sql
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>--h2 is typically used to setup a test database, not a prod database.\r\n--first, drop your tables (to reset your database for testing)\r\n--then create your tables\r\n\r\n\r\ndrop table StudentCourses if exists;\r\ndrop table TeacherCourses if exists;\r\ndrop table Student if exists;\r\ndrop table Teacher if exists;\r\ndrop table Course if exists;\r\n\r\n-- Create a schema\r\n\r\nCREATE TABLE Student\r\n(\r\n  id INT PRIMARY KEY,\r\n  name VARCHAR(255) NOT NULL,\r\n  email VARCHAR(255) NOT NULL,\r\n  PRIMARY KEY (id)\r\n);\r\n\r\nCREATE TABLE Teacher\r\n(\r\n  id INT PRIMARY KEY,\r\n  name VARCHAR(255) NOT NULL,\r\n  PRIMARY KEY (id)\r\n);\r\n\r\nCREATE TABLE Course\r\n(\r\n  id INT PRIMARY KEY,\r\n  name VARCHAR(255) NOT NULL,\r\n  PRIMARY KEY (id)\r\n);\r\n\r\nCREATE TABLE StudentCourses\r\n(\r\n  student_id INT NOT NULL,\r\n  course_id INT NOT NULL,\r\n  PRIMARY KEY (student_id, course_id),\r\n  FOREIGN KEY (student_id) REFERENCES Student(id),\r\n  FOREIGN KEY (course_id) REFERENCES Course(id)\r\n);\r\n\r\nCREATE TABLE TeacherCourses\r\n(\r\n  teacher_id INT NOT NULL,\r\n  course_id INT NOT NULL,\r\n  PRIMARY KEY (teacher_id, course_id),\r\n  FOREIGN KEY (course_id) REFERENCES Course(id),\r\n  FOREIGN KEY (teacher_id) REFERENCES Teacher(id)\r\n);\r\n\r\n\r\n-- Fill a data\r\n\r\ninsert into teacher (id, name) values (1, 'Zachary Harris');\r\ninsert into teacher (id, name) values (2, 'Ralph Fatkullin');\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/target/classes/Tables.sql b/target/classes/Tables.sql
+--- a/target/classes/Tables.sql	(revision a552450aa0965f82aab0741b9539cb7514a2239e)
++++ b/target/classes/Tables.sql	(date 1695246664568)
+@@ -54,5 +54,15 @@
+ 
+ -- Fill a data
+ 
++-- Teacher table
+ insert into teacher (id, name) values (1, 'Zachary Harris');
+ insert into teacher (id, name) values (2, 'Ralph Fatkullin');
++
++-- Course table
++insert into course (id, name) values (1, 'Math');
++insert into course (id, name) values (2, 'Science');
++insert into course (id, name) values (3, 'Databases');
++insert into course (id, name) values (4, 'English');
++insert into course (id, name) values (5, 'Physics');
++
++--
+Index: src/main/java/Model/Course.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Model;\r\n\r\npublic class Course {\r\n    private int id;\r\n    private String course;\r\n\r\n    public Course(int id, String course) {\r\n        this.id = id;\r\n        this.course = course;\r\n    }\r\n\r\n    public int getId() {\r\n        return id;\r\n    }\r\n\r\n    public void setId(int id) {\r\n        this.id = id;\r\n    }\r\n\r\n    public String getCourse() {\r\n        return course;\r\n    }\r\n\r\n    public void setCourse(String course) {\r\n        this.course = course;\r\n    }\r\n\r\n    @Override\r\n    public String toString() {\r\n        return \"Course{\" +\r\n                \"id=\" + id +\r\n                \", course='\" + course + '\\'' +\r\n                '}';\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/Model/Course.java b/src/main/java/Model/Course.java
+--- a/src/main/java/Model/Course.java	(revision a552450aa0965f82aab0741b9539cb7514a2239e)
++++ b/src/main/java/Model/Course.java	(date 1695246756273)
+@@ -1,12 +1,14 @@
+ package Model;
+ 
++import java.util.Objects;
++
+ public class Course {
+     private int id;
+-    private String course;
++    private String name;
+ 
+-    public Course(int id, String course) {
++    public Course(int id, String name) {
+         this.id = id;
+-        this.course = course;
++        this.name = name;
+     }
+ 
+     public int getId() {
+@@ -17,19 +19,33 @@
+         this.id = id;
+     }
+ 
+-    public String getCourse() {
+-        return course;
++
++    public String getName() {
++        return name;
+     }
+ 
+-    public void setCourse(String course) {
+-        this.course = course;
++    public void setName(String name) {
++        this.name = name;
++    }
++
++    @Override
++    public boolean equals(Object o) {
++        if (this == o) return true;
++        if (o == null || getClass() != o.getClass()) return false;
++        Course course = (Course) o;
++        return id == course.id && Objects.equals(name, course.name);
++    }
++
++    @Override
++    public int hashCode() {
++        return Objects.hash(id, name);
+     }
+ 
+     @Override
+     public String toString() {
+         return "Course{" +
+                 "id=" + id +
+-                ", course='" + course + '\'' +
++                ", course='" + name + '\'' +
+                 '}';
+     }
+ }
