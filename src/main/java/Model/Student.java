@@ -6,6 +6,9 @@ public class Student {
     private String email;
 
 
+    public Student() {
+    }
+
     public Student(int id, String name, String email) {
         this.id = id;
         this.name = name;
