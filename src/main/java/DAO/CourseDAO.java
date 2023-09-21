@@ -3,10 +3,7 @@ package DAO;
 import Model.Course;
 import Model.Teacher;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,30 +52,26 @@ public class CourseDAO {
     }
 
     public boolean addCourse(Course course){
-
         boolean result = false;
+
         try {
-            PreparedStatement ps = conn.prepareStatement("insert into course (id, name) values (?,?)");
+            String sql = "INSERT INTO course (id, name) VALUES (?, ?);";
+            PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1,course.getId());
             ps.setString(2,course.getName());
-            ResultSet rs = ps.executeQuery();
+            ps.executeUpdate();
 
-            //Check existence
-            ps = conn.prepareStatement("select * from course where course.id=?");
-            ps.setInt(1,course.getId());
-            rs = ps.executeQuery();
+            ResultSet rs = ps.getGeneratedKeys();
 
-            Course newCourse = new Course();
-            while(rs.next()){
-                newCourse.setId(rs.getInt("id"));
-                newCourse.setName(rs.getString("name"));
+            // If there is something in the result set, then we were successfully able
+            // to add a course!
+            if(rs.next()) {
+                result = true;
             }
-            //compare parametr with retrived from DB
-            result = course.equals(newCourse);
-
-        }catch(SQLException e){
+        } catch(SQLException e) {
             e.printStackTrace();
         }
+
         return result;
     }
 
