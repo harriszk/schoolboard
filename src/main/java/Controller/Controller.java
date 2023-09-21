@@ -1,7 +1,11 @@
 package Controller;
 
+import Model.Course;
+import Service.CourseService;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+
+import java.util.List;
 
 
 public class Controller {
@@ -17,6 +21,12 @@ public class Controller {
         this.teacherService = teacherService;
     }
     */
+
+    private CourseService courseService;
+
+    public Controller(CourseService courseService) {
+        this.courseService = courseService;
+    }
 
     public Javalin getAPI() {
         Javalin app = Javalin.create();
@@ -50,11 +60,21 @@ public class Controller {
 
     // ========== COURSES HANDLERS ==========
     private void getAllCoursesHandler(Context context) {
-        
+        List<Course> authors = this.courseService.getAllCourses();
+        context.json(authors);
     }
 
     private void getCourseByIdHandler(Context context) {
+        Course course = this.courseService.getCourseById(
+                Integer.parseInt(context.pathParam("id")));
 
+        if(course == null) {
+            context.html("No course with that id!");
+            context.status(404);
+            return;
+        }
+
+        context.json(course);
     }
 
     private void addCourseHandler(Context context) {
