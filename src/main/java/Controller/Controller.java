@@ -5,6 +5,7 @@ import Model.Course;
 import Model.Student;
 import Service.CourseService;
 import Service.StudentService;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -109,7 +110,12 @@ public class Controller {
     }
 
     private void getStudentByIdHandler(Context context) {
-
+        Student student = this.studentService.getStudentById(
+                Integer.parseInt(context.pathParam("id")));
+        if (student==null){
+            context.html("No students with this id");
+            context.status(404);
+        }
     }
 
     private void addNewStudentHandler(Context context) {
