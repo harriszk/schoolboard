@@ -65,4 +65,9 @@ insert into course (id, name) values (3, 'Databases');
 insert into course (id, name) values (4, 'English');
 insert into course (id, name) values (5, 'Physics');
 
---
+-- Student table
+insert into student (id, name, email) values (1, 'John Doe', 'johnD@someCompany.com');
+insert into student (id, name, email) values (2, 'Jane Doe', 'aneD@someCompany.com');
+insert into student (id, name, email) values (3, 'Daisy Moyer', 'DaisyMoyer@CrystalEngineer.com');
+
+
