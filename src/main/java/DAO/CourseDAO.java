@@ -40,15 +40,13 @@ public class CourseDAO {
             PreparedStatement ps = conn.prepareStatement("select * from course where course.id=?");
             ps.setInt(1,id);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-                /*
-                * if(!rs.next()){
-                *
-                * } else return null
-                * */
-                course.setId(rs.getInt("id"));
-                course.setName(rs.getString("name"));
-            }
+
+
+                if(rs.next()){
+                    course.setId(rs.getInt("id"));
+                    course.setName(rs.getString("name"));
+                } else course = null;
+
 
         }catch(SQLException e){
             e.printStackTrace();
