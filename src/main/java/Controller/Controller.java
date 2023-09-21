@@ -1,7 +1,11 @@
 package Controller;
 
 import Model.Course;
+import Exception.CourseAlreadyExistsException;
+import Exception.CourseDoesNotExistException;
 import Service.CourseService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -77,16 +81,43 @@ public class Controller {
         context.json(course);
     }
 
-    private void addCourseHandler(Context context) {
+    private void addCourseHandler(Context context) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Course course = mapper.readValue(context.body(), Course.class);
 
+        try {
+            this.courseService.addCourse(course);
+            context.json("Successfully added course!");
+        } catch (CourseAlreadyExistsException e) {
+            e.printStackTrace();
+            context.status(400);
+        }
     }
 
-    private void updateCourseHandler(Context context) {
+    private void updateCourseHandler(Context context) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Course course = mapper.readValue(context.body(), Course.class);
 
+        try {
+            this.courseService.updateCourse(course.getId(), course.getName());
+            context.json("Successfully updated course!");
+        } catch(CourseDoesNotExistException e) {
+            e.printStackTrace();
+            context.status(400);
+        }
     }
 
-    private void deleteCourseHandler(Context context) {
+    private void deleteCourseHandler(Context context) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Course course = mapper.readValue(context.body(), Course.class);
 
+        try {
+            this.courseService.updateCourse(course.getId(), course.getName());
+            context.json("Successfully updated course!");
+        } catch(CourseDoesNotExistException e) {
+            e.printStackTrace();
+            context.status(400);
+        }
     }
 
     private void getCoursesByTeacherIdHandler(Context context) {
