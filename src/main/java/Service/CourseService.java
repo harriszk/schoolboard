@@ -2,6 +2,8 @@ package Service;
 
 import DAO.CourseDAO;
 import Model.Course;
+import Exception.CourseAlreadyExistsException;
+import Exception.CourseDoesNotExistException;
 
 import java.sql.Connection;
 import java.util.List;
@@ -46,15 +48,15 @@ public class CourseService {
         return this.courseDAO.getCourseById(id);
     }
 
-    public void addCourse() {
-
+    public void addCourse(Course course) throws CourseAlreadyExistsException {
+        this.courseDAO.addCourse(course);
     }
 
-    public void deleteCourse() {
-
+    public void deleteCourse(int id) throws CourseDoesNotExistException {
+        this.courseDAO.deleteCourse(id);
     }
 
-    public void updateCourse() {
-
+    public void updateCourse(int id, String courseName) throws CourseDoesNotExistException {
+        this.courseDAO.updateCourse(id, courseName);
     }
 }
