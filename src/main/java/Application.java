@@ -1,5 +1,6 @@
 import Controller.Controller;
 import DAO.TeacherDAO;
+import Service.CourseService;
 import Util.ConnectionSingleton;
 
 import java.util.List;
@@ -11,7 +12,9 @@ public class Application {
 //        if not, you'll get a stack trace
         ConnectionSingleton.getConnection();
 //        this line is for starting the javalin server
-        Controller controller = new Controller();
+        CourseService courseService = new CourseService(ConnectionSingleton.getConnection());
+
+        Controller controller = new Controller(courseService);
         controller.getAPI().start();
 
         /*
