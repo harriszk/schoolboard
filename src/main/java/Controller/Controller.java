@@ -1,7 +1,10 @@
 package Controller;
 
+import DAO.StudentDAO;
 import Model.Course;
+import Model.Student;
 import Service.CourseService;
+import Service.StudentService;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -23,6 +26,7 @@ public class Controller {
     */
 
     private CourseService courseService;
+    private StudentService studentService;
 
     public Controller(CourseService courseService) {
         this.courseService = courseService;
@@ -99,7 +103,8 @@ public class Controller {
 
     // ========== STUDENTS HANDLERS ==========
     private void getAllStudentsHandler(Context context) {
-
+        List<Student> students = studentService.getAllStudents();
+        context.json(students);
     }
 
     private void getStudentByIdHandler(Context context) {
