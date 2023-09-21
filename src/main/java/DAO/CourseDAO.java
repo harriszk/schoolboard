@@ -87,19 +87,32 @@ public class CourseDAO {
         boolean result = false;
 
         try {
-            PreparedStatement ps = conn.prepareStatement("delete from course where course.id=?");
-            ps.setInt(1,id);
-            ps.executeUpdate();
 
-
-            ps = conn.prepareStatement("select * from course where course.id=?");
+            PreparedStatement ps = conn.prepareStatement("select * from course where course.id=?");
             ps.setInt(1,id);
             ResultSet rs = ps.executeQuery();
-            result =  !rs.next();
 
-            /*while(rs.next()){
-                course.setId(rs.getInt("id"));
-                course.setName(rs.getString("name"));
+            if(rs.next()){ //if exist -> delete it
+                ps = conn.prepareStatement("delete from course where course.id=?");
+                ps.setInt(1,id);
+                ps.executeUpdate();
+
+                //Check nonexistence anymore
+                ps = conn.prepareStatement("select * from course where course.id=?");
+                ps.setInt(1,id);
+                rs = ps.executeQuery();
+                result =  !rs.next();
+            }else {//if course didn't exist
+                result = rs.next();
+            }
+
+
+
+
+
+
+           /* if(rs.next()){
+                result =  true;
             }*/
 
         }catch(SQLException e){
