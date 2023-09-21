@@ -17,14 +17,12 @@ public class CourseDAO {
     public List<Course> getAllCourses(){
         List<Course> courses = new ArrayList<Course>();
         try {
-
-
             PreparedStatement ps = conn.prepareStatement("select * from course");
             ResultSet rs = ps.executeQuery();
+
             while(rs.next()){
                  courses.add(new Course(rs.getInt("id"),rs.getString("name")));
             }
-
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -38,13 +36,10 @@ public class CourseDAO {
             ps.setInt(1,id);
             ResultSet rs = ps.executeQuery();
 
-
-                if(rs.next()){
-                    course.setId(rs.getInt("id"));
-                    course.setName(rs.getString("name"));
-                } else course = null;
-
-
+            if(rs.next()){
+                course.setId(rs.getInt("id"));
+                course.setName(rs.getString("name"));
+            } else course = null;
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -68,12 +63,12 @@ public class CourseDAO {
 
         boolean result = false;
         try{
-        PreparedStatement ps = conn.prepareStatement("delete from course where course.id=?");
-        ps.setInt(1, id);
+            PreparedStatement ps = conn.prepareStatement("delete from course where course.id=?");
+            ps.setInt(1, id);
 
-        if(ps.executeUpdate() != 0){
-            result = true;
-        }
+            if(ps.executeUpdate() != 0){
+                result = true;
+            }
 
         }catch (SQLException e){
 
@@ -111,7 +106,6 @@ public class CourseDAO {
         */
 
     }
-
     public void updateCourse(int id, String courseName) throws SQLException {
         PreparedStatement ps = conn.prepareStatement("update course set course.name=? where course.id=?");
         ps.setString(1,courseName);
@@ -143,10 +137,4 @@ public class CourseDAO {
         }
         */
     }
-
-
-
-
-
-
 }

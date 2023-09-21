@@ -11,14 +11,15 @@ public class Application {
 //        if not, you'll get a stack trace
         ConnectionSingleton.getConnection();
 //        this line is for starting the javalin server
-        //Controller controller = new Controller();
-       // controller.getAPI().start();
+        Controller controller = new Controller();
+        controller.getAPI().start();
 
         /*
         TeacherDAO teacherDAO = new TeacherDAO(ConnectionSingleton.getConnection());
         System.out.println("Teacher with id=1"+ teacherDAO.getTeacherById(1));*/
 
         // Console interface
+        /*
         Scanner sc = new Scanner(System.in);
         boolean theEnd = false;
         while(!theEnd){
@@ -46,5 +47,6 @@ public class Application {
                 System.out.println("invalid choice");
             }
         }
+         */
     }
 }
