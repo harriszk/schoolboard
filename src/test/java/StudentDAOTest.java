@@ -1,23 +1,23 @@
-import DAO.CourseDAO;
-import DAO.StudentDAO;
 import Model.Student;
+import DAO.StudentDAO;
+import Exception.ItemAlreadyExistsException;
+import Exception.ItemDoesNotExistException;
 import Util.ConnectionSingleton;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
 public class StudentDAOTest {
-
     private StudentDAO studentDAO;
 
     @Before
     public void setUp() {
-        Connection conn = ConnectionSingleton.getConnection();
-        studentDAO = new StudentDAO(conn);
+        ConnectionSingleton.resetTestDatabase();
+        studentDAO = new StudentDAO(ConnectionSingleton.getConnection());
     }
 
     @Test
@@ -43,44 +43,68 @@ public class StudentDAOTest {
 
     @Test
     public void getStudentByIdUnsuccessfulTest(){
-        int id=-1;
-        Student expected = null;
+        int id = -1;
         Student actual = studentDAO.getStudentById(id);
 
+        Assert.assertNull(actual);
+    }
+
+    @Test
+    public void addNewStudentTest() throws ItemAlreadyExistsException {
+        int id = 4;
+        String name = "Raymond Welsh";
+        String email = "rwelsh@email.com";
+        Student expected = new Student(id, name, email);
+        studentDAO.addStudent(expected);
+
+        Student actual = studentDAO.getStudentById(id);
         Assert.assertEquals(expected, actual);
     }
 
     @Test
-    public void addStudentSuccessfulTest(){
-        boolean expected = true;
-        Student student = new Student(4,"Brian Jones","BrianJones@@CrystalEngineer.com");
-        boolean actual = studentDAO.addStudent(student);
+    public void addNewStudentWithSameIdlTest() {
+        int id = 1;
+        String name = "Raymond Welsh";
+        String email = "rwelsh@email.com";
+        Student newStudent = new Student(id, name, email);
+
+        Assert.assertThrows(ItemAlreadyExistsException.class, () -> studentDAO.addStudent(newStudent));
+    }
+
+    @Test
+    public void updateExistingStudentTest() throws ItemDoesNotExistException {
+        int id = 1;
+        String name = "Raymond Welsh";
+        String email = "rwelsh@email.com";
+        studentDAO.updateStudent(id, name, email);
+
+        Student expected = new Student(id, name, email);
+        Student actual = studentDAO.getStudentById(id);
         Assert.assertEquals(expected, actual);
     }
 
     @Test
-    public void addStudentUnsuccessfulTest(){
-        boolean expected = false;
-        Student student = new Student(1,"Brian Jones","BrianJones@@CrystalEngineer.com");
-        boolean actual = studentDAO.addStudent(student);
-        Assert.assertEquals(expected, actual);
-    }
-
-
-    @Test
-    public void deleteStudentByIdSuccessfulTest(){
-        int id =1;
-        boolean expected = true;
-        boolean actual = studentDAO.deleteStudentById(id);
-        Assert.assertEquals(expected, actual);
+    public void updateNonexistentStudentTest() {
+        int id = -1;
+        String name = "Raymond Welsh";
+        String email = "rwelsh@email.com";
+        
+        Assert.assertThrows(ItemDoesNotExistException.class, () -> studentDAO.updateStudent(id, name, email));
     }
 
     @Test
-    public void deleteStudentByIdUnsuccessfulTest(){
-        int id =-1;
-        boolean expected = false;
-        boolean actual = studentDAO.deleteStudentById(id);
-        Assert.assertEquals(expected, actual);
+    public void deleteStudentSuccessfulTest() throws ItemDoesNotExistException {
+        int id = 2;
+
+        studentDAO.deleteStudentById(id);
+        Student actual = studentDAO.getStudentById(id);
+        Assert.assertNull(actual);
     }
 
+    @Test
+    public void deleteStudentUnsuccessfulTest() {
+        int id = -1;
+
+        Assert.assertThrows(ItemDoesNotExistException.class, () -> studentDAO.deleteStudentById(id));
+    }
 }
