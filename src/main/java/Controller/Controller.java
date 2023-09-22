@@ -110,6 +110,7 @@ public class Controller {
             context.json("Successfully updated course!");
         } catch(ItemDoesNotExistException e) {
             e.printStackTrace();
+            context.json("This student doesn't exist!");
             context.status(400);
         }
     }
@@ -169,7 +170,7 @@ public class Controller {
         Student student = om.readValue(context.body(), Student.class);
 
         try{
-            studentService.updateStudent(student);
+            studentService.updateStudent(student.getId(), student.getName(), student.getEmail());
             context.json("Updated successfuly!");
         }catch (ItemDoesNotExistException e){
             e.printStackTrace();

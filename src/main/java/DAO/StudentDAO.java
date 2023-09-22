@@ -70,6 +70,19 @@ public class StudentDAO {
 
     public void updateStudent(int id, String name, String email) throws ItemDoesNotExistException {
 
+        try {
+            PreparedStatement ps = conn.prepareStatement("update student set student.name= ?, student.email=? where student.id=?");
+            ps.setString(1, name);
+            ps.setString(2, email);
+            ps.setInt(3, id);
+
+            if (ps.executeUpdate() == 0){
+                throw new ItemDoesNotExistException("Student");
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
     }
 
     public void deleteStudentById(int id) throws ItemDoesNotExistException {
@@ -86,4 +99,5 @@ public class StudentDAO {
             e.printStackTrace();
         }
     }
+
 }

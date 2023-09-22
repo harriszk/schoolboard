@@ -35,4 +35,7 @@ public class StudentService {
     }
 
 
+    public void updateStudent(int id, String name, String email) throws ItemDoesNotExistException{
+        studentDAO.updateStudent(id, name, email);
+    }
 }
