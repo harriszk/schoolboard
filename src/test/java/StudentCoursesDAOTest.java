@@ -107,7 +107,7 @@ public class StudentCoursesDAOTest {
         studentCoursesDAO.deleteEntriesByStudentId(studentId);
         List<StudentCourses> actual = studentCoursesDAO.getAllCoursesByStudentId(studentId);
 
-        Assert.assertNull(actual);
+        Assert.assertTrue(actual.isEmpty());
     }
     
     @Test
@@ -117,6 +117,6 @@ public class StudentCoursesDAOTest {
         studentCoursesDAO.deleteEntriesByCourseId(courseId);
         List<StudentCourses> actual = studentCoursesDAO.getAllStudentsByCourseId(courseId);
 
-        Assert.assertNull(actual);
+        Assert.assertTrue(actual.isEmpty());
     }
 }
