@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CourseDAO {
-
-    Connection conn;
+    private Connection conn;
+    
     public CourseDAO(Connection conn){
         this.conn = conn;
     }
@@ -73,6 +73,7 @@ public class CourseDAO {
             e.printStackTrace();
         }
     }
+
     public void updateCourse(int id, String courseName) throws CourseDoesNotExistException {
         try {
             String sql = "UPDATE course SET course.name = ? WHERE course.id = ?";
