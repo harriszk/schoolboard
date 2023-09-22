@@ -154,8 +154,21 @@ public class Controller {
         context.json(student);
     }
 
-    private void addNewStudentHandler(Context context) {
+    private void addNewStudentHandler(Context context) throws JsonProcessingException{
+        ObjectMapper om = new ObjectMapper();
+        Student student = om.readValue(context.body(), Student.class);
+        boolean result = false;
+        try {
+            result = this.studentService.addStudent(student);
+            if (result){
+                context.json("Successfully added student!");
+            } else {
+                context.json("Failed to add student!");
+            }
 
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void updateStudentHandler(Context context) {
