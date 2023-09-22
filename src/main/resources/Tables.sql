@@ -72,3 +72,13 @@ INSERT INTO Student (id, name, email) values (13, 'Ricardo George', 'rgeorge@ema
 INSERT INTO Student (id, name, email) values (14, 'Trey Gregory', 'tgregory@email.com');
 INSERT INTO Student (id, name, email) values (15, 'Tommy Barton', 'tbarton@email.com');
 */
+
+-- StudentCourses table
+INSERT INTO StudentCourses (student_id, course_id) VALUES (1, 1);
+INSERT INTO StudentCourses (student_id, course_id) VALUES (1, 2);
+INSERT INTO StudentCourses (student_id, course_id) VALUES (1, 5);
+INSERT INTO StudentCourses (student_id, course_id) VALUES (2, 2);
+INSERT INTO StudentCourses (student_id, course_id) VALUES (2, 3);
+INSERT INTO StudentCourses (student_id, course_id) VALUES (2, 4);
+INSERT INTO StudentCourses (student_id, course_id) VALUES (3, 1);
+INSERT INTO StudentCourses (student_id, course_id) VALUES (3, 3);
