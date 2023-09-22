@@ -24,7 +24,7 @@ public class StudentService {
     public Student getStudentById(int Id){
         return studentDAO.getStudentById(Id);
     }
-    public boolean addStudent(Student student){
+    public boolean addStudent(Student student) {
         return studentDAO.addStudent(student);
     }
 
