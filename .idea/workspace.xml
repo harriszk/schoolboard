@@ -6,11 +6,21 @@
   <component name="ChangeListManager">
     <list default="true" id="893e5753-8922-430e-8222-f7b2179df409" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< HEAD
+=======
+      <change beforePath="$PROJECT_DIR$/h2/db.mv.db" beforeDir="false" afterPath="$PROJECT_DIR$/h2/db.mv.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Controller/Controller.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Controller/Controller.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Tables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Tables.sql" afterDir="false" />
+>>>>>>> e36c4f2bf66cc28de4d6c219dc8aade5397c2d1b
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -26,17 +36,29 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="2" />
+  </component>
   <component name="ProjectId" id="2Vg09MaQlbcAE1vo7tL10FxWP22" />
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
+<<<<<<< HEAD
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "last_opened_file_path": "C:/Users/Rafael/Documents/Revature-training/Projects/922",
     "settings.editor.selected.configurable": "advanced.settings"
+=======
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/zachary/Desktop/revature-work/schoolboard&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;advanced.settings&quot;
+>>>>>>> e36c4f2bf66cc28de4d6c219dc8aade5397c2d1b
   }
 }]]></component>
   <component name="RunManager" selected="Application.Application">
@@ -52,6 +74,16 @@
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="CourseDAOTest" />
       <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CourseDAOTest.getCourseByIdSuccessfulTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Challenges" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="CourseDAOTest" />
+      <option name="METHOD_NAME" value="getCourseByIdSuccessfulTest" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -75,22 +107,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TeacherDAOTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Challenges" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="TeacherDAOTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Application" />
+        <item itemvalue="JUnit.CourseDAOTest" />
+        <item itemvalue="JUnit.CourseDAOTest.getCourseByIdSuccessfulTest" />
         <item itemvalue="JUnit.StudentDAOTest" />
         <item itemvalue="JUnit.StudentDAOTest.getAllStudentsTest" />
-        <item itemvalue="JUnit.CourseDAOTest" />
-        <item itemvalue="JUnit.TeacherDAOTest" />
       </list>
     </recent_temporary>
   </component>
