@@ -118,14 +118,14 @@ public class Controller {
     }
 
     private void deleteCourseHandler(Context context) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        Course course = mapper.readValue(context.body(), Course.class);
+        int id = Integer.parseInt(context.pathParam("id"));
 
         try {
-            this.courseService.updateCourse(course.getId(), course.getName());
-            context.json("Successfully updated course!");
+            this.courseService.deleteCourse(id);
+            context.json("Successfully deleted course!");
         } catch(CourseDoesNotExistException e) {
             e.printStackTrace();
+            context.json("CourseDoesNotExistException");
             context.status(400);
         }
     }
