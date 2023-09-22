@@ -1,8 +1,9 @@
-import DAO.CourseDAO;
 import Model.Course;
+import DAO.CourseDAO;
 import Exception.CourseAlreadyExistsException;
 import Exception.CourseDoesNotExistException;
 import Util.ConnectionSingleton;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
