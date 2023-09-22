@@ -151,8 +151,17 @@ public class Controller {
         context.json(student);
     }
 
-    private void addNewStudentHandler(Context context) {
-
+    private void addNewStudentHandler(Context context) throws JsonProcessingException{
+        ObjectMapper om = new ObjectMapper();
+        Student student = om.readValue(context.body(), Student.class);
+        try {
+            studentService.addStudent(student);
+            context.json("student successfuly added!");
+        }catch (ItemAlreadyExistsException e){
+            e.printStackTrace();
+            context.json("This student already exist!");
+            context.status(400);
+        }
     }
 
     private void updateStudentHandler(Context context) {
