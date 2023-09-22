@@ -1,7 +1,7 @@
 import Model.Student;
 import DAO.StudentDAO;
-import Exception.StudentAlreadyExistsException;
-import Exception.StudentDoesNotExistException;
+import Exception.ItemAlreadyExistsException;
+import Exception.ItemDoesNotExistException;
 import Util.ConnectionSingleton;
 
 import org.junit.Assert;
@@ -50,7 +50,7 @@ public class StudentDAOTest {
     }
 
     @Test
-    public void addNewStudentTest() throws StudentAlreadyExistsException {
+    public void addNewStudentTest() throws ItemAlreadyExistsException {
         int id = 4;
         String name = "Raymond Welsh";
         String email = "rwelsh@email.com";
@@ -68,11 +68,11 @@ public class StudentDAOTest {
         String email = "rwelsh@email.com";
         Student newStudent = new Student(id, name, email);
 
-        Assert.assertThrows(StudentAlreadyExistsException.class, () -> studentDAO.addStudent(newStudent));
+        Assert.assertThrows(ItemAlreadyExistsException.class, () -> studentDAO.addStudent(newStudent));
     }
 
     @Test
-    public void updateExistingStudentTest() throws StudentDoesNotExistException {
+    public void updateExistingStudentTest() throws ItemDoesNotExistException {
         int id = 1;
         String name = "Raymond Welsh";
         String email = "rwelsh@email.com";
@@ -89,12 +89,12 @@ public class StudentDAOTest {
         String name = "Raymond Welsh";
         String email = "rwelsh@email.com";
         
-        Assert.assertThrows(StudentDoesNotExistException.class, () -> studentDAO.updateStudent(id, name, email));
+        Assert.assertThrows(ItemDoesNotExistException.class, () -> studentDAO.updateStudent(id, name, email));
     }
 
     @Test
-    public void deleteStudentSuccessfulTest() throws StudentDoesNotExistException {
-        int id = 1;
+    public void deleteStudentSuccessfulTest() throws ItemDoesNotExistException {
+        int id = 2;
 
         studentDAO.deleteStudentById(id);
         Student actual = studentDAO.getStudentById(id);
@@ -105,6 +105,6 @@ public class StudentDAOTest {
     public void deleteStudentUnsuccessfulTest() {
         int id = -1;
 
-        Assert.assertThrows(StudentDoesNotExistException.class, () -> studentDAO.deleteStudentById(id));
+        Assert.assertThrows(ItemDoesNotExistException.class, () -> studentDAO.deleteStudentById(id));
     }
 }

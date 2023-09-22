@@ -1,7 +1,7 @@
 import Model.Course;
 import DAO.CourseDAO;
-import Exception.CourseAlreadyExistsException;
-import Exception.CourseDoesNotExistException;
+import Exception.ItemAlreadyExistsException;
+import Exception.ItemDoesNotExistException;
 import Util.ConnectionSingleton;
 
 import org.junit.Assert;
@@ -49,7 +49,7 @@ public class CourseDAOTest {
     }
 
     @Test
-    public void addNewCourseTest() throws CourseAlreadyExistsException {
+    public void addNewCourseTest() throws ItemAlreadyExistsException {
         int id = 6;
         String courseName = "History";
         Course expected = new Course(id, courseName);
@@ -65,11 +65,11 @@ public class CourseDAOTest {
         String courseName = "Some Course";
         Course newCourse = new Course(id, courseName);
 
-        Assert.assertThrows(CourseAlreadyExistsException.class, () -> courseDAO.addCourse(newCourse));
+        Assert.assertThrows(ItemAlreadyExistsException.class, () -> courseDAO.addCourse(newCourse));
     }
 
     @Test
-    public void updateExistingCourseNameTest() throws CourseDoesNotExistException {
+    public void updateExistingCourseNameTest() throws ItemDoesNotExistException {
         int id = 3;
         String courseName = "New Course Name";
         courseDAO.updateCourse(id, courseName);
@@ -84,11 +84,11 @@ public class CourseDAOTest {
         int id = -1;
         String courseName = "New Course Name";
 
-        Assert.assertThrows(CourseDoesNotExistException.class, () -> courseDAO.updateCourse(id, courseName));
+        Assert.assertThrows(ItemDoesNotExistException.class, () -> courseDAO.updateCourse(id, courseName));
     }
 
     @Test
-    public void deleteCourseSuccessfulTest() throws CourseDoesNotExistException {
+    public void deleteCourseSuccessfulTest() throws ItemDoesNotExistException {
         int id = 1;
 
         courseDAO.deleteCourse(id);
@@ -100,6 +100,6 @@ public class CourseDAOTest {
     public void deleteCourseUnsuccessfulTest() {
         int id = -1;
 
-        Assert.assertThrows(CourseDoesNotExistException.class, () -> courseDAO.deleteCourse(id));
+        Assert.assertThrows(ItemDoesNotExistException.class, () -> courseDAO.deleteCourse(id));
     }
 }

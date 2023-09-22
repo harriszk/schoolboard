@@ -1,7 +1,7 @@
 import Model.Teacher;
 import DAO.TeacherDAO;
-import Exception.TeacherAlreadyExistsException;
-import Exception.TeacherDoesNotExistException;
+import Exception.ItemDoesNotExistException;
+import Exception.ItemAlreadyExistsException;
 import Util.ConnectionSingleton;
 
 import org.junit.Assert;
@@ -32,19 +32,23 @@ public class TeacherDAOTest {
 
     @Test
     public void getTeacherByIdSuccessfulTest() {
-        Teacher expected = new Teacher(1, "Zachary Harris");
+        int id = 1;
+        String name = "Zachary Harris";
+        Teacher expected = new Teacher(id, name);
         Teacher actual = teacherDAO.getTeacherById(1);
+
         Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void getTeacherByIdUnsuccessfulTest() {
-        Teacher actual = teacherDAO.getTeacherById(-1);
+        int id = -1;
+        Teacher actual = teacherDAO.getTeacherById(id);
         Assert.assertNull(actual);
     }
 
     @Test
-    public void addNewTeacherTest() throws TeacherAlreadyExistsException {
+    public void addNewTeacherTest() throws ItemAlreadyExistsException {
         int id = 3;
         String name = "John Doe";
         Teacher expected = new Teacher(id, name);
@@ -60,14 +64,14 @@ public class TeacherDAOTest {
         String name = "John Doe";
         Teacher newTeacher = new Teacher(id, name);
         
-        Assert.assertThrows(TeacherAlreadyExistsException.class, () -> teacherDAO.addTeacher(newTeacher));
+        Assert.assertThrows(ItemAlreadyExistsException.class, () -> teacherDAO.addTeacher(newTeacher));
     }
 
     @Test
-    public void updateExistingTeacherNameTest() throws TeacherDoesNotExistException {
+    public void updateExistingTeacherNameTest() throws ItemDoesNotExistException {
         int id = 1;
         String name = "New name";
-        teacherDAO.update(id, name);
+        teacherDAO.updateTeacher(id, name);
 
         Teacher expected = new Teacher(id, name);
         Teacher actual = teacherDAO.getTeacherById(id);
@@ -79,14 +83,14 @@ public class TeacherDAOTest {
         int id = -1;
         String name = "New name";
 
-        Assert.assertThrows(TeacherDoesNotExistException.class, () -> teacherDAO.update(id, name));
+        Assert.assertThrows(ItemDoesNotExistException.class, () -> teacherDAO.updateTeacher(id, name));
     }
 
     @Test
-    public void deleteTeacherSuccessfulTest() throws TeacherDoesNotExistException {
+    public void deleteTeacherSuccessfulTest() throws ItemDoesNotExistException {
         int id = 1;
 
-        teacherDAO.remove(id);
+        teacherDAO.removeTeacher(id);
         Teacher actual = teacherDAO.getTeacherById(id);
         Assert.assertNull(actual);
     }
@@ -95,7 +99,7 @@ public class TeacherDAOTest {
     public void deleteTeacherUnsuccessfulTest() {
         int id = -1;
 
-        Assert.assertThrows(TeacherDoesNotExistException.class, () -> teacherDAO.remove(id));
+        Assert.assertThrows(ItemDoesNotExistException.class, () -> teacherDAO.removeTeacher(id));
     }
 
 }

@@ -1,17 +1,20 @@
 package DAO;
 
 import Model.Student;
+import Exception.ItemAlreadyExistsException;
+import Exception.ItemDoesNotExistException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class StudentDAO {
-
-    Connection conn;
+    private Connection conn;
+    
     public StudentDAO(Connection conn){
         this.conn = conn;
     }
@@ -36,13 +39,15 @@ public class StudentDAO {
     public Student getStudentById(int id){
         Student student = null;
 
-        try{
-            PreparedStatement ps = conn.prepareStatement("select * from student where id=?");
+        try {
+            PreparedStatement ps = conn.prepareStatement("select * from student where student.id=?");
+            ps.setInt(1, id);
+
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
                 student = new Student(rs.getInt("id"), rs.getString("name"), rs.getString("email"));
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -51,5 +56,35 @@ public class StudentDAO {
 
     }
 
+    public void addStudent(Student student) throws ItemAlreadyExistsException {
+        try {
+            PreparedStatement ps = conn.prepareStatement("insert into student (id, name, email) values (?,?,?)");
+            ps.setInt(1,student.getId());
+            ps.setString(2,student.getName());
+            ps.setString(3, student.getEmail());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new ItemAlreadyExistsException("Student");
+        }
+    }
 
+    public void updateStudent(int id, String name, String email) throws ItemDoesNotExistException {
+
+    }
+
+    public void deleteStudentById(int id) throws ItemDoesNotExistException {
+        try {
+            PreparedStatement ps = conn.prepareStatement("delete from student where id=?");
+            ps.setInt(1,id);
+            int rs = ps.executeUpdate();
+
+            //if delete succeded
+            if (rs == 0) {
+                throw new ItemDoesNotExistException("Student");
+            } 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

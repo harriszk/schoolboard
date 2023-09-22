@@ -1,8 +1,8 @@
 package Controller;
 
 import Model.Course;
-import Exception.CourseAlreadyExistsException;
-import Exception.CourseDoesNotExistException;
+import Exception.ItemAlreadyExistsException;
+import Exception.ItemDoesNotExistException;
 import Service.CourseService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -88,7 +88,7 @@ public class Controller {
         try {
             this.courseService.addCourse(course);
             context.json("Successfully added course!");
-        } catch (CourseAlreadyExistsException e) {
+        } catch (ItemAlreadyExistsException e) {
             e.printStackTrace();
             context.status(400);
         }
@@ -101,7 +101,7 @@ public class Controller {
         try {
             this.courseService.updateCourse(course.getId(), course.getName());
             context.json("Successfully updated course!");
-        } catch(CourseDoesNotExistException e) {
+        } catch(ItemDoesNotExistException e) {
             e.printStackTrace();
             context.status(400);
         }
@@ -114,7 +114,7 @@ public class Controller {
         try {
             this.courseService.deleteCourse(course.getId());
             context.json("Successfully updated course!");
-        } catch(CourseDoesNotExistException e) {
+        } catch(ItemDoesNotExistException e) {
             e.printStackTrace();
             context.status(400);
         }
