@@ -96,6 +96,7 @@ public class Controller {
             context.json("Successfully added course!");
         } catch (ItemAlreadyExistsException e) {
             e.printStackTrace();
+            context.json("Cannot add course!");
             context.status(400);
         }
     }
@@ -113,7 +114,7 @@ public class Controller {
         }
     }
 
-    private void deleteCourseHandler(Context context) throws JsonProcessingException {
+    private void deleteCourseHandler(Context context) {
         int id = Integer.parseInt(context.pathParam("id"));
 
         try {

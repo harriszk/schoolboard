@@ -2,6 +2,8 @@ package Service;
 
 import DAO.StudentDAO;
 import Model.Student;
+import Exception.ItemAlreadyExistsException;
+import Exception.ItemDoesNotExistException;
 
 import java.sql.Connection;
 import java.util.List;
@@ -24,12 +26,12 @@ public class StudentService {
     public Student getStudentById(int Id){
         return studentDAO.getStudentById(Id);
     }
-    public boolean addStudent(Student student) {
-        return studentDAO.addStudent(student);
+    public void addStudent(Student student) throws ItemAlreadyExistsException {
+        studentDAO.addStudent(student);
     }
 
-    public boolean deleteStudentById(int Id){
-        return studentDAO.deleteStudentById(Id);
+    public void deleteStudentById(int Id) throws ItemDoesNotExistException {
+        studentDAO.deleteStudentById(Id);
     }
 
 
