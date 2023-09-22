@@ -47,20 +47,20 @@ public class Controller {
 
         // Courses endpoints
         app.get("/courses", this::getAllCoursesHandler);
-        app.get("/courses/{id}", this::getCourseByIdHandler);
-        app.post("/courses", this::addCourseHandler);
-        app.put("/courses", this::updateCourseHandler);
-        app.delete("/courses/{id}", this::deleteCourseHandler);
+        app.get("/course/{id}", this::getCourseByIdHandler);
+        app.post("/course", this::addCourseHandler);
+        app.put("/course", this::updateCourseHandler);
+        app.delete("/course/{id}", this::deleteCourseHandler);
 
         app.get("/courses/teacher/{id}", this::getCoursesByTeacherIdHandler);
         app.get("/courses/student/{id}", this::getCoursesByStudentIdHandler);
 
         // Student endpoints
         app.get("/students", this::getAllStudentsHandler);
-        app.get("/students/{id}", this::getStudentByIdHandler);
-        app.post("/students", this::addNewStudentHandler);
-        app.put("/students", this::updateStudentHandler);
-        app.delete("/students/{id}", this::deleteStudentHandler);
+        app.get("/student/{id}", this::getStudentByIdHandler);
+        app.post("/student", this::addNewStudentHandler);
+        app.put("/student", this::updateStudentHandler);
+        app.delete("/student/{id}", this::deleteStudentHandler);
 
         // Teacher endpoints
         app.get("/teachers", this::getAllTeachersHandler);
@@ -118,14 +118,14 @@ public class Controller {
     }
 
     private void deleteCourseHandler(Context context) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        Course course = mapper.readValue(context.body(), Course.class);
+        int id = Integer.parseInt(context.pathParam("id"));
 
         try {
-            this.courseService.updateCourse(course.getId(), course.getName());
-            context.json("Successfully updated course!");
+            this.courseService.deleteCourse(id);
+            context.json("Successfully deleted course!");
         } catch(CourseDoesNotExistException e) {
             e.printStackTrace();
+            context.json("CourseDoesNotExistException");
             context.status(400);
         }
     }
