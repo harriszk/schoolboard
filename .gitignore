@@ -2,5 +2,5 @@
 .idea
 .vscode
 /workspace.xml
-/target/
-h2/
+/target/*
+h2/*
