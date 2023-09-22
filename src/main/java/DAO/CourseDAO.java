@@ -1,16 +1,16 @@
 package DAO;
 
 import Model.Course;
-import Exception.CourseAlreadyExistsException;
-import Exception.CourseDoesNotExistException;
+import Exception.ItemAlreadyExistsException;
+import Exception.ItemDoesNotExistException;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CourseDAO {
-
-    Connection conn;
+    private Connection conn;
+    
     public CourseDAO(Connection conn){
         this.conn = conn;
     }
@@ -47,7 +47,7 @@ public class CourseDAO {
         return course;
     }
 
-    public void addCourse(Course course) throws CourseAlreadyExistsException {
+    public void addCourse(Course course) throws ItemAlreadyExistsException {
         try {
             String sql = "INSERT INTO course (id, name) VALUES (?, ?);";
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -56,24 +56,25 @@ public class CourseDAO {
             ps.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
-            throw new CourseAlreadyExistsException();
+            throw new ItemAlreadyExistsException("Course");
         }
     }
 
-    public void deleteCourse(int id) throws CourseDoesNotExistException {
+    public void deleteCourse(int id) throws ItemDoesNotExistException {
         try {
             String sql = "DELETE FROM course WHERE course.id = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
 
             if(ps.executeUpdate() == 0) {
-                throw new CourseDoesNotExistException();
+                throw new ItemDoesNotExistException("Course");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    public void updateCourse(int id, String courseName) throws CourseDoesNotExistException {
+
+    public void updateCourse(int id, String courseName) throws ItemDoesNotExistException {
         try {
             String sql = "UPDATE course SET course.name = ? WHERE course.id = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -81,7 +82,7 @@ public class CourseDAO {
             ps.setInt(2, id);
 
             if(ps.executeUpdate() == 0) {
-                throw new CourseDoesNotExistException();
+                throw new ItemDoesNotExistException("Course");
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -7,6 +7,7 @@ public class Course {
     private String name;
 
     public Course() {
+        
     }
 
     public Course(int id, String name) {
