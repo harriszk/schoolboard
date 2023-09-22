@@ -50,14 +50,14 @@ public class Controller {
         app.get("/courses/{id}", this::getCourseByIdHandler);
         app.post("/courses", this::addCourseHandler);
         app.put("/courses", this::updateCourseHandler);
-        app.delete("/courses/{id}", this::deleteCourseHandler);
+        app.delete("/course/{id}", this::deleteCourseHandler);
 
         app.get("/courses/teacher/{id}", this::getCoursesByTeacherIdHandler);
         app.get("/courses/student/{id}", this::getCoursesByStudentIdHandler);
 
         // Student endpoints
         app.get("/students", this::getAllStudentsHandler);
-        app.get("/students/{id}", this::getStudentByIdHandler);
+        app.get("/student/{id}", this::getStudentByIdHandler);
         app.post("/students", this::addNewStudentHandler);
         app.put("/students", this::updateStudentHandler);
         app.delete("/students/{id}", this::deleteStudentHandler);

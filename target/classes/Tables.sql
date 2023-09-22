@@ -7,7 +7,6 @@ drop table Course if exists;
 drop table Teacher if exists;
 drop table Student if exists;
 
-
 -- Create a schema
 CREATE TABLE Student
 (
