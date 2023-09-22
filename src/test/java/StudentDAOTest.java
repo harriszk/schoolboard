@@ -1,15 +1,22 @@
 import DAO.StudentDAO;
 import Model.Student;
+import Util.ConnectionSingleton;
+
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
 public class StudentDAOTest {
-
     private StudentDAO studentDAO;
+
+    @Before
+    public void setUp() {
+        ConnectionSingleton.resetTestDatabase();
+        studentDAO = new StudentDAO(ConnectionSingleton.getConnection());
+    }
 
     @Test
     public void getAllStudentsTest(){
@@ -34,10 +41,39 @@ public class StudentDAOTest {
 
     @Test
     public void getStudentByIdUnsuccessfulTest(){
-        int id=-1;
-        Student expected = null;
+        int id = -1;
         Student actual = studentDAO.getStudentById(id);
 
-        Assert.assertEquals(expected, actual);
+        Assert.assertNull(actual);
+    }
+
+    @Test
+    public void addNewStudentTest() {
+
+    }
+
+    @Test
+    public void addNewStudentWithSameIdlTest() {
+
+    }
+
+    @Test
+    public void updateExistingStudentTest() {
+
+    }
+
+    @Test
+    public void updateNonexistentStudentTest() {
+
+    }
+
+    @Test
+    public void deleteStudentSuccessfulTest() {
+
+    }
+
+    @Test
+    public void deleteStudentUnsuccessfulTest() {
+        
     }
 }
