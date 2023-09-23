@@ -4,3 +4,5 @@
 /workspace.xml
 /target/*
 h2/*
+
+### Shutdown tracking of .Idea folder:  git rm --cached -r .idea
