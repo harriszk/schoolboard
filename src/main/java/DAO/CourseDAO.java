@@ -3,6 +3,7 @@ package DAO;
 import Model.Course;
 import Exception.ItemAlreadyExistsException;
 import Exception.ItemDoesNotExistException;
+import Model.StudentCourses;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -62,6 +63,9 @@ public class CourseDAO {
 
     public void deleteCourse(int id) throws ItemDoesNotExistException {
         try {
+            StudentCoursesDAO scDAO = new StudentCoursesDAO(this.conn);
+            scDAO.deleteEntriesByCourseId(id);
+
             String sql = "DELETE FROM course WHERE course.id = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
