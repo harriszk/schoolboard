@@ -3,15 +3,19 @@ import DAO.TeacherDAO;
 import Service.CourseService;
 import Service.StudentService;
 import Util.ConnectionSingleton;
+import Util.LogUtil;
 
 import java.util.List;
 import java.util.Scanner;
+
+import static Util.LogUtil.log;
 
 public class Application {
     public static void main(String[] args) {
 //        this line is just for testing that your tables get set up correctly
 //        if not, you'll get a stack trace
         ConnectionSingleton.getConnection();
+        log.info("Got connectionSingleton");
 //        this line is for starting the javalin server
         CourseService courseService = new CourseService(ConnectionSingleton.getConnection());
         StudentService studentService = new StudentService(ConnectionSingleton.getConnection());
@@ -53,5 +57,6 @@ public class Application {
             }
         }
          */
+
     }
 }
