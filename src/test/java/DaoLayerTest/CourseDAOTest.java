@@ -1,3 +1,5 @@
+package DaoLayerTest;
+
 import Model.Course;
 import DAO.CourseDAO;
 import Exception.ItemAlreadyExistsException;
