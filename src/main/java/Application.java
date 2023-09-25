@@ -2,8 +2,10 @@ import Controller.Controller;
 import DAO.TeacherDAO;
 import Service.CourseService;
 import Service.StudentService;
+import Service.TeacherService;
 import Util.ConnectionSingleton;
 
+import java.sql.Connection;
 import java.util.List;
 import java.util.Scanner;
 
@@ -11,12 +13,13 @@ public class Application {
     public static void main(String[] args) {
 //        this line is just for testing that your tables get set up correctly
 //        if not, you'll get a stack trace
-        ConnectionSingleton.getConnection();
+        Connection conn = ConnectionSingleton.getConnection();
 //        this line is for starting the javalin server
-        CourseService courseService = new CourseService(ConnectionSingleton.getConnection());
-        StudentService studentService = new StudentService(ConnectionSingleton.getConnection());
+        CourseService courseService = new CourseService(conn);
+        StudentService studentService = new StudentService(conn);
+        TeacherService teacherService = new TeacherService(conn);
 
-        Controller controller = new Controller(courseService, studentService);
+        Controller controller = new Controller(courseService, studentService, teacherService);
         controller.getAPI().start();
 
         /*

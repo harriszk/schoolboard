@@ -3,11 +3,13 @@ package Controller;
 import DAO.StudentDAO;
 import Model.Course;
 import Model.Student;
+import Model.Teacher;
 import Service.CourseService;
 import Service.StudentService;
 import Exception.ItemAlreadyExistsException;
 import Exception.ItemDoesNotExistException;
 
+import Service.TeacherService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -17,8 +19,6 @@ import io.javalin.http.Context;
 import java.util.List;
 
 public class Controller {
-    /*
-    // TODO: Need to implement the service layers!
     private CourseService courseService;
     private StudentService studentService;
     private TeacherService teacherService;
@@ -27,15 +27,6 @@ public class Controller {
         this.courseService = courseService;
         this.studentService = studentService;
         this.teacherService = teacherService;
-    }
-    */
-
-    private CourseService courseService;
-    private StudentService studentService;
-
-    public Controller(CourseService courseService, StudentService studentService ) {
-        this.courseService = courseService;
-        this.studentService = studentService;
     }
 
     public Javalin getAPI() {
@@ -185,22 +176,63 @@ public class Controller {
 
     // ========== TEACHERS HANDLERS ==========
     private void getAllTeachersHandler(Context context) {
-
+        List<Teacher> teachers = this.teacherService.getAllTeachers();
+        context.json(teachers);
     }
 
     private void getTeacherByIdHandler(Context context) {
+        Teacher teacher  = this.teacherService.getTeacherById(
+                Integer.parseInt(context.pathParam("id")));
 
+        if(teacher == null) {
+            context.html("No teacher with that id!");
+            context.status(404);
+            return;
+        }
+
+        context.json(teacher);
     }
 
-    private void addNewTeacherHandler(Context context) {
+    private void addNewTeacherHandler(Context context) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Teacher teacher = mapper.readValue(context.body(), Teacher.class);
 
+        try {
+            this.teacherService.addTeacher(teacher);
+            context.json("Successfully added teacher!");
+        } catch (ItemAlreadyExistsException e) {
+            e.printStackTrace();
+            //context.json("Cannot add teacher!");
+            context.json(e.toString());
+            context.status(400);
+        }
     }
 
-    private void updateTeacherHandler(Context context) {
+    private void updateTeacherHandler(Context context) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Teacher teacher = mapper.readValue(context.body(), Teacher.class);
 
+        try {
+            this.teacherService.updateTeacher(teacher.getId(), teacher.getName());
+            context.json("Successfully updated teacher!");
+        } catch(ItemDoesNotExistException e) {
+            e.printStackTrace();
+            //context.json("This teacher doesn't exist!");
+            context.json(e.toString());
+            context.status(400);
+        }
     }
 
     private void deleteTeacherHandler(Context context) {
+        int id = Integer.parseInt(context.pathParam("id"));
 
+        try {
+            this.teacherService.deleteTeacher(id);
+            context.json("Successfully deleted teacher!");
+        } catch(ItemDoesNotExistException e) {
+            e.printStackTrace();
+            context.json(e.toString());
+            context.status(400);
+        }
     }
 }
