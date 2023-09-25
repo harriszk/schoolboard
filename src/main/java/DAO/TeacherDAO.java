@@ -11,6 +11,8 @@ import java.sql.SQLException;
 
 import java.util.List;
 
+import static Util.LogUtil.log;
+
 public class TeacherDAO {
     private Connection conn;
 
@@ -39,7 +41,17 @@ public class TeacherDAO {
     }
 
     public void addTeacher(Teacher teacher) throws ItemAlreadyExistsException {
-
+        try {
+            log.info("Add teacher:{}",teacher);
+            PreparedStatement ps = conn.prepareStatement("insert into teacher (id,name) values (?,?)");
+            ps.setInt(1,teacher.getId());
+            ps.setString(2,teacher.getName());
+            int rs = ps.executeUpdate();
+            log.info("ps.executeUpdate()={}",rs);
+        }catch (SQLException e){
+            e.printStackTrace();
+            throw new ItemAlreadyExistsException("teacher");
+        }
     }
 
     public void updateTeacher(int id, String name) throws ItemDoesNotExistException {
