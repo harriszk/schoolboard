@@ -39,7 +39,16 @@ public class TeacherDAO {
     }
 
     public void addTeacher(Teacher teacher) throws ItemAlreadyExistsException {
-
+        try {
+            PreparedStatement ps = conn.prepareStatement("insert into teacher (id,name) values (?,?)");
+            ps.setInt(1,teacher.getId());
+            ps.setString(2,teacher.getName());
+            if(ps.executeUpdate()==0){
+                throw new ItemAlreadyExistsException("teacher");
+            };
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     public void updateTeacher(int id, String name) throws ItemDoesNotExistException {
