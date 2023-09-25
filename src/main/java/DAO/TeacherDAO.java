@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static Util.LogUtil.log;
@@ -21,7 +22,18 @@ public class TeacherDAO {
     }
 
     public List<Teacher> getAllTeachers() {
-        return null;
+        List<Teacher> teachers = new ArrayList<>();
+        try {
+            PreparedStatement ps = conn.prepareStatement("select * from teacher");
+            ResultSet rs = ps.executeQuery();
+            //log.info("ps.executeUpdate()={}",rs);
+            while (rs.next()){
+                teachers.add(new Teacher(rs.getInt("id"),rs.getString("name") ));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return teachers;
     }
 
     public Teacher getTeacherById(int id) {
@@ -29,6 +41,8 @@ public class TeacherDAO {
             PreparedStatement ps = conn.prepareStatement("select * from teacher where teacher.id = ?");
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
+            //!!!!!!!!!!!!!!!!!!
+            // Take out loop and add ItemDoesntEx exception
             while(rs.next()){
                 Teacher tmpTeacher = new Teacher(rs.getInt("id"), rs.getString("name"));
                 return tmpTeacher;
@@ -55,10 +69,28 @@ public class TeacherDAO {
     }
 
     public void updateTeacher(int id, String name) throws ItemDoesNotExistException {
+        try {
+            PreparedStatement ps = conn.prepareStatement("update teacher set name=? where id=?");
+            ps.setString(1,name);
+            ps.setInt(2,id);
+            int rs = ps.executeUpdate();
+            log.info("ps.executeupdate()={}",rs);
+            if (rs==0)  throw new ItemDoesNotExistException("teacher");
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
 
     }
 
-    public void removeTeacher(int id) throws ItemDoesNotExistException {
-
+    public void deleteTeacher(int id) throws ItemDoesNotExistException {
+        try {
+            PreparedStatement ps = conn.prepareStatement("delete from teacher where id=?");
+            ps.setInt(1,id);
+            int rs= ps.executeUpdate();
+            log.info("rs={}",rs);
+            if (rs==0) throw new ItemDoesNotExistException("teacher");
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 }

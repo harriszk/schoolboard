@@ -36,6 +36,6 @@ public class TeacherService {
     }
 
     public void deleteTeacher(int id) throws ItemDoesNotExistException {
-        teacherDAO.removeTeacher(id);
+        teacherDAO.deleteTeacher(id);
     }
 }

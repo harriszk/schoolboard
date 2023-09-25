@@ -91,7 +91,7 @@ public class TeacherDAOTest {
     public void deleteTeacherSuccessfulTest() throws ItemDoesNotExistException {
         int id = 1;
 
-        teacherDAO.removeTeacher(id);
+        teacherDAO.deleteTeacher(id);
         Teacher actual = teacherDAO.getTeacherById(id);
         Assert.assertNull(actual);
     }
@@ -100,7 +100,7 @@ public class TeacherDAOTest {
     public void deleteTeacherUnsuccessfulTest() {
         int id = -1;
 
-        Assert.assertThrows(ItemDoesNotExistException.class, () -> teacherDAO.removeTeacher(id));
+        Assert.assertThrows(ItemDoesNotExistException.class, () -> teacherDAO.deleteTeacher(id));
     }
 
 }
