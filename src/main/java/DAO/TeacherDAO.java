@@ -36,22 +36,25 @@ public class TeacherDAO {
         return teachers;
     }
 
-    public Teacher getTeacherById(int id) {
+    public Teacher getTeacherById(int id) throws ItemDoesNotExistException{
+        Teacher teacher = new Teacher();
         try{
             PreparedStatement ps = conn.prepareStatement("select * from teacher where teacher.id = ?");
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
+            log.info("rs={}",rs);
             //!!!!!!!!!!!!!!!!!!
             // Take out loop and add ItemDoesntEx exception
-            while(rs.next()){
-                Teacher tmpTeacher = new Teacher(rs.getInt("id"), rs.getString("name"));
-                return tmpTeacher;
+            if(rs.next()){
+                teacher = new Teacher(rs.getInt("id"), rs.getString("name"));
+            }else {
+                throw new ItemDoesNotExistException("teacher");
             }
 
         }catch(SQLException e){
             e.printStackTrace();
         }
-        return null;
+        return teacher;
     }
 
     public void addTeacher(Teacher teacher) throws ItemAlreadyExistsException {

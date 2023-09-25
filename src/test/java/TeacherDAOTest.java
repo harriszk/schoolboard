@@ -22,7 +22,7 @@ public class TeacherDAOTest {
 
     @Test
     public void getAllTeachersTest() {
-        List<Teacher> expected = new ArrayList<Teacher>();
+        List<Teacher> expected = new ArrayList<>();
         expected.add(new Teacher(1, "Zachary Harris"));
         expected.add(new Teacher(2, "Ralph Fatkullin"));
 
@@ -31,7 +31,7 @@ public class TeacherDAOTest {
     }
 
     @Test
-    public void getTeacherByIdSuccessfulTest() {
+    public void getTeacherByIdSuccessfulTest() throws ItemDoesNotExistException {
         int id = 1;
         String name = "Zachary Harris";
         Teacher expected = new Teacher(id, name);
@@ -41,14 +41,15 @@ public class TeacherDAOTest {
     }
 
     @Test
-    public void getTeacherByIdUnsuccessfulTest() {
+    public void getTeacherByIdUnsuccessfulTest() throws ItemDoesNotExistException {
         int id = -1;
-        Teacher actual = teacherDAO.getTeacherById(id);
-        Assert.assertNull(actual);
+        //Teacher actual = teacherDAO.getTeacherById(id);
+        //Assert.assertNull(actual);
+        Assert.assertThrows(ItemDoesNotExistException.class, () -> teacherDAO.getTeacherById(id));
     }
 
     @Test
-    public void addNewTeacherTest() throws ItemAlreadyExistsException {
+    public void addNewTeacherTest() throws ItemAlreadyExistsException, ItemDoesNotExistException {
         //ConnectionSingleton.resetTestDatabase();
         int id = 3;
         String name = "John Doe";
@@ -92,8 +93,9 @@ public class TeacherDAOTest {
         int id = 1;
 
         teacherDAO.deleteTeacher(id);
-        Teacher actual = teacherDAO.getTeacherById(id);
-        Assert.assertNull(actual);
+        //Teacher actual = teacherDAO.getTeacherById(id);
+        //Assert.assertNull(actual);
+        Assert.assertThrows(ItemDoesNotExistException.class, () -> teacherDAO.getTeacherById(id));
     }
 
     @Test

@@ -180,7 +180,7 @@ public class Controller {
         context.json(teachers);
     }
 
-    private void getTeacherByIdHandler(Context context) {
+    private void getTeacherByIdHandler(Context context) throws ItemDoesNotExistException {
         Teacher teacher  = this.teacherService.getTeacherById(
                 Integer.parseInt(context.pathParam("id")));
 

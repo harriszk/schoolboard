@@ -23,8 +23,14 @@ public class TeacherService {
         return teacherDAO.getAllTeachers();
     }
 
-    public Teacher getTeacherById(int id) {
-        return teacherDAO.getTeacherById(id);
+    public Teacher getTeacherById(int id) throws ItemDoesNotExistException{
+        Teacher teacher = new Teacher();
+        try {
+             teacher = teacherDAO.getTeacherById(id);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return teacher;
     }
 
     public void addTeacher(Teacher teacher) throws ItemAlreadyExistsException {
