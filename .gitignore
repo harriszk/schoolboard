@@ -42,4 +42,4 @@ build/
 /h2/
 /h2/*.db
 
-### Shutdown tracking of .Idea folder:  git rm --cached -r .idea
+
