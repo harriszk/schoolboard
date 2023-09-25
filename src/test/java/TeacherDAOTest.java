@@ -49,6 +49,7 @@ public class TeacherDAOTest {
 
     @Test
     public void addNewTeacherTest() throws ItemAlreadyExistsException {
+        //ConnectionSingleton.resetTestDatabase();
         int id = 3;
         String name = "John Doe";
         Teacher expected = new Teacher(id, name);
