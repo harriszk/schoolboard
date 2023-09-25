@@ -87,9 +87,6 @@ public class StudentDAO {
 
     public void deleteStudentById(int id) throws ItemDoesNotExistException {
         try {
-            StudentCoursesDAO scDAO = new StudentCoursesDAO(this.conn);
-            scDAO.deleteEntriesByStudentId(id);
-
             PreparedStatement ps = conn.prepareStatement("delete from student where id=?");
             ps.setInt(1,id);
             int rs = ps.executeUpdate();

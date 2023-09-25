@@ -63,9 +63,6 @@ public class CourseDAO {
 
     public void deleteCourse(int id) throws ItemDoesNotExistException {
         try {
-            StudentCoursesDAO scDAO = new StudentCoursesDAO(this.conn);
-            scDAO.deleteEntriesByCourseId(id);
-
             String sql = "DELETE FROM course WHERE course.id = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, id);

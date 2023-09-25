@@ -20,6 +20,7 @@
 
 ## User Stories
 - Teachers can look up which student is in a particular class
+- Student can find which courses they are taking are from a particular teacher.
 - Be able to loop up which courses a teacher is teaching
 - Students should be able to register/unregister for a course
 - Be able to add new students, courses, and teachers
