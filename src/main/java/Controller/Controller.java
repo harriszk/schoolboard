@@ -1,21 +1,24 @@
 package Controller;
 
-import DAO.StudentDAO;
 import Model.Course;
 import Model.Student;
+import Model.StudentCourses;
 import Model.Teacher;
 import Service.CourseService;
+import Service.StudentCoursesService;
 import Service.StudentService;
+import Service.TeacherService;
 import Exception.ItemAlreadyExistsException;
 import Exception.ItemDoesNotExistException;
-
-import Service.TeacherService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 
 import static Util.LogUtil.log;
@@ -23,12 +26,14 @@ import static Util.LogUtil.log;
 public class Controller {
     private CourseService courseService;
     private StudentService studentService;
+    private StudentCoursesService studentCoursesService;
     private TeacherService teacherService;
 
-    public Controller(CourseService courseService, StudentService studentService, TeacherService teacherService) {
-        this.courseService = courseService;
-        this.studentService = studentService;
-        this.teacherService = teacherService;
+    public Controller(Connection conn) {
+        this.courseService = new CourseService(conn);
+        this.studentService = new StudentService(conn);
+        this.teacherService = new TeacherService(conn);
+        this.studentCoursesService = new StudentCoursesService(conn);
     }
 
     public Javalin getAPI() {
@@ -43,6 +48,7 @@ public class Controller {
 
         app.get("/courses/teacher/{id}", this::getCoursesByTeacherIdHandler);
         app.get("/courses/student/{id}", this::getCoursesByStudentIdHandler);
+        app.get("/courses/student/{student_id}/teacher/{teacher_id}", this::getCoursesByStudentAndTeacherIdHandler);
 
         // Student endpoints
         app.get("/students", this::getAllStudentsHandler);
@@ -50,6 +56,10 @@ public class Controller {
         app.post("/student", this::addNewStudentHandler);
         app.put("/student", this::updateStudentHandler);
         app.delete("/student/{id}", this::deleteStudentHandler);
+
+        app.get("/students/course/{id}", this::getStudentsByCourseIdHandler);
+        app.post("/students/{student_id}/register/{course_id}", this::registerForCourseHandler);
+        app.put("/students/{student_id}/unregister/{course_id}", this::unregisterForCourseHandler);
 
         // Teacher endpoints
         app.get("/teachers", this::getAllTeachersHandler);
@@ -62,12 +72,28 @@ public class Controller {
         return app;
     }
 
-    // ========== COURSES HANDLERS ==========
+    // ==================== COURSES HANDLERS ====================
+    /**
+     * This handler displays all of courses in the database.
+     * 
+     * GET -> "/course"
+     * 
+     * @param context
+     */
     private void getAllCoursesHandler(Context context) {
-        List<Course> authors = this.courseService.getAllCourses();
-        context.json(authors);
+        List<Course> courses = this.courseService.getAllCourses();
+        context.json(courses);
     }
 
+    /**
+     * This handler displays the information for a specific course in the
+     * database that is gotten by its id. If no course with the given id
+     * exists then a 404 is returned.
+     * 
+     * GET -> "/course/{id}"
+     * 
+     * @param context
+     */
     private void getCourseByIdHandler(Context context) {
         Course course = this.courseService.getCourseById(
                 Integer.parseInt(context.pathParam("id")));
@@ -81,6 +107,15 @@ public class Controller {
         context.json(course);
     }
 
+    /**
+     * This handler adds a new course to the database, given that it is a course with a
+     * new unique id.
+     * 
+     * POST -> "/course"
+     * 
+     * @param context
+     * @throws JsonProcessingException
+     */
     private void addCourseHandler(Context context) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Course course = mapper.readValue(context.body(), Course.class);
@@ -88,13 +123,24 @@ public class Controller {
         try {
             this.courseService.addCourse(course);
             context.json("Successfully added course!");
-        } catch (ItemAlreadyExistsException e) {
+        } catch(ItemAlreadyExistsException e) {
             e.printStackTrace();
-            context.json("Cannot add course!");
+            context.json(e.toString());
             context.status(400);
         }
     }
 
+    /**
+     * This handler updates an existing course in the database. The given id for the course to be
+     * updated needs to be a valid one that is already in the database, else a 400 is returned and
+     * nothing is updated. The SQL request by default won't do anything and all is fine but we
+     * show a 400 just to indicate that the attempt was a "failure".
+     * 
+     * PUT -> "/course"
+     * 
+     * @param context
+     * @throws JsonProcessingException
+     */
     private void updateCourseHandler(Context context) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Course course = mapper.readValue(context.body(), Course.class);
@@ -104,11 +150,21 @@ public class Controller {
             context.json("Successfully updated course!");
         } catch(ItemDoesNotExistException e) {
             e.printStackTrace();
-            context.json("This student doesn't exist!");
+            context.json(e.toString());
             context.status(400);
         }
     }
 
+    /**
+     * This handler deletes an existing course from the database. The given id for the course to be
+     * updated needs to be a valid one that is already in the database, else a 400 is returned and
+     * nothing is deleted. The SQL request by default won't do anything and all is fine but we
+     * show a 400 just to indicate that the attempt was a "failure".
+     * 
+     * DELETE -> "/course/{id}"
+     * 
+     * @param context
+     */
     private void deleteCourseHandler(Context context) {
         int id = Integer.parseInt(context.pathParam("id"));
 
@@ -117,72 +173,255 @@ public class Controller {
             context.json("Successfully deleted course!");
         } catch(ItemDoesNotExistException e) {
             e.printStackTrace();
-            context.json("ItemDoesNotExistException");
+            context.json(e.toString());
             context.status(400);
         }
     }
 
+    /**
+     * CHECK
+     * This handler gets all of the courses that a teacher is teaching.
+     * The path parameter is the teacher's id.
+     * 
+     * GET -> "/courses/teacher/{id}"
+     * 
+     * @param context
+     */
     private void getCoursesByTeacherIdHandler(Context context) {
+        int teacherId = Integer.parseInt(context.pathParam("id"));
+        //List<Course> courses = this.courseService.getCoursesByTeacherId(teacherId);
 
+        /*
+        for(Course course : courses) {
+            if(course.getTeacherId() != teacherId) {
+                courses.remove(course);
+            }
+        }
+        */
+
+        //context.json(courses);
     }
 
+    /**
+     * CHECK
+     * This handler gets all of the courses that a student is taking.
+     * The path parameter is the student's id.
+     * 
+     * GET -> "/courses/student/{id}"
+     * 
+     * @param context
+     */
     private void getCoursesByStudentIdHandler(Context context) {
+        int studentId = Integer.parseInt(context.pathParam("id"));
+
+        /* 
+        List<StudentCourses> test = this.studentCoursesService.getAllCoursesByStudentId(studentId);
+        List<Course> a = new ArrayList<Course>();
+
+        for(StudentCourses e : test) {
+            a.add(this.courseService.getCourseById(e.getCourseId()));
+        }
+        */
+
+        List<Course> courses = this.studentCoursesService.getAllCoursesByStudentId(studentId);
+
+        context.json(courses);
+    }
+
+    /**
+     * TODO
+     * This handler gets all of the courses that a specific teacher teaches given a student id.
+     * That is, a student might want to know the other courses they are taking by a specific teacher.
+     * 
+     * GET -> "/courses/student/{student_id}/teacher/{teacher_id}"
+     * 
+     * @param context
+     */
+    private void getCoursesByStudentAndTeacherIdHandler(Context context) {
 
     }
 
-    // ========== STUDENTS HANDLERS ==========
+    // ==================== STUDENTS HANDLERS ====================
+    /**
+     * This handler displays all of the students in the database.
+     * 
+     * GET -> "/student"
+     * 
+     * @param context
+     */
     private void getAllStudentsHandler(Context context) {
         List<Student> students = this.studentService.getAllStudents();
         context.json(students);
     }
 
+    /**
+     * This handler displays the information for a specific student in the
+     * database that is gotten by its id. If no student with the given id
+     * exists then a 404 is returned.
+     * 
+     * GET -> "/student/{id}"
+     * 
+     * @param context
+     */
     private void getStudentByIdHandler(Context context) {
         Student student = this.studentService.getStudentById(Integer.parseInt(context.pathParam("id")));
-        if (student==null){
+
+        if(student==null) {
             context.html("No students with this id");
             context.status(404);
             return;
         }
+
         context.json(student);
     }
 
-    private void addNewStudentHandler(Context context) throws JsonProcessingException{
+    /**
+     * This handler adds a new student to the database, given that it is a student with a
+     * new unique id.
+     * 
+     * POST -> "/student"
+     * 
+     * @param context
+     * @throws JsonProcessingException
+     */
+    private void addNewStudentHandler(Context context) throws JsonProcessingException {
         ObjectMapper om = new ObjectMapper();
         Student student = om.readValue(context.body(), Student.class);
+
         try {
             studentService.addStudent(student);
-            context.json("student successfuly added!");
-        }catch (ItemAlreadyExistsException e){
+            context.json("Student successfully added!");
+        } catch(ItemAlreadyExistsException e) {
             e.printStackTrace();
-            context.json("This student already exist!");
+            context.json(e.toString());
             context.status(400);
         }
     }
 
-    private void updateStudentHandler(Context context) throws JsonProcessingException{
+    /**
+     * This handler updates an existing student in the database. The given id for the student to be
+     * updated needs to be a valid one that is already in the database, else a 400 is returned and
+     * nothing is updated. The SQL request by default won't do anything and all is fine but we
+     * show a 400 just to indicate that the attempt was a "failure".
+     * 
+     * PUT -> "/student"
+     * 
+     * @param context
+     * @throws JsonProcessingException
+     */
+    private void updateStudentHandler(Context context) throws JsonProcessingException {
         ObjectMapper om = new ObjectMapper();
         Student student = om.readValue(context.body(), Student.class);
 
-        try{
+        try {
             studentService.updateStudent(student.getId(), student.getName(), student.getEmail());
-            context.json("Updated successfuly!");
-        }catch (ItemDoesNotExistException e){
+            context.json("Updated successfully!");
+        } catch(ItemDoesNotExistException e) {
             e.printStackTrace();
-            context.json("This student doesn't exist!");
+            context.json(e.toString());
             context.status(400);
         }
     }
 
+    /**
+     * This handler deletes an existing student from the database. The given id for the student to be
+     * updated needs to be a valid one that is already in the database, else a 400 is returned and
+     * nothing is deleted. The SQL request by default won't do anything and all is fine but we
+     * show a 400 just to indicate that the attempt was a "failure".
+     * 
+     * DELETE -> "student/{id}"
+     * 
+     * @param context
+     */
     private void deleteStudentHandler(Context context) {
+        int id = Integer.parseInt(context.pathParam("id"));
+
+        try {
+            this.studentService.deleteStudentById(id);
+            context.json("Successfully deleted student!");
+        } catch(ItemDoesNotExistException e) {
+            e.printStackTrace();
+            context.json(e.toString());
+            context.status(400);
+        }
+    }
+
+    /**
+     * TODO
+     * This handler gets all of the students that are registered for a
+     * specific course.
+     * 
+     * GET -> "/students/course/{id}"
+     * 
+     * @param context
+     */
+    private void getStudentsByCourseIdHandler(Context context) {
+        int courseId = Integer.parseInt(context.pathParam("id"));
+
+        
+        List<Student> students = studentCoursesService.getAllStudentsByCourseId(courseId);
+
+        context.json(students);
+    }
+
+    /**
+     * This handler registers a specific student for a specific course.
+     * 
+     * POST -> "/students/{student_id}/register/{course_id}"
+     * 
+     * @param context
+     */
+    private void registerForCourseHandler(Context context) {
+        int studentId = Integer.parseInt(context.pathParam("student_id"));
+        int courseId = Integer.parseInt(context.pathParam("course_id"));
+
+        try {
+            this.studentCoursesService.addNewEntry(studentId, courseId);
+            context.json("Successfully registered student for the course!");
+        } catch(ItemAlreadyExistsException e) {
+            e.printStackTrace();
+            context.json(e.toString());
+        }
+    }
+
+    /**
+     * TODO
+     * This handler unregister's a specific student from a specific course
+     * that they are currently registered for.
+     * 
+     * PUT -> "/students/{student_id}/unregister/{course_id}"
+     * 
+     * @param context
+     */
+    private void unregisterForCourseHandler(Context context) {
+        int studentId = Integer.parseInt(context.pathParam("student_id"));
+        int courseId = Integer.parseInt(context.pathParam("course_id"));
 
     }
 
-    // ========== TEACHERS HANDLERS ==========
+    // ==================== TEACHERS HANDLERS ====================
+    /**
+     * This handler displays all of teachers in the database.
+     * 
+     * GET -> "/teachers"
+     * 
+     * @param context
+     */
     private void getAllTeachersHandler(Context context) {
         List<Teacher> teachers = this.teacherService.getAllTeachers();
         context.json(teachers);
     }
 
+    /**
+     * This handler displays the information for a specific teacher in the
+     * database that is gotten by its id. If no teacher with the given id
+     * exists then a 404 is returned.
+     * 
+     * GET -> "/teachers/{id}"
+     * 
+     * @param context
+     * @throws ItemDoesNotExistException
+     */
     private void getTeacherByIdHandler(Context context) throws ItemDoesNotExistException {
         Teacher teacher  = this.teacherService.getTeacherById(
                 Integer.parseInt(context.pathParam("id")));
@@ -196,6 +435,15 @@ public class Controller {
         context.json(teacher);
     }
 
+    /**
+     * This handler adds a new teacher to the database, given that it is a teacher with a
+     * new unique id.
+     * 
+     * POST -> "/teachers"
+     * 
+     * @param context
+     * @throws JsonProcessingException
+     */
     private void addNewTeacherHandler(Context context) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Teacher teacher = mapper.readValue(context.body(), Teacher.class);
@@ -203,14 +451,24 @@ public class Controller {
         try {
             this.teacherService.addTeacher(teacher);
             context.json("Successfully added teacher!");
-        } catch (ItemAlreadyExistsException e) {
+        } catch(ItemAlreadyExistsException e) {
             e.printStackTrace();
-            //context.json("Cannot add teacher!");
             context.json(e.toString());
             context.status(400);
         }
     }
 
+    /**
+     * This handler updates an existing teacher in the database. The given id for the teacher to be
+     * updated needs to be a valid one that is already in the database, else a 400 is returned and
+     * nothing is updated. The SQL request by default won't do anything and all is fine but we
+     * show a 400 just to indicate that the attempt was a "failure".
+     * 
+     * PUT -> "/teachers"
+     * 
+     * @param context
+     * @throws JsonProcessingException
+     */
     private void updateTeacherHandler(Context context) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Teacher teacher = mapper.readValue(context.body(), Teacher.class);
@@ -220,12 +478,21 @@ public class Controller {
             context.json("Successfully updated teacher!");
         } catch(ItemDoesNotExistException e) {
             e.printStackTrace();
-            //context.json("This teacher doesn't exist!");
             context.json(e.toString());
             context.status(400);
         }
     }
 
+    /**
+     * This handler deletes an existing teacher from the database. The given id for the teacher to be
+     * updated needs to be a valid one that is already in the database, else a 400 is returned and
+     * nothing is deleted. The SQL request by default won't do anything and all is fine but we
+     * show a 400 just to indicate that the attempt was a "failure".
+     * 
+     * DELETE -> "/teachers/{id}"
+     * 
+     * @param context
+     */
     private void deleteTeacherHandler(Context context) {
         int id = Integer.parseInt(context.pathParam("id"));
 
