@@ -3,6 +3,7 @@ package ServiceLayerTest;
 import DAO.CourseDAO;
 import Model.Course;
 import Service.CourseService;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -28,6 +29,15 @@ public class CourseServiceTest {
         Mockito.when(mockCourseDAO.getAllCourses()).thenReturn(courses);
         courseService.getAllCourses();
         Mockito.verify(mockCourseDAO, Mockito.times(1)).getAllCourses();
+    }
+
+    @Test
+    public void getCourseById() {
+        Course expected = new Course(1,"Databases",1);
+        Mockito.when(mockCourseDAO.getCourseById(1)).thenReturn(expected);
+        Course actual = courseService.getCourseById(1);
+        Mockito.verify(mockCourseDAO,Mockito.times(1)).getCourseById(1);
+        Assert.assertEquals(expected,actual);
     }
     /*
     *@Test

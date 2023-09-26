@@ -3,3 +3,5 @@
 
 == Cascade constraint
 foreign key (made_by) references author(author_id) ON DELETE CASCADE
+
+curl -X POST <url> -d "key=value"
