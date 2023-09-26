@@ -44,18 +44,8 @@ public class Application {
                 System.out.println("Teacher with id="+id+": "+ teacherDAO.getTeacherById(id));
             }else if(choice == 2){
                 theEnd=true;
-            }else if(choice ==3) {
+            }else if(choice >2) {
 
-                System.out.println("invalid choice");
-            }else if(choice == 4){
-                System.out.println("invalid choice");
-
-            }else if(choice == 5){
-                System.out.println("invalid choice");
-
-            }else if(choice == 6){
-                System.out.println("invalid choice");
-            }else{
                 System.out.println("invalid choice");
             }
         }
