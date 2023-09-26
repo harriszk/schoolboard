@@ -9,6 +9,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static Util.LogUtil.log;
+
 public class CourseDAO {
     private Connection conn;
     
@@ -23,7 +25,7 @@ public class CourseDAO {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                 courses.add(new Course(rs.getInt("id"),rs.getString("name")));
+                 courses.add(new Course(rs.getInt("id"),rs.getString("name"),rs.getInt("teacher_id")));
             }
         }catch(SQLException e){
             e.printStackTrace();
@@ -39,8 +41,11 @@ public class CourseDAO {
             ResultSet rs = ps.executeQuery();
 
             if(rs.next()){
+
                 course.setId(rs.getInt("id"));
                 course.setName(rs.getString("name"));
+                course.setTeacherId(rs.getInt("teacher_id"));
+                log.info("course: {}",course);
             } else course = null;
         }catch(SQLException e){
             e.printStackTrace();
@@ -50,10 +55,11 @@ public class CourseDAO {
 
     public void addCourse(Course course) throws ItemAlreadyExistsException {
         try {
-            String sql = "INSERT INTO course (id, name) VALUES (?, ?);";
+            String sql = "INSERT INTO course (id, name, teacher_id) VALUES (?, ?, ?)";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, course.getId());
             ps.setString(2, course.getName());
+            ps.setInt(3,course.getTeacherId());
             ps.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
@@ -75,12 +81,13 @@ public class CourseDAO {
         }
     }
 
-    public void updateCourse(int id, String courseName) throws ItemDoesNotExistException {
+    public void updateCourse(int id, String courseName, int teacherId) throws ItemDoesNotExistException {
         try {
-            String sql = "UPDATE course SET course.name = ? WHERE course.id = ?";
+            String sql = "UPDATE course SET course.name = ?, course.teacher_id = ? WHERE course.id = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, courseName);
-            ps.setInt(2, id);
+            ps.setInt(2, teacherId);
+            ps.setInt(3, id);
 
             if(ps.executeUpdate() == 0) {
                 throw new ItemDoesNotExistException("Course");

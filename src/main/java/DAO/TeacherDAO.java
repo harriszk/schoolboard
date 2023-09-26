@@ -114,12 +114,15 @@ public class TeacherDAO {
 
     public List<Course> coursesByTeacher(Teacher teacher) {
         List<Course> courses = new ArrayList<>();
+        log.info("*************************************");
         try {
-            PreparedStatement ps = conn.prepareStatement("select * from course where course.name=?");
-            ps.setString(1,teacher.getName());
+            PreparedStatement ps = conn.prepareStatement("select * from course where course.teacher_id=?");
+            ps.setInt(1,teacher.getId());
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
-                courses.add(new Course(rs.getInt("id"), rs.getString("name")));
+
+                courses.add(new Course(rs.getInt("id"), rs.getString("name"), rs.getInt("teacher_id")));
+                log.info("courses: {}",courses);
             }
         }catch (SQLException e){
             e.printStackTrace();

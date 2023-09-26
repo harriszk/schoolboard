@@ -1,5 +1,6 @@
 package DaoLayerTest;
 
+import Model.Course;
 import Model.Teacher;
 import DAO.TeacherDAO;
 import Exception.ItemDoesNotExistException;
@@ -27,6 +28,7 @@ public class TeacherDAOTest {
         List<Teacher> expected = new ArrayList<>();
         expected.add(new Teacher(1, "Zachary Harris"));
         expected.add(new Teacher(2, "Ralph Fatkullin"));
+        expected.add(new Teacher(3, "Walt Whitman"));
 
         List<Teacher> actual = teacherDAO.getAllTeachers();
         Assert.assertEquals(expected, actual);
@@ -53,7 +55,7 @@ public class TeacherDAOTest {
     @Test
     public void addNewTeacherTest() throws ItemAlreadyExistsException, ItemDoesNotExistException {
         //ConnectionSingleton.resetTestDatabase();
-        int id = 3;
+        int id = 4;
         String name = "John Doe";
         Teacher expected = new Teacher(id, name);
         teacherDAO.addTeacher(expected);
@@ -105,6 +107,17 @@ public class TeacherDAOTest {
         int id = -1;
 
         Assert.assertThrows(ItemDoesNotExistException.class, () -> teacherDAO.deleteTeacher(id));
+    }
+
+    @Test
+    public void coursesByTeacherSuccessfullTest(){
+        Teacher teacher = new Teacher(3,"Walt Whitman");
+        List< Course> expected = new ArrayList<>();
+
+        expected.add(new Course(4, "English",3));
+        expected.add(new Course(5, "History",3));
+
+        Assert.assertEquals(expected,teacherDAO.coursesByTeacher(teacher));
     }
 
 }

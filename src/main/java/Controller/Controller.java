@@ -97,7 +97,7 @@ public class Controller {
         Course course = mapper.readValue(context.body(), Course.class);
 
         try {
-            this.courseService.updateCourse(course.getId(), course.getName());
+            this.courseService.updateCourse(course.getId(), course.getName(), course.getTeacherId());
             context.json("Successfully updated course!");
         } catch(ItemDoesNotExistException e) {
             e.printStackTrace();

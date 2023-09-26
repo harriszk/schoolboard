@@ -46,13 +46,16 @@ CREATE TABLE StudentCourses
 -- Teacher table
 insert into teacher (id, name) values (1, 'Zachary Harris');
 insert into teacher (id, name) values (2, 'Ralph Fatkullin');
+insert into teacher (id, name) values (3, 'Walt Whitman');
+
 
 -- Course table
-insert into course (id, name) values (1, 'Math');
-insert into course (id, name) values (2, 'Science');
-insert into course (id, name) values (3, 'Databases');
-insert into course (id, name) values (4, 'English');
-insert into course (id, name) values (5, 'Physics');
+insert into course (id, name) values (1, 'Math',2);
+insert into course (id, name) values (2, 'Science',1);
+insert into course (id, name) values (3, 'Databases',1);
+insert into course (id, name) values (4, 'English',3);
+insert into course (id, name) values (5, 'Physics',2);
+insert into course (id, name) values (5, 'History',3);
 
 -- Student table
 insert into student (id, name, email) values (1, 'John Doe', 'johnD@someCompany.com');
