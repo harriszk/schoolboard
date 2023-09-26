@@ -14,6 +14,7 @@ import org.mockito.Mockito;
 import java.util.ArrayList;
 import java.util.List;
 import Exception.ItemDoesNotExistException;
+import Exception.ItemAlreadyExistsException;
 
 public class TeacherServiceTest {
 
@@ -47,6 +48,39 @@ public class TeacherServiceTest {
         Mockito.verify(mockTeacherDAO, Mockito.times(1)).getAllTeachers();
         Assert.assertEquals(expected, actual);
     }
+
+     @Test
+    public void getTeacherByIdTest() throws ItemDoesNotExistException {
+        Teacher expected = new Teacher(1,"John Doe");
+        Mockito.when(mockTeacherDAO.getTeacherById(1)).thenReturn(expected);
+        List<Teacher> actual = teacherService.getAllTeachers();
+        Mockito.verify(mockTeacherDAO, Mockito.times(1)).getAllTeachers();
+    }
+
+    /*
+    @Test
+    public void addTeacher() {
+        try {
+            Teacher expected = new Teacher(1,"John Doe");
+            Mockito.when(mockTeacherDAO.addTeacher(expected)).thenReturn(Mockito.any());
+        }catch (ItemAlreadyExistsException e){
+            e.printStackTrace();
+        }
+
+    }*/
+
+    public void updateTeacher(){
+    }
+
+    public void deleteTeacher(){
+    }
+
+    public void searchTeacherByName(){
+    }
+
+    public  void coursesByTeacherName(){
+    }
+
 
     /*  !!!!!!!!!
     @Test
