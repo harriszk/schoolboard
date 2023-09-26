@@ -46,11 +46,11 @@ public class TeacherService {
         teacherDAO.deleteTeacher(id);
     }
 
-    public Teacher searchTeacherByName(String name){
+    public Teacher searchTeacherByName(String name) throws ItemDoesNotExistException {
         return teacherDAO.searchTeacherByName(name);
     }
 
-    public List<Course> coursesByTeacherName(String name){
+    public List<Course> coursesByTeacherName(String name) throws ItemDoesNotExistException {
         Teacher teacher = this.searchTeacherByName(name);
         return teacherDAO.coursesByTeacher(teacher);
     }
