@@ -120,4 +120,29 @@ public class TeacherDAOTest {
         Assert.assertEquals(expected,teacherDAO.coursesByTeacher(teacher));
     }
 
+    /*
+    @Test
+    public void coursesByTeacherByNameSuccessfullTest(){
+        String name = "Walt Whitman";
+        List< Course> expected = new ArrayList<>();
+
+        expected.add(new Course(4, "English",3));
+        expected.add(new Course(6, "History",3));
+
+        Assert.assertEquals(expected,teacherDAO.coursesByTeacher());
+    }*/
+
+    /*
+    @Test
+    public void searchByTeacherNameSuccessfullTest(){
+        String name = "Walt Whitman";
+        Teacher expected = new Teacher();
+
+        expected.add(new Course(4, "English",3));
+        expected.add(new Course(6, "History",3));
+
+        Assert.assertEquals(expected,teacherDAO.searchTeacherByName(teacher));
+    }*/
+
+
 }

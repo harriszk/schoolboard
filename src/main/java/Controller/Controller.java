@@ -18,6 +18,8 @@ import io.javalin.http.Context;
 
 import java.util.List;
 
+import static Util.LogUtil.log;
+
 public class Controller {
     private CourseService courseService;
     private StudentService studentService;
@@ -52,6 +54,7 @@ public class Controller {
         // Teacher endpoints
         app.get("/teachers", this::getAllTeachersHandler);
         app.get("/teachers/{id}", this::getTeacherByIdHandler);
+        app.get("/teachers-courses/{name}", this::getCoursesByTeacherHandler);
         app.post("/teachers", this::addNewTeacherHandler);
         app.put("/teachers", this::updateTeacherHandler);
         app.delete("/teachers/{id}", this::deleteTeacherHandler);
@@ -233,6 +236,17 @@ public class Controller {
             e.printStackTrace();
             context.json(e.toString());
             context.status(400);
+        }
+    }
+
+    private void getCoursesByTeacherHandler(Context context){
+        String name = context.pathParam("name");
+        log.info("name:{}",name);
+        try {
+            List<Course> courses = this.teacherService.coursesByTeacherName(name);
+            context.json(courses);
+        }catch(Exception e){
+            e.printStackTrace();
         }
     }
 }
