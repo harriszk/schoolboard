@@ -115,7 +115,7 @@ public class TeacherDAOTest {
         List< Course> expected = new ArrayList<>();
 
         expected.add(new Course(4, "English",3));
-        expected.add(new Course(5, "History",3));
+        expected.add(new Course(6, "History",3));
 
         Assert.assertEquals(expected,teacherDAO.coursesByTeacher(teacher));
     }
