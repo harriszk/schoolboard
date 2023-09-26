@@ -1,5 +1,6 @@
 package Service;
 
+import Model.Course;
 import Model.Teacher;
 import DAO.TeacherDAO;
 import Exception.ItemAlreadyExistsException;
@@ -43,5 +44,14 @@ public class TeacherService {
 
     public void deleteTeacher(int id) throws ItemDoesNotExistException {
         teacherDAO.deleteTeacher(id);
+    }
+
+    public Teacher searchTeacherByName(String name){
+        return teacherDAO.searchTeacherByName(name);
+    }
+
+    public List<Course> coursesByTeacherName(String name){
+        Teacher teacher = this.searchTeacherByName(name);
+        return teacherDAO.coursesByTeacher(teacher);
     }
 }

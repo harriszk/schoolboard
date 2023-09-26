@@ -4,6 +4,7 @@ import DAO.CourseDAO;
 import Model.Course;
 import Exception.ItemAlreadyExistsException;
 import Exception.ItemDoesNotExistException;
+import Model.Teacher;
 
 import java.sql.Connection;
 import java.util.List;

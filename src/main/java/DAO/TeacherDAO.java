@@ -1,5 +1,6 @@
 package DAO;
 
+import Model.Course;
 import Model.Teacher;
 import Exception.ItemAlreadyExistsException;
 import Exception.ItemDoesNotExistException;
@@ -19,6 +20,20 @@ public class TeacherDAO {
 
     public TeacherDAO(Connection conn) {
         this.conn = conn;
+    }
+
+    //Make a search a teachers by a name and return Arraylist
+    public Teacher searchTeacherByName(String name) {
+        //get a List of all teachers
+        List<Teacher> allTeachers = this.getAllTeachers();
+        Teacher teacher = new Teacher();
+        //Loop over List of allTeachers and check a name
+        for (Teacher teacherElement: allTeachers) {
+            if (teacherElement.getName().equals(name)){
+                teacher = teacherElement;
+            }
+        }
+        return teacher;
     }
 
     public List<Teacher> getAllTeachers() {
@@ -95,5 +110,20 @@ public class TeacherDAO {
         }catch (SQLException e){
             e.printStackTrace();
         }
+    }
+
+    public List<Course> coursesByTeacher(Teacher teacher) {
+        List<Course> courses = new ArrayList<>();
+        try {
+            PreparedStatement ps = conn.prepareStatement("select * from course where course.name=?");
+            ps.setString(1,teacher.getName());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                courses.add(new Course(rs.getInt("id"), rs.getString("name")));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return courses;
     }
 }

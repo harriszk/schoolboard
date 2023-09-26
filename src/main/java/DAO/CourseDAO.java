@@ -3,7 +3,7 @@ package DAO;
 import Model.Course;
 import Exception.ItemAlreadyExistsException;
 import Exception.ItemDoesNotExistException;
-import Model.StudentCourses;
+import Model.Teacher;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -89,4 +89,5 @@ public class CourseDAO {
             e.printStackTrace();
         }
     }
+
 }
