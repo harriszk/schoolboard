@@ -32,5 +32,15 @@ public class StudentCourseServiceTest {
     Assert.assertEquals(expected,actual);
 }
 
+@Test
+public void getAllCoursesByStudentIdTest() {
+    List<StudentCourses> expected = new ArrayList<>();
+    expected.add(new StudentCourses(1,1));
+    Mockito.when(mockStudentCoursesDAO.getAllCoursesByStudentId(1)).thenReturn(expected);
+    List<StudentCourses> actual = studentCoursesService.getAllCoursesByStudentId(1);
+    Mockito.verify(mockStudentCoursesDAO,Mockito.times(1)).getAllCoursesByStudentId(1);
+    Assert.assertEquals(expected,actual);
+}
+
 }
 
