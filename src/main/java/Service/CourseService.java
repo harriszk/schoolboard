@@ -7,6 +7,7 @@ import Exception.ItemDoesNotExistException;
 import Model.Teacher;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CourseService {
@@ -37,6 +38,24 @@ public class CourseService {
      */
     public List<Course> getAllCourses() {
         return this.courseDAO.getAllCourses();
+    }
+
+    /**
+     * 
+     * @param id
+     * @return
+     */
+    public List<Course> getCoursesByTeacherId(int id) {
+        List<Course> courses = this.courseDAO.getAllCourses();
+        List<Course> result = new ArrayList<Course>();
+
+        for(Course course : courses) {
+            if(course.getTeacherId() == id) {
+                result.add(course);
+            }
+        }
+
+        return result;
     }
 
     /**
