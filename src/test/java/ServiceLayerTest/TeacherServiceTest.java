@@ -53,8 +53,9 @@ public class TeacherServiceTest {
     public void getTeacherByIdTest() throws ItemDoesNotExistException {
         Teacher expected = new Teacher(1,"John Doe");
         Mockito.when(mockTeacherDAO.getTeacherById(1)).thenReturn(expected);
-        List<Teacher> actual = teacherService.getAllTeachers();
-        Mockito.verify(mockTeacherDAO, Mockito.times(1)).getAllTeachers();
+        Teacher actual = teacherService.getTeacherById(1);
+        Mockito.verify(mockTeacherDAO, Mockito.times(1)).getTeacherById(1);
+        Assert.assertEquals(expected,actual);
     }
 
     /*
@@ -67,7 +68,10 @@ public class TeacherServiceTest {
             e.printStackTrace();
         }
 
-    }*/
+    }
+*/
+
+
 
     public void updateTeacher(){
     }
