@@ -3,39 +3,58 @@ package Model;
 import java.util.Objects;
 
 public class Course {
-    private int id;
-    private String name;
-
+    private String subject;
+    private int number;
+    private String title;
+    private double creditHours;
     private int teacherId;
 
     public Course() {
+
     }
 
-    public Course(int id, String name, int teacherId) {
-        this.id = id;
-        this.name = name;
+    public Course(String subject, int number, String title, double creditHours, int teacherId) {
+        this.subject = subject;
+        this.number = number;
+        this.title = title;
+        this.creditHours = creditHours;
         this.teacherId = teacherId;
     }
 
-    public int getId() {
-        return id;
+    public String getSubject() {
+        return this.subject;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
-
-    public String getName() {
-        return name;
+    public int getNumber() {
+        return this.number;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public String getTitle() {
+        return this.title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public double getCreditHours() {
+        return this.creditHours;
+    }
+
+    public void setCreditHours(double creditHours) {
+        this.creditHours = creditHours;
     }
 
     public int getTeacherId() {
-        return teacherId;
+        return this.teacherId;
     }
 
     public void setTeacherId(int teacherId) {
@@ -44,22 +63,28 @@ public class Course {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == this)
+            return true;
+        if (!(o instanceof Course)) {
+            return false;
+        }
         Course course = (Course) o;
-        return id == course.id && Objects.equals(name, course.name);
+        return Objects.equals(subject, course.subject) && number == course.number && Objects.equals(title, course.title) && creditHours == course.creditHours && teacherId == course.teacherId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(subject, number, title, creditHours, teacherId);
     }
 
     @Override
     public String toString() {
-        return "Course{" +
-                "id=" + id +
-                ", course='" + name + '\'' +
-                '}';
+        return "{" +
+            " subject='" + getSubject() + "'" +
+            ", number='" + getNumber() + "'" +
+            ", title='" + getTitle() + "'" +
+            ", creditHours='" + getCreditHours() + "'" +
+            ", teacherId='" + getTeacherId() + "'" +
+            "}";
     }
 }
