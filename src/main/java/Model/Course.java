@@ -3,6 +3,7 @@ package Model;
 import java.util.Objects;
 
 public class Course {
+    private int id;
     private String subject;
     private int number;
     private String title;
@@ -13,12 +14,21 @@ public class Course {
 
     }
 
-    public Course(String subject, int number, String title, double creditHours, int teacherId) {
+    public Course(int id, String subject, int number, String title, double creditHours, int teacherId) {
+        this.id = id;
         this.subject = subject;
         this.number = number;
         this.title = title;
         this.creditHours = creditHours;
         this.teacherId = teacherId;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getSubject() {

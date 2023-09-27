@@ -170,7 +170,7 @@ public class Controller {
         Course course = mapper.readValue(context.body(), Course.class);
 
         try {
-            this.courseService.updateCourse(course.getId(), course.getName(), course.getTeacherId());
+            this.courseService.updateCourse(course);
             context.json("Successfully updated course!");
         } catch(ItemDoesNotExistException e) {
             e.printStackTrace();
