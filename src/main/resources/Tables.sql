@@ -23,6 +23,20 @@ CREATE TABLE Teacher
   PRIMARY KEY (id)
 );
 
+-- CONSTRAINT check_length CHECK (your_column_name >= 10000 AND your_column_name <= 99999)
+
+CREATE TABLE Course
+(
+  subject VARCHAR(4) NOT NULL,
+  number INT NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  credit_hours DECIMAL(5, 3) NOT NULL
+  teacher_id INT,
+  PRIMARY KEY (subject, number)
+  FOREIGN KEY (teacher_id) REFERENCES Teacher(id) ON DELETE CASCADE
+);
+
+/*
 CREATE TABLE Course
 (
   id INT NOT NULL,
@@ -31,6 +45,7 @@ CREATE TABLE Course
   PRIMARY KEY (id),
   FOREIGN KEY (teacher_id) REFERENCES Teacher(id) ON DELETE CASCADE
 );
+*/
 
 CREATE TABLE StudentCourses
 (
@@ -50,12 +65,23 @@ insert into teacher (id, name) values (3, 'Walt Whitman');
 
 
 -- Course table
-insert into course (id, name, teacher_id) values (1, 'Math',2);
-insert into course (id, name, teacher_id) values (2, 'Science',1);
-insert into course (id, name, teacher_id) values (3, 'Databases',1);
-insert into course (id, name, teacher_id) values (4, 'English',3);
-insert into course (id, name, teacher_id) values (5, 'Physics',2);
-insert into course (id, name, teacher_id) values (6, 'History',3);
+INSERT INTO Course (subject, number, title, credit_hours, teacher_id) VALUES ("MATH", 11000, "Fundamentals of Algebra", 4.000, 0);
+INSERT INTO Course (subject, number, title, credit_hours, teacher_id) VALUES ("MATH", 15100, "Algebra and Trigonometry", 4.000, 0);
+INSERT INTO Course (subject, number, title, credit_hours, teacher_id) VALUES ("MATH", 15400, "Trigonometry", 3.000, 0);
+INSERT INTO Course (subject, number, title, credit_hours, teacher_id) VALUES ("MATH", 15900, "Pre-calculus", 5.000, 0);
+INSERT INTO Course (subject, number, title, credit_hours, teacher_id) VALUES ("MATH", 16500, "Analytic Geometry and Calculus I", 4.000, 0);
+INSERT INTO Course (subject, number, title, credit_hours, teacher_id) VALUES ("MATH", 16600, "Analytic Geometry and Calculus II", 4.000, 0);
+INSERT INTO Course (subject, number, title, credit_hours, teacher_id) VALUES ("MATH", 26100, "Multivariate Calculus", 4.000, 0);
+INSERT INTO Course (subject, number, title, credit_hours, teacher_id) VALUES ("MATH", 26600, "Ordinary Differential Equations", 3.000, 0);
+INSERT INTO Course (subject, number, title, credit_hours, teacher_id) VALUES ("MATH", 30000, "Logic and the Foundations of Algebra", 3.000, 0);
+INSERT INTO Course (subject, number, title, credit_hours, teacher_id) VALUES ("MATH", 35100, "Elementary Linear Algebra", 3.000, 0);
+INSERT INTO Course (subject, number, title, credit_hours, teacher_id) VALUES ("MATH", 41400, "Numerical Methods", 3.000, 0);
+INSERT INTO Course (subject, number, title, credit_hours, teacher_id) VALUES ("MATH", 44400, "Real Analysis I", 3.000, 0);
+INSERT INTO Course (subject, number, title, credit_hours, teacher_id) VALUES ("MATH", 44500, "Real Analysis II", 3.000, 0);
+INSERT INTO Course (subject, number, title, credit_hours, teacher_id) VALUES ("MATH", 45300, "Elementary Abstract Algebra", 3.000, 0);
+INSERT INTO Course (subject, number, title, credit_hours, teacher_id) VALUES ("MATH", 46200, "Elementary Differential Geometry", 3.000, 0);
+INSERT INTO Course (subject, number, title, credit_hours, teacher_id) VALUES ("MATH", 52300, "Introduction to Partial Differential Equations", 3.000, 0);
+INSERT INTO Course (subject, number, title, credit_hours, teacher_id) VALUES ("MATH", 52500, "Introduction to Complex Analysis", 3.000, 0);
 
 -- Student table
 insert into student (id, name, email) values (1, 'John Doe', 'johnD@someCompany.com');
