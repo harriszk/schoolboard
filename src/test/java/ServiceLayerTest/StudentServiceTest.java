@@ -28,7 +28,7 @@ public void setUp(){
 
 
     /**
-     * This test is testing the getAllStudentsSuccessfulTest() method in a StudentService class.
+     * This test is testing the getAllStudents() method in a StudentService class.
      * The method gets empty ArrayList from DAO level.
      *
      * @Test verifies:
@@ -46,7 +46,7 @@ public void setUp(){
 
 
     /**
-     * This test is testing the getStudentByIdTest() method in a StudentService class.
+     * This test is testing the getStudentById() method in a StudentService class.
      * The method gets instance of a Student class from DAO level.
      *
      * @Test verifies:

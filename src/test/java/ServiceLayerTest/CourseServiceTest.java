@@ -24,7 +24,7 @@ public class CourseServiceTest {
     }
 
     /**
-     * This test is testing the getAllCoursesEmptyArrayTest() method in a CourseService class.
+     * This test is testing the getAllCourses() method in a CourseService class.
      * The method gets empty ArrayList from DAO level.
      *
      * @Test verifies:
@@ -49,7 +49,7 @@ public class CourseServiceTest {
      *    transferred an instance of a Course class from DAO level.
      */
     @Test
-    public void getCourseById() {
+    public void getCourseByIdTest() {
         Course expected = new Course(1,"Databases",1);
         Mockito.when(mockCourseDAO.getCourseById(1)).thenReturn(expected);
         Course actual = courseService.getCourseById(1);

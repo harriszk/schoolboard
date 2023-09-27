@@ -29,7 +29,7 @@ public class TeacherServiceTest {
 
 
     /**
-     * This test is testing the getAllTeachersEmptyArrayTest() method in a TeacherService class.
+     * This test is testing the getAllTeachers() method in a TeacherService class.
      * The method gets empty ArrayList from DAO level.
      *
      * @Test verifies:
@@ -46,7 +46,7 @@ public class TeacherServiceTest {
     }
 
     /**
-     * This test is testing the getAllTeachersArrayTest() method in a TeacherService class.
+     * This test is testing the getAllTeachers() method in a TeacherService class.
      * The method gets instance of a Teacher class from DAO level.
      *
      * @Test verifies:
@@ -66,7 +66,7 @@ public class TeacherServiceTest {
     }
 
     /**
-     * This test is testing the getTeacherByIdTest() method in a TeacherService class.
+     * This test is testing the getTeacherById() method in a TeacherService class.
      * The method gets instance of a Teacher class from DAO level.
      *
      * @Test verifies:

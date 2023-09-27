@@ -32,7 +32,7 @@ public class StudentCourseServiceTest {
      *    transferred an ArrayList from DAO level.
      */
     @Test
-    public  void getAllEntries(){
+    public  void getAllEntriesTest(){
     List<StudentCourses> expected = new ArrayList<>();
     expected.add(new StudentCourses(1,1));
     Mockito.when(mockStudentCoursesDAO.getAllEntries()).thenReturn(expected);
@@ -42,7 +42,7 @@ public class StudentCourseServiceTest {
 }
 
     /**
-     * This test is testing the getAllCoursesByStudentIdTest() method in a StudentCoursesService class.
+     * This test is testing the getAllCoursesByStudentId() method in a StudentCoursesService class.
      * The method gets ArrayList from DAO level.
      *
      * @Test verifies:

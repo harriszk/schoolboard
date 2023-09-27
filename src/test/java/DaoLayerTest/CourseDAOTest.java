@@ -22,6 +22,13 @@ public class CourseDAOTest {
         courseDAO = new CourseDAO(ConnectionSingleton.getConnection());
     }
 
+    /**
+     * This test is testing the getAllCourses() method in a CourseDAO class.
+     *
+     * @Test verifies:
+     *    ...that method provides an ArrayList populated by instances of Course class.
+     */
+
     @Test
     public void getAllCoursesTest() {
         List<Course> expected = new ArrayList<Course>();
@@ -36,6 +43,12 @@ public class CourseDAOTest {
         Assert.assertEquals(expected, actual);
     }
 
+    /**
+     * This test is testing the getCourseById() method in a CourseDAO class.
+     *
+     * @Test verifies:
+     *    ...that method provides an instances of Course class with particular Course.ID.
+     */
     @Test
     public void getCourseByIdSuccessfulTest() {
         int id = 3;
@@ -47,11 +60,21 @@ public class CourseDAOTest {
         Assert.assertEquals(expected, actual);
     }
 
+    /**
+     * This test is testing the getCourseById() method in a CourseDAO class.
+     *
+     * @Test verifies:
+     *    ...that method provides a Null value for parameters id=-1.
+     */
+
     @Test
     public void getCourseByIdUnsuccessfulTest() {
         Course actual = courseDAO.getCourseById(-1);
         Assert.assertNull(actual);
     }
+
+
+
 
     @Test
     public void addNewCourseTest() throws ItemAlreadyExistsException {
