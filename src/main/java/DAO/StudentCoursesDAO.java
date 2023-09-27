@@ -1,16 +1,16 @@
 package DAO;
 
+import Model.StudentCourses;
+
+import Exception.ItemAlreadyExistsException;
+import Exception.ItemDoesNotExistException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import Exception.ItemAlreadyExistsException;
-import Exception.ItemDoesNotExistException;
-import Model.Course;
-import Model.StudentCourses;
 
 public class StudentCoursesDAO {
     private Connection conn;

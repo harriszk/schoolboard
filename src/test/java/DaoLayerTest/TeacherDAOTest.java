@@ -110,9 +110,9 @@ public class TeacherDAOTest {
     }
 
     @Test
-    public void coursesByTeacherSuccessfullTest() throws ItemDoesNotExistException {
+    public void coursesByTeacherSuccessfulTest() throws ItemDoesNotExistException {
         Teacher teacher = new Teacher(3,"Walt Whitman");
-        List< Course> expected = new ArrayList<>();
+        List<Course> expected = new ArrayList<>();
 
         expected.add(new Course(4, "English",3));
         expected.add(new Course(6, "History",3));
