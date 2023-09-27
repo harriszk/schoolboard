@@ -39,33 +39,16 @@ public class StudentCoursesService {
         return this.studentCoursesDAO.getAllEntries();
     }
 
-    public List<Course> getAllCoursesByStudentId(int studentId) {
+    public List<StudentCourses> getAllCoursesByStudentId(int studentId) {
         List<StudentCourses> entries = this.studentCoursesDAO.getAllCoursesByStudentId(studentId);
-        List<Course> courses = new ArrayList<Course>();
 
-        // Do we want this in this service file?
-        CourseService courseService = new CourseService(ConnectionSingleton.getConnection());
-
-        for(StudentCourses entry : entries) {
-            courses.add(courseService.getCourseById(entry.getCourseId()));
-        }
-
-        return courses;
+        return entries;
     }
 
-    public List<Student> getAllStudentsByCourseId(int courseId) {
-        List<StudentCourses> entries = this.studentCoursesDAO.getAllCoursesByStudentId(courseId);
-        List<Student> students = new ArrayList<Student>();
+    public List<StudentCourses> getAllStudentsByCourseId(int courseId) {
+        List<StudentCourses> entries = this.studentCoursesDAO.getAllStudentsByCourseId(courseId);
 
-        // Do we want this in this service file?
-        StudentService studentService = new StudentService(ConnectionSingleton.getConnection());
-
-        for(StudentCourses entry : entries) {
-            log.debug(entry.toString());
-            //students.add(studentService.getStudentById(entry.getStudentId()));
-        }
-
-        return students;
+        return entries;
     }
 
     public void addNewEntry(int studentId, int courseId) throws ItemAlreadyExistsException {
@@ -74,13 +57,17 @@ public class StudentCoursesService {
         this.studentCoursesDAO.addNewEntry(newEntry);
     }
 
-    public void deleteEntry() throws ItemDoesNotExistException {
+    public void deleteEntry(int studentId, int courseId) throws ItemDoesNotExistException {
+        StudentCourses entry = new StudentCourses(studentId, courseId);
 
+        this.studentCoursesDAO.deleteEntry(entry);
     }
 
-    public void deleteEntriesByStudentId() {
-
+    public void deleteEntriesByStudentId(int studentId) {
+        this.studentCoursesDAO.deleteEntriesByStudentId(studentId);
     }
 
-    public void deleteEntriesByCourseId() {}
+    public void deleteEntriesByCourseId(int courseId) {
+        this.studentCoursesDAO.deleteEntriesByCourseId(courseId);
+    }
 }

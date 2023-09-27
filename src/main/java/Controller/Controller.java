@@ -41,11 +41,11 @@ public class Controller {
 
         // Courses endpoints
         app.get("/courses", this::getAllCoursesHandler);
-        app.get("/course/{id}", this::getCourseByIdHandler);
         app.post("/course", this::addCourseHandler);
         app.put("/course", this::updateCourseHandler);
         app.delete("/course/{id}", this::deleteCourseHandler);
 
+        app.get("/course/{id}", this::getCourseByIdHandler);
         app.get("/courses/teacher/{id}", this::getCoursesByTeacherIdHandler);
         app.get("/courses/student/{id}", this::getCoursesByStudentIdHandler);
         app.get("/courses/student/{student_id}/teacher/{teacher_id}", this::getCoursesByStudentAndTeacherIdHandler);
@@ -81,8 +81,32 @@ public class Controller {
      * @param context
      */
     private void getAllCoursesHandler(Context context) {
-        List<Course> courses = this.courseService.getAllCourses();
-        context.json(courses);
+        String courseIdString = context.queryParam("courseId");
+        String studentIdString = context.queryParam("studentId");
+        String teacherIdString = context.queryParam("teacherId");
+
+        if(studentIdString != null && teacherIdString != null) {
+            int studentId = Integer.parseInt(studentIdString);
+            int teacherId = Integer.parseInt(teacherIdString);
+
+            List<StudentCourses> entries = this.studentCoursesService.getAllCoursesByStudentId(studentId);
+            List<Course> courses = new ArrayList<Course>();
+
+            Course tempCourse;
+
+            for(StudentCourses entry : entries) {
+                tempCourse = this.courseService.getCourseById(entry.getCourseId());
+
+                if(tempCourse.getTeacherId() == teacherId) {
+                    courses.add(tempCourse);
+                }
+            }
+
+            context.json(courses);
+        } else {
+            List<Course> courses = this.courseService.getAllCourses();
+            context.json(courses);
+        }
     }
 
     /**
@@ -189,7 +213,7 @@ public class Controller {
      */
     private void getCoursesByTeacherIdHandler(Context context) {
         int teacherId = Integer.parseInt(context.pathParam("id"));
-        //List<Course> courses = this.courseService.getCoursesByTeacherId(teacherId);
+        List<Course> courses = this.courseService.getCoursesByTeacherId(teacherId);
 
         /*
         for(Course course : courses) {
@@ -199,11 +223,10 @@ public class Controller {
         }
         */
 
-        //context.json(courses);
+        context.json(courses);
     }
 
     /**
-     * CHECK
      * This handler gets all of the courses that a student is taking.
      * The path parameter is the student's id.
      * 
@@ -214,31 +237,44 @@ public class Controller {
     private void getCoursesByStudentIdHandler(Context context) {
         int studentId = Integer.parseInt(context.pathParam("id"));
 
-        /* 
-        List<StudentCourses> test = this.studentCoursesService.getAllCoursesByStudentId(studentId);
-        List<Course> a = new ArrayList<Course>();
+        List<StudentCourses> entries = this.studentCoursesService.getAllCoursesByStudentId(studentId);
+        List<Course> courses = new ArrayList<Course>();
 
-        for(StudentCourses e : test) {
-            a.add(this.courseService.getCourseById(e.getCourseId()));
+        for(StudentCourses entry : entries) {
+            courses.add(this.courseService.getCourseById(entry.getCourseId()));
         }
-        */
-
-        List<Course> courses = this.studentCoursesService.getAllCoursesByStudentId(studentId);
 
         context.json(courses);
     }
 
     /**
-     * TODO
+     * CHECK
      * This handler gets all of the courses that a specific teacher teaches given a student id.
      * That is, a student might want to know the other courses they are taking by a specific teacher.
      * 
      * GET -> "/courses/student/{student_id}/teacher/{teacher_id}"
+     * GET -> "/courses?student={student_id}&teacher={teacher_id}"
      * 
      * @param context
      */
     private void getCoursesByStudentAndTeacherIdHandler(Context context) {
+        int studentId = Integer.parseInt(context.pathParam("student_id"));
+        int teacherId = Integer.parseInt(context.pathParam("teacher_id"));
 
+        List<StudentCourses> entries = this.studentCoursesService.getAllCoursesByStudentId(studentId);
+        List<Course> courses = new ArrayList<Course>();
+
+        Course tempCourse;
+
+        for(StudentCourses entry : entries) {
+            tempCourse = this.courseService.getCourseById(entry.getCourseId());
+
+            if(tempCourse.getTeacherId() == teacherId) {
+                courses.add(tempCourse);
+            }
+        }
+
+        context.json(courses);
     }
 
     // ==================== STUDENTS HANDLERS ====================
@@ -272,6 +308,7 @@ public class Controller {
             return;
         }
 
+
         context.json(student);
     }
 
@@ -287,6 +324,7 @@ public class Controller {
     private void addNewStudentHandler(Context context) throws JsonProcessingException {
         ObjectMapper om = new ObjectMapper();
         Student student = om.readValue(context.body(), Student.class);
+
 
         try {
             studentService.addStudent(student);
@@ -347,7 +385,6 @@ public class Controller {
     }
 
     /**
-     * TODO
      * This handler gets all of the students that are registered for a
      * specific course.
      * 
@@ -358,8 +395,12 @@ public class Controller {
     private void getStudentsByCourseIdHandler(Context context) {
         int courseId = Integer.parseInt(context.pathParam("id"));
 
-        
-        List<Student> students = studentCoursesService.getAllStudentsByCourseId(courseId);
+        List<StudentCourses> entries = this.studentCoursesService.getAllStudentsByCourseId(courseId);
+        List<Student> students = new ArrayList<Student>();
+
+        for(StudentCourses entry : entries) {
+            students.add(this.studentService.getStudentById(entry.getStudentId()));
+        }
 
         context.json(students);
     }
@@ -385,7 +426,7 @@ public class Controller {
     }
 
     /**
-     * TODO
+     * CHECK
      * This handler unregister's a specific student from a specific course
      * that they are currently registered for.
      * 
@@ -397,6 +438,13 @@ public class Controller {
         int studentId = Integer.parseInt(context.pathParam("student_id"));
         int courseId = Integer.parseInt(context.pathParam("course_id"));
 
+        try {
+            this.studentCoursesService.deleteEntry(studentId, courseId);
+            context.json("Successfully unregistered student for the course!");
+        } catch(ItemDoesNotExistException e) {
+            e.printStackTrace();
+            context.json(e.toString());
+        }
     }
 
     // ==================== TEACHERS HANDLERS ====================
