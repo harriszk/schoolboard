@@ -560,7 +560,8 @@ public class Controller {
         try {
             List<Course> courses = this.teacherService.coursesByTeacherName(name);
             context.json(courses);
-        }catch(Exception e){
+        }catch(ItemDoesNotExistException e){
+            context.json(e.toString());
             e.printStackTrace();
         }
     }

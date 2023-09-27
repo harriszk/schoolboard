@@ -110,7 +110,7 @@ public class TeacherDAOTest {
     }
 
     @Test
-    public void coursesByTeacherSuccessfullTest(){
+    public void coursesByTeacherSuccessfullTest() throws ItemDoesNotExistException {
         Teacher teacher = new Teacher(3,"Walt Whitman");
         List< Course> expected = new ArrayList<>();
 
@@ -120,29 +120,32 @@ public class TeacherDAOTest {
         Assert.assertEquals(expected,teacherDAO.coursesByTeacher(teacher));
     }
 
-    /*
     @Test
-    public void coursesByTeacherByNameSuccessfullTest(){
-        String name = "Walt Whitman";
-        List< Course> expected = new ArrayList<>();
+    public void coursesByTeacherUnsuccessfullTest() throws ItemDoesNotExistException{
+        Teacher teacher = new Teacher(4,"Walt");
 
-        expected.add(new Course(4, "English",3));
-        expected.add(new Course(6, "History",3));
+        Assert.assertThrows(ItemDoesNotExistException.class, () -> teacherDAO.coursesByTeacher(teacher));
 
-        Assert.assertEquals(expected,teacherDAO.coursesByTeacher());
-    }*/
+    }
 
-    /*
     @Test
-    public void searchByTeacherNameSuccessfullTest(){
+    public void searchTeacherSuccessfullTest() throws ItemDoesNotExistException {
+        Teacher expected = new Teacher(3,"Walt Whitman");
         String name = "Walt Whitman";
-        Teacher expected = new Teacher();
 
-        expected.add(new Course(4, "English",3));
-        expected.add(new Course(6, "History",3));
+        Assert.assertEquals(expected,teacherDAO.searchTeacherByName(name));
+    }
 
-        Assert.assertEquals(expected,teacherDAO.searchTeacherByName(teacher));
-    }*/
+    @Test
+    public void searchTeacherUnsuccessfullTest()  {
+        Teacher expected = new Teacher(3,"Walt Whitman");
+        String name = "Walt";
+
+        //Assert.assertEquals(expected,teacherDAO.searchTeacherByName(name));
+        Assert.assertThrows(ItemDoesNotExistException.class, () -> teacherDAO.searchTeacherByName(name));
+
+    }
+
 
 
 }

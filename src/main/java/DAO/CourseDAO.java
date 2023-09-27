@@ -72,8 +72,9 @@ public class CourseDAO {
             String sql = "DELETE FROM course WHERE course.id = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
-
-            if(ps.executeUpdate() == 0) {
+            int rs = ps.executeUpdate();
+            log.info("rs = {}",rs);
+            if(rs == 0) {
                 throw new ItemDoesNotExistException("Course");
             }
         } catch (SQLException e) {
@@ -96,5 +97,6 @@ public class CourseDAO {
             e.printStackTrace();
         }
     }
+
 
 }

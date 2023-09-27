@@ -23,16 +23,23 @@ public class TeacherDAO {
     }
 
     //Make a search a teachers by a name and return Arraylist
-    public Teacher searchTeacherByName(String name) {
+    public Teacher searchTeacherByName(String name) throws ItemDoesNotExistException {
         //get a List of all teachers
         List<Teacher> allTeachers = this.getAllTeachers();
-        Teacher teacher = new Teacher();
+        Teacher teacher = null;
+
+
         //Loop over List of allTeachers and check a name
-        for (Teacher teacherElement: allTeachers) {
-            if (teacherElement.getName().equals(name)){
+        for (Teacher teacherElement : allTeachers) {
+            if (teacherElement.getName().equals(name)) {
                 teacher = teacherElement;
             }
         }
+        if (teacher == null) {
+            String strName = "teacher " + name;
+            throw new ItemDoesNotExistException(strName);
+        }
+
         return teacher;
     }
 
@@ -50,6 +57,7 @@ public class TeacherDAO {
         }
         return teachers;
     }
+
 
     public Teacher getTeacherById(int id) throws ItemDoesNotExistException{
         Teacher teacher = new Teacher();
@@ -112,7 +120,7 @@ public class TeacherDAO {
         }
     }
 
-    public List<Course> coursesByTeacher(Teacher teacher) {
+    public List<Course> coursesByTeacher(Teacher teacher) throws ItemDoesNotExistException{
         List<Course> courses = new ArrayList<>();
         log.info("*************************************");
         try {
@@ -123,6 +131,9 @@ public class TeacherDAO {
 
                 courses.add(new Course(rs.getInt("id"), rs.getString("name"), rs.getInt("teacher_id")));
                 log.info("courses: {}",courses);
+            }
+            if (courses.isEmpty()){
+                throw new ItemDoesNotExistException("teacher");
             }
         }catch (SQLException e){
             e.printStackTrace();
