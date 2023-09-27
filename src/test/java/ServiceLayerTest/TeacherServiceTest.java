@@ -28,6 +28,14 @@ public class TeacherServiceTest {
     }
 
 
+    /**
+     * This test is testing the getAllTeachersEmptyArrayTest() method in a TeacherService class.
+     * The method gets empty ArrayList from DAO level.
+     *
+     * @Test verifies:
+     *    ...that method invoked appropriate method in DAO level precisely one time and
+     *    transferred an empty ArrayList from DAO level.
+     */
     @Test
     public void getAllTeachersEmptyArrayTest(){
         List<Teacher> teachers = new ArrayList<>();
@@ -37,6 +45,14 @@ public class TeacherServiceTest {
         Assert.assertTrue(actual.isEmpty());
     }
 
+    /**
+     * This test is testing the getAllTeachersArrayTest() method in a TeacherService class.
+     * The method gets instance of a Teacher class from DAO level.
+     *
+     * @Test verifies:
+     *    ...that method invoked appropriate method in DAO level precisely one time and
+     *    transferred an instance of a Teacher class from DAO level.
+     */
     @Test
     public void getAllTeachersArrayTest(){
         List<Teacher> expected = new ArrayList<>();
@@ -49,6 +65,14 @@ public class TeacherServiceTest {
         Assert.assertEquals(expected, actual);
     }
 
+    /**
+     * This test is testing the getTeacherByIdTest() method in a TeacherService class.
+     * The method gets instance of a Teacher class from DAO level.
+     *
+     * @Test verifies:
+     *    ...that method invoked appropriate method in DAO level precisely one time and
+     *    transferred an instance of a Teacher class from DAO level.
+     */
      @Test
     public void getTeacherByIdTest() throws ItemDoesNotExistException {
         Teacher expected = new Teacher(1,"John Doe");
@@ -57,48 +81,5 @@ public class TeacherServiceTest {
         Mockito.verify(mockTeacherDAO, Mockito.times(1)).getTeacherById(1);
         Assert.assertEquals(expected,actual);
     }
-
-    /*
-    @Test
-    public void addTeacher() {
-        try {
-            Teacher expected = new Teacher(1,"John Doe");
-            Mockito.when(mockTeacherDAO.addTeacher(expected)).thenReturn(Mockito.any());
-        }catch (ItemAlreadyExistsException e){
-            e.printStackTrace();
-        }
-
-    }
-*/
-
-
-
-    public void updateTeacher(){
-    }
-
-    public void deleteTeacher(){
-    }
-
-    public void searchTeacherByName(){
-    }
-
-    public  void coursesByTeacherName(){
-    }
-
-
-    /*  !!!!!!!!!
-    @Test
-    public void getAllTeachersProvideExceptionTest(){
-        List<Teacher> teachers = new ArrayList<>();
-        ItemDoesNotExistException e = new ItemDoesNotExistException("teacher");
-        Mockito.when(mockTeacherDAO.getAllTeachers()).thenThrow(e);
-        List<Teacher> actual = teacherService.getAllTeachers();
-        Mockito.verify(mockTeacherDAO, Mockito.times(1)).getAllTeachers();
-        Assert.assertTrue(actual.isEmpty());
-    }
-*/
-
-
-
 
 }

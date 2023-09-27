@@ -22,7 +22,16 @@ public class StudentCourseServiceTest {
         mockStudentCoursesDAO = Mockito.mock(StudentCoursesDAO.class);
         studentCoursesService = new StudentCoursesService(mockStudentCoursesDAO);
     }
-@Test
+
+    /**
+     * This test is testing the getAllEntries() method in a StudentCoursesService class.
+     * The method gets ArrayList from DAO level.
+     *
+     * @Test verifies:
+     *    ...that method invoked appropriate method in DAO level precisely one time and
+     *    transferred an ArrayList from DAO level.
+     */
+    @Test
     public  void getAllEntries(){
     List<StudentCourses> expected = new ArrayList<>();
     expected.add(new StudentCourses(1,1));
@@ -32,6 +41,14 @@ public class StudentCourseServiceTest {
     Assert.assertEquals(expected,actual);
 }
 
+    /**
+     * This test is testing the getAllCoursesByStudentIdTest() method in a StudentCoursesService class.
+     * The method gets ArrayList from DAO level.
+     *
+     * @Test verifies:
+     *    ...that method invoked appropriate method in DAO level precisely one time and
+     *    transferred an ArrayList from DAO level.
+     */
 @Test
 public void getAllCoursesByStudentIdTest() {
     List<StudentCourses> expected = new ArrayList<>();

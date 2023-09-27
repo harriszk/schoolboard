@@ -27,6 +27,14 @@ public void setUp(){
 }
 
 
+    /**
+     * This test is testing the getAllStudentsSuccessfulTest() method in a StudentService class.
+     * The method gets empty ArrayList from DAO level.
+     *
+     * @Test verifies:
+     *    ...that method invoked appropriate method in DAO level precisely one time and
+     *    transferred an empty ArrayList from DAO level.
+     */
 @Test
     public void getAllStudentsSuccessfulTest(){
         List<Student> expected = new ArrayList<>();
@@ -36,6 +44,15 @@ public void setUp(){
         Assert.assertTrue(actual.isEmpty());
     }
 
+
+    /**
+     * This test is testing the getStudentByIdTest() method in a StudentService class.
+     * The method gets instance of a Student class from DAO level.
+     *
+     * @Test verifies:
+     *    ...that method invoked appropriate method in DAO level precisely one time and
+     *    transferred an instance of a Course class from DAO level.
+     */
     @Test
     public void getStudentByIdTest() throws ItemDoesNotExistException {
         Student expected = new Student(1,"Test Test","Test@Test.com");
