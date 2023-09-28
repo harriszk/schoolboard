@@ -114,8 +114,8 @@ public class TeacherDAOTest {
         Teacher teacher = new Teacher(3,"Walt Whitman");
         List<Course> expected = new ArrayList<>();
 
-        expected.add(new Course(18, "ENG", 20200, "Literary Interpretation", 3.000, 3));
-        expected.add(new Course(19, "ENG", 20400, "Introduction to Fiction", 3.000, 3));
+        expected.add(new Course(4, "ENG", 20200, "Literary Interpretation", 3.000, 3));
+        expected.add(new Course(5, "ENG", 20400, "Introduction to Fiction", 3.000, 3));
 
         Assert.assertEquals(expected,teacherDAO.coursesByTeacher(teacher));
     }

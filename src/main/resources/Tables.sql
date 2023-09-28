@@ -23,10 +23,6 @@ CREATE TABLE Teacher
   PRIMARY KEY (id)
 );
 
-/*
-CONSTRAINT check_length CHECK (your_column_name >= 10000 AND your_column_name <= 99999)
-*/
-
 CREATE TABLE Course
 (
   id INT NOT NULL,
@@ -51,95 +47,32 @@ CREATE TABLE StudentCourses
 -- Populate tables with sample data
 
 -- Teacher table
-insert into teacher (id, name) values (1, 'Zachary Harris');
-insert into teacher (id, name) values (2, 'Ralph Fatkullin');
-insert into teacher (id, name) values (3, 'Walt Whitman');
-
+INSERT INTO Teacher (id, name) VALUES
+(1, 'Zachary Harris'),
+(2, 'Ralph Fatkullin'),
+(3, 'Walt Whitman');
 
 -- Course table
 INSERT INTO Course (id, subject, number, title, credit_hours, teacher_id) VALUES
-(1, 'MATH', 11000, 'Fundamentals of Algebra', 4.000, 1),
-(2, 'MATH', 15100, 'Algebra and Trigonometry', 4.000, 2),
-(3, 'MATH', 15400, 'Trigonometry', 3.000, 1),
-(4, 'MATH', 15900, 'Pre-calculus', 5.000, 2),
-(5, 'MATH', 16500, 'Analytic Geometry and Calculus I', 4.000, 1),
-(6, 'MATH', 16600, 'Analytic Geometry and Calculus II', 4.000, 2),
-(7, 'MATH', 26100, 'Multivariate Calculus', 4.000, 2),
-(8, 'MATH', 26600, 'Ordinary Differential Equations', 3.000, 1),
-(9, 'MATH', 30000, 'Logic and the Foundations of Algebra', 3.000, 1),
-(10, 'MATH', 35100, 'Elementary Linear Algebra', 3.000, 2),
-(11, 'MATH', 41400, 'Numerical Methods', 3.000, 1),
-(12, 'MATH', 44400, 'Real Analysis I', 3.000, 2),
-(13, 'MATH', 44500, 'Real Analysis II', 3.000, 2),
-(14, 'MATH', 45300, 'Elementary Abstract Algebra', 3.000, 2),
-(15, 'MATH', 46200, 'Elementary Differential Geometry', 3.000, 1),
-(16, 'MATH', 52300, 'Introduction to Partial Differential Equations', 3.000, 1),
-(17, 'MATH', 52500, 'Introduction to Complex Analysis', 3.000, 2),
-(18, 'ENG', 20200, 'Literary Interpretation', 3.000, 3),
-(19, 'ENG', 20400, 'Introduction to Fiction', 3.000, 3);
-
-/*
-(, 'PHYS', 15200, 'Mechanics', 4.000, NULL)
-(, 'PHYS', 20000, 'General Physics', 4.000, NULL)
-(, 'PHYS', 24100, 'Electricity and Optics', 3.000, NULL)
-(, 'PHYS', 25100, 'Heat, Electricity and Optics', 5.000, NULL)
-(, 'PHYS', 29900, 'Introduction to Computational Physics', 3.000, NULL)
-(, 'PHYS', 30400, 'Relativity I', 4.000, NULL)
-(, 'PHYS', 31100, 'Quantum Physics I', 4.000, NULL)
-(, 'PHYS', 34000, 'Modern Physics', 4.000, NULL)
-(, 'PHYS', 34800, 'Nuclear Physics', 3.000, NULL)
-(, 'PHYS', 40400, 'Relativity II', 4.000, NULL)
-(, 'PHYS', 40500, 'Atomic and Molecular Physics', 3.000, NULL)
-(, 'PHYS', 41200, 'Quantum Physics II', 4.000, NULL)
-(, 'PHYS', 41800, 'Thermal and Statistical Physics', 4.000, NULL)
-(, 'PHYS', 42200, 'Waves and Oscillations', 3.000, NULL)
-(, 'PHYS', 42400, 'Nonlinear Optics', 3.000, NULL)
-(, 'PHYS', 44200, 'Quantum Mechanics', 5.000, NULL)
-(, 'PHYS', 44300, 'Quantum Computing and Cryptography', 3.000, NULL)
-(, 'PHYS', 44900, 'Neutron Physics', 3.000, NULL)
-(, 'PHYS', 51100, 'Laser Physics', 3.000, NULL)
-
-(, 'CHEM', 10500, 'General Chemistry I', 3.000, NULL)
-(, 'CHEM', 10600, 'General Chemistry II', 3.000, NULL)
-(, 'CHEM', 12500, 'Experimental Chemistry I', 4.000, NULL)
-(, 'CHEM', 12600, 'Experimental Chemistry II', 4.000, NULL)
-(, 'CHEM', 31000, 'Analytical Chemistry', 3.000, NULL)
-(, 'CHEM', 34100, 'Organic Chemistry I', 4.000, NULL)
-(, 'CHEM', 34200, 'Organic Chemistry II', 4.000, NULL)
-(, 'CHEM', 41000, 'Principles of Chemical Instrumentation', 3.000, NULL)
-(, 'CHEM', 34300, 'Inorganic Chemistry', 4.000, NULL)
-(, 'CHEM', 22200, 'Biochemistry', 3.000, NULL)
-(, 'CHEM', 35100, 'Nuclear Chemistry', 4.000, NULL)
-(, 'CHEM', 21000, 'Environmental Chemistry', 3.000, NULL)
-(, 'CHEM', 23200, 'Introduction to Material Science', 4.000, NULL)
-*/
-
+(1, 'MATH', 15000, 'Number Systems', 4.000, 1),
+(2, 'BIOL', 12300, 'Biology 101', 4.000, 1),
+(3, 'HIST', 13300, 'World History', 3.000, 2),
+(4, 'ENG', 20200, 'Literary Interpretation', 3.000, 3),
+(5, 'ENG', 20400, 'Introduction to Fiction', 3.000, 3);
 
 -- Student table
-insert into student (id, name, email) values (1, 'John Doe', 'johnD@someCompany.com');
-insert into student (id, name, email) values (2, 'Jane Doe', 'janeD@someCompany.com');
-insert into student (id, name, email) values (3, 'Daisy Moyer', 'DaisyMoyer@CrystalEngineer.com');
-/*
-INSERT INTO Student (id, name, email) values (4, 'Raymond Welsh', 'rwelsh@email.com');
-INSERT INTO Student (id, name, email) values (5, 'Maya Lam', 'mlam@email.com');
-INSERT INTO Student (id, name, email) values (6, 'Mae Garza', 'mgarza@email.com');
-INSERT INTO Student (id, name, email) values (7, 'Eve Henry', 'ehenry@email.com');
-INSERT INTO Student (id, name, email) values (8, 'Gracie Webster', 'gwebster@email.com');
-INSERT INTO Student (id, name, email) values (9, 'Angus Khan', 'akhan@email.com');
-INSERT INTO Student (id, name, email) values (10, 'Rodney Frazier', 'rfrazier@email.com');
-INSERT INTO Student (id, name, email) values (11, 'Calum Jensen', 'cjensen@email.com');
-INSERT INTO Student (id, name, email) values (12, 'Stephanie Carson', 'scarson@email.com');
-INSERT INTO Student (id, name, email) values (13, 'Ricardo George', 'rgeorge@email.com');
-INSERT INTO Student (id, name, email) values (14, 'Trey Gregory', 'tgregory@email.com');
-INSERT INTO Student (id, name, email) values (15, 'Tommy Barton', 'tbarton@email.com');
-*/
+INSERT INTO Student (id, name, email) VALUES 
+(1, 'John Doe', 'johnD@someCompany.com'),
+(2, 'Jane Doe', 'janeD@someCompany.com'),
+(3, 'Daisy Moyer', 'DaisyMoyer@CrystalEngineer.com');
 
 -- StudentCourses table
-INSERT INTO StudentCourses (student_id, course_id) VALUES (1, 1);
-INSERT INTO StudentCourses (student_id, course_id) VALUES (1, 2);
-INSERT INTO StudentCourses (student_id, course_id) VALUES (1, 5);
-INSERT INTO StudentCourses (student_id, course_id) VALUES (2, 2);
-INSERT INTO StudentCourses (student_id, course_id) VALUES (2, 3);
-INSERT INTO StudentCourses (student_id, course_id) VALUES (2, 4);
-INSERT INTO StudentCourses (student_id, course_id) VALUES (3, 1);
-INSERT INTO StudentCourses (student_id, course_id) VALUES (3, 3);
+INSERT INTO StudentCourses (student_id, course_id) VALUES 
+(1, 1),
+(1, 2),
+(1, 5),
+(2, 2),
+(2, 3),
+(2, 4),
+(3, 1),
+(3, 3);
