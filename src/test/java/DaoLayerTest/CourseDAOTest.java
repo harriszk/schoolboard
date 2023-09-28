@@ -64,7 +64,8 @@ public class CourseDAOTest {
      * This test is testing the getCourseById() method in a CourseDAO class.
      *
      * @Test verifies:
-     *    ...that method provides a Null value for parameters id=-1.
+     *    ...that method return a Null value in attempting to get a course
+     *    from Course table with a parameter id=-1.
      */
 
     @Test
@@ -74,7 +75,13 @@ public class CourseDAOTest {
     }
 
 
-
+    /**
+     * This test is testing the addNewCourse() method in a CourseDAO class.
+     *
+     * @Test verifies:
+     *    ...that the method performs an INSERT operation of a new record to Course table.
+     *    If the record with that id is already exist in a table it throws ItemAlreadyExistsException.
+     */
 
     @Test
     public void addNewCourseTest() throws ItemAlreadyExistsException {
@@ -88,6 +95,13 @@ public class CourseDAOTest {
         Assert.assertEquals(expected, actual);
     }
 
+    /**
+     * This test is testing the addCourse() method in a CourseDAO class.
+     *
+     * @Test verifies:
+     *     ...that the method throws an ItemAlreadyExistsException when attempting to add
+     *    a record to the Courses table with a value in the ID field that already exists in the table.
+     */
     @Test
     public void addCourseWithSameIdTest() {
         int id = 1;
@@ -98,6 +112,14 @@ public class CourseDAOTest {
         Assert.assertThrows(ItemAlreadyExistsException.class, () -> courseDAO.addCourse(newCourse));
     }
 
+
+    /**
+     * This test is testing the updateCourse() method in a CourseDAO class.
+     *
+     * @Test verifies:
+     *    ...that the method performs an UPDATE operation on an existing record in the Courses table.
+     *    If the record is not found, it throws an ItemDoesNotExistException.
+     **/
     @Test
     public void updateExistingCourseNameTest() throws ItemDoesNotExistException {
         int id = 3;
@@ -110,6 +132,14 @@ public class CourseDAOTest {
         Assert.assertEquals(expected, actual);
     }
 
+
+    /**
+     * This test is testing the updateCourse() method in a CourseDAO class.
+     *
+     * @Test verifies:
+     *    ...that the method throws an ItemDoesNotExistException when attempting to UPDATE
+     *    a nonexistent record in the Courses table.
+     **/
     @Test
     public void updateNonexistentCourseNameTest() {
         int id = -1;
@@ -119,6 +149,13 @@ public class CourseDAOTest {
         Assert.assertThrows(ItemDoesNotExistException.class, () -> courseDAO.updateCourse(id, courseName, teacherId));
     }
 
+    /**
+     * This test is testing the deleteCourse() method in a CourseDAO class.
+     *
+     * @Test verifies:
+     *    ...that the method performs an DELETE operation on an existing record in the Courses table.
+     *    If the record is not found, it throws an ItemDoesNotExistException.
+     **/
     @Test
     public void deleteCourseSuccessfulTest() throws ItemDoesNotExistException {
         int id = 1;
@@ -128,6 +165,13 @@ public class CourseDAOTest {
         Assert.assertNull(actual);
     }
 
+    /**
+     * This test is testing the deleteCourse() method in a CourseDAO class.
+     *
+     * @Test verifies:
+     *    ...that the method throws an ItemDoesNotExistException when attempting to DELETE
+     *    a nonexistent record in the Courses table.
+     **/
     @Test
     public void deleteCourseUnsuccessfulTest() {
         int id = -1;
