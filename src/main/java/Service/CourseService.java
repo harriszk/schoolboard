@@ -4,7 +4,6 @@ import DAO.CourseDAO;
 import Model.Course;
 import Exception.ItemAlreadyExistsException;
 import Exception.ItemDoesNotExistException;
-import Model.Teacher;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ public class CourseService {
      * @param conn
      */
     public CourseService(Connection conn) {
-        courseDAO = new CourseDAO(conn);
+        this.courseDAO = new CourseDAO(conn);
     }
 
     /**
