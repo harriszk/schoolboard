@@ -47,7 +47,7 @@ public class CourseDAOTest {
      * This test is testing the getCourseById() method in a CourseDAO class.
      *
      * @Test verifies:
-     *    ...that method provides an instances of Course class with particular Course.ID.
+     *    ...that method provides an instances of Course class with a course.Id=3.
      */
     @Test
     public void getCourseByIdSuccessfulTest() {

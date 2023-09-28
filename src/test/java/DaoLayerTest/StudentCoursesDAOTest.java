@@ -22,6 +22,12 @@ public class StudentCoursesDAOTest {
         studentCoursesDAO = new StudentCoursesDAO(ConnectionSingleton.getConnection());
     }
 
+    /**
+     * This test is testing the getAllEntries() method in a StudentCoursesDAO class.
+     *
+     * @Test verifies:
+     *    ...that method provides an ArrayList populated by instances of StudentCoursesDAO class.
+     */
     @Test
     public void getAllEntriesTest() {
         List<StudentCourses> expected = new ArrayList<StudentCourses>();
@@ -38,6 +44,13 @@ public class StudentCoursesDAOTest {
         Assert.assertEquals(expected, actual);
     }
 
+    /**
+     * This test is testing the getAllCoursesByStudentId() method in a StudentCoursesDAO class.
+     *
+     * @Test verifies:
+     *    ...that method provides an ArrayList populated by instances of StudentCoursesDAO class
+     *    with a studentId=1.
+     */
     @Test
     public void getAllCoursesByStudentIdTest() {
         int id = 1;
@@ -50,6 +63,13 @@ public class StudentCoursesDAOTest {
         Assert.assertEquals(expected, actual);
     }
 
+    /**
+     * This test is testing the getAllStudentsByCourseId() method in a StudentCoursesDAO class.
+     *
+     * @Test verifies:
+     *    ...that method provides an ArrayList populated by instances of StudentCoursesDAO class
+     *    with a courseId=3.
+     */
     @Test
     public void getAllStudentsByCourseIdTest() {
         int id = 3;
@@ -61,6 +81,14 @@ public class StudentCoursesDAOTest {
         Assert.assertEquals(expected, actual);
     }
 
+
+    /**
+     * This test is testing the addNewStudentCourseEntry() method in a StudentCoursesDAO class.
+     *
+     * @Test verifies:
+     *    ...that the method performs an INSERT operation of a new record to StudentCourses table.
+     *    If the record with that id is already exist in a table it throws ItemAlreadyExistsException.
+     */
     @Test
     public void addNewStudentCourseEntrySuccessfulTest() throws ItemAlreadyExistsException {
         int studentId = 1;
@@ -72,6 +100,13 @@ public class StudentCoursesDAOTest {
         Assert.assertTrue(actual.contains(expected));
     }
 
+    /**
+     * This test is testing the addNewStudentCourseEntry() method in a StudentCoursesDAO class.
+     *
+     * @Test verifies:
+     *    ...that the method throws ItemAlreadyExistsException when attempting to add a record
+     *    to the StudentCourses table with a values that already exists in the table.
+     */
     @Test
     public void addNewStudentCourseEntryUnsuccessfulTest() {
         int studentId = 1;
@@ -81,6 +116,13 @@ public class StudentCoursesDAOTest {
         Assert.assertThrows(ItemAlreadyExistsException.class, () -> studentCoursesDAO.addNewEntry(newEntry));
     }
 
+    /**
+     * This test is testing the deleteStudentCourseEntry() method in a StudentCoursesDAO class.
+     *
+     * @Test verifies:
+     *    ...that the method performs an DELETE operation on an existing record in the StudentCourses table.
+     *    If the record is not found, it throws an ItemDoesNotExistException.
+     */
     @Test
     public void deleteStudentCourseEntrySuccessfulTest() throws ItemDoesNotExistException {
         int studentId = 1;
@@ -93,6 +135,13 @@ public class StudentCoursesDAOTest {
         Assert.assertFalse(actual.contains(entry));
     }
 
+    /**
+     * This test is testing the deleteStudentCourseEntry() method in a StudentCoursesDAO class.
+     *
+     * @Test verifies:
+     *    ...that the method throws an ItemDoesNotExistException when attempting to DELETE
+     *    a nonexistent record in the StudentCoursesDAO table.
+     **/
     @Test
     public void deleteStudentCourseEntryUnsuccessfulTest() {
         int studentId = 1;
@@ -102,6 +151,13 @@ public class StudentCoursesDAOTest {
         Assert.assertThrows(ItemDoesNotExistException.class, () -> studentCoursesDAO.deleteEntry(entry));
     }
 
+    /**
+     * This test is testing the deleteAllEntriesByStudentId() method in a StudentCoursesDAO class.
+     *
+     * @Test verifies:
+     *    ...that the method performs an DELETE operation on an existing records where studentId = 1
+     *    in the StudentCourses table.
+     */
     @Test
     public void deleteAllEntriesByStudentIdTest() {
         int studentId = 1;
@@ -111,7 +167,15 @@ public class StudentCoursesDAOTest {
 
         Assert.assertTrue(actual.isEmpty());
     }
-    
+
+
+    /**
+     * This test is testing the deleteAllEntriesByCourseId() method in a StudentCoursesDAO class.
+     *
+     * @Test verifies:
+     *    ...that the method performs an DELETE operation on an existing records where courseId = 1
+     *    in the StudentCourses table.
+     */
     @Test
     public void deleteAllEntriesByCourseIdTest() {
         int courseId = 1;
