@@ -26,7 +26,10 @@ CREATE TABLE Teacher
 CREATE TABLE Course
 (
   id INT NOT NULL,
-  name VARCHAR(255) NOT NULL,
+  subject VARCHAR(4) NOT NULL,
+  number INT NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  credit_hours DECIMAL(5, 3) NOT NULL,
   teacher_id INT,
   PRIMARY KEY (id),
   FOREIGN KEY (teacher_id) REFERENCES Teacher(id) ON DELETE CASCADE
@@ -41,47 +44,35 @@ CREATE TABLE StudentCourses
   FOREIGN KEY (course_id) REFERENCES Course(id) ON DELETE CASCADE
 );
 
--- Fill a data
+-- Populate tables with sample data
 
 -- Teacher table
-insert into teacher (id, name) values (1, 'Zachary Harris');
-insert into teacher (id, name) values (2, 'Ralph Fatkullin');
-insert into teacher (id, name) values (3, 'Walt Whitman');
-
+INSERT INTO Teacher (id, name) VALUES
+(1, 'Zachary Harris'),
+(2, 'Ralph Fatkullin'),
+(3, 'Walt Whitman');
 
 -- Course table
-insert into course (id, name, teacher_id) values (1, 'Math',2);
-insert into course (id, name, teacher_id) values (2, 'Science',1);
-insert into course (id, name, teacher_id) values (3, 'Databases',1);
-insert into course (id, name, teacher_id) values (4, 'English',3);
-insert into course (id, name, teacher_id) values (5, 'Physics',2);
-insert into course (id, name, teacher_id) values (6, 'History',3);
+INSERT INTO Course (id, subject, number, title, credit_hours, teacher_id) VALUES
+(1, 'MATH', 15000, 'Number Systems', 4.000, 1),
+(2, 'BIOL', 12300, 'Biology 101', 4.000, 1),
+(3, 'HIST', 13300, 'World History', 3.000, 2),
+(4, 'ENG', 20200, 'Literary Interpretation', 3.000, 3),
+(5, 'ENG', 20400, 'Introduction to Fiction', 3.000, 3);
 
 -- Student table
-insert into student (id, name, email) values (1, 'John Doe', 'johnD@someCompany.com');
-insert into student (id, name, email) values (2, 'Jane Doe', 'janeD@someCompany.com');
-insert into student (id, name, email) values (3, 'Daisy Moyer', 'DaisyMoyer@CrystalEngineer.com');
-/*
-INSERT INTO Student (id, name, email) values (4, 'Raymond Welsh', 'rwelsh@email.com');
-INSERT INTO Student (id, name, email) values (5, 'Maya Lam', 'mlam@email.com');
-INSERT INTO Student (id, name, email) values (6, 'Mae Garza', 'mgarza@email.com');
-INSERT INTO Student (id, name, email) values (7, 'Eve Henry', 'ehenry@email.com');
-INSERT INTO Student (id, name, email) values (8, 'Gracie Webster', 'gwebster@email.com');
-INSERT INTO Student (id, name, email) values (9, 'Angus Khan', 'akhan@email.com');
-INSERT INTO Student (id, name, email) values (10, 'Rodney Frazier', 'rfrazier@email.com');
-INSERT INTO Student (id, name, email) values (11, 'Calum Jensen', 'cjensen@email.com');
-INSERT INTO Student (id, name, email) values (12, 'Stephanie Carson', 'scarson@email.com');
-INSERT INTO Student (id, name, email) values (13, 'Ricardo George', 'rgeorge@email.com');
-INSERT INTO Student (id, name, email) values (14, 'Trey Gregory', 'tgregory@email.com');
-INSERT INTO Student (id, name, email) values (15, 'Tommy Barton', 'tbarton@email.com');
-*/
+INSERT INTO Student (id, name, email) VALUES 
+(1, 'John Doe', 'johnD@someCompany.com'),
+(2, 'Jane Doe', 'janeD@someCompany.com'),
+(3, 'Daisy Moyer', 'DaisyMoyer@CrystalEngineer.com');
 
 -- StudentCourses table
-INSERT INTO StudentCourses (student_id, course_id) VALUES (1, 1);
-INSERT INTO StudentCourses (student_id, course_id) VALUES (1, 2);
-INSERT INTO StudentCourses (student_id, course_id) VALUES (1, 5);
-INSERT INTO StudentCourses (student_id, course_id) VALUES (2, 2);
-INSERT INTO StudentCourses (student_id, course_id) VALUES (2, 3);
-INSERT INTO StudentCourses (student_id, course_id) VALUES (2, 4);
-INSERT INTO StudentCourses (student_id, course_id) VALUES (3, 1);
-INSERT INTO StudentCourses (student_id, course_id) VALUES (3, 3);
+INSERT INTO StudentCourses (student_id, course_id) VALUES 
+(1, 1),
+(1, 2),
+(1, 5),
+(2, 2),
+(2, 3),
+(2, 4),
+(3, 1),
+(3, 3);

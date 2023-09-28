@@ -89,6 +89,8 @@ public class Controller {
             int studentId = Integer.parseInt(studentIdString);
             int teacherId = Integer.parseInt(teacherIdString);
 
+            // TODO: Create a new service layer for doing this!
+
             List<StudentCourses> entries = this.studentCoursesService.getAllCoursesByStudentId(studentId);
             List<Course> courses = new ArrayList<Course>();
 
@@ -170,7 +172,7 @@ public class Controller {
         Course course = mapper.readValue(context.body(), Course.class);
 
         try {
-            this.courseService.updateCourse(course.getId(), course.getName(), course.getTeacherId());
+            this.courseService.updateCourse(course);
             context.json("Successfully updated course!");
         } catch(ItemDoesNotExistException e) {
             e.printStackTrace();
@@ -237,6 +239,8 @@ public class Controller {
     private void getCoursesByStudentIdHandler(Context context) {
         int studentId = Integer.parseInt(context.pathParam("id"));
 
+        // TODO: Create a new service layer for doing this!
+
         List<StudentCourses> entries = this.studentCoursesService.getAllCoursesByStudentId(studentId);
         List<Course> courses = new ArrayList<Course>();
 
@@ -260,6 +264,8 @@ public class Controller {
     private void getCoursesByStudentAndTeacherIdHandler(Context context) {
         int studentId = Integer.parseInt(context.pathParam("student_id"));
         int teacherId = Integer.parseInt(context.pathParam("teacher_id"));
+
+        // TODO: Create a new service layer for doing this!
 
         List<StudentCourses> entries = this.studentCoursesService.getAllCoursesByStudentId(studentId);
         List<Course> courses = new ArrayList<Course>();
@@ -394,6 +400,8 @@ public class Controller {
      */
     private void getStudentsByCourseIdHandler(Context context) {
         int courseId = Integer.parseInt(context.pathParam("id"));
+
+        // TODO: Create a new service layer for doing this!
 
         List<StudentCourses> entries = this.studentCoursesService.getAllStudentsByCourseId(courseId);
         List<Student> students = new ArrayList<Student>();

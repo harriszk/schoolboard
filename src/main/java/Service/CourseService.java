@@ -92,7 +92,7 @@ public class CourseService {
      * @param courseName
      * @throws ItemDoesNotExistException
      */
-    public void updateCourse(int id, String courseName, int teacherId) throws ItemDoesNotExistException {
-        this.courseDAO.updateCourse(id, courseName, teacherId);
+    public void updateCourse(Course course) throws ItemDoesNotExistException {
+        this.courseDAO.updateCourse(course);
     }
 }

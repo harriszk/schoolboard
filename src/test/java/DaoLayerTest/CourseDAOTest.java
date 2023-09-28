@@ -19,7 +19,7 @@ public class CourseDAOTest {
     @Before
     public void setUp() {
         ConnectionSingleton.resetTestDatabase();
-        courseDAO = new CourseDAO(ConnectionSingleton.getConnection());
+        this.courseDAO = new CourseDAO(ConnectionSingleton.getConnection());
     }
 
     /**
@@ -32,14 +32,13 @@ public class CourseDAOTest {
     @Test
     public void getAllCoursesTest() {
         List<Course> expected = new ArrayList<Course>();
-        expected.add(new Course(1, "Math",2));
-        expected.add(new Course(2, "Science",1));
-        expected.add(new Course(3, "Databases",1));
-        expected.add(new Course(4, "English",3));
-        expected.add(new Course(5, "Physics",2));
-        expected.add(new Course(6, "History",3));
+        expected.add(new Course(1, "MATH", 15000, "Number Systems", 4.000, 1));
+        expected.add(new Course(2, "BIOL", 12300, "Biology 101", 4.000, 1));
+        expected.add(new Course(3, "HIST", 13300, "World History", 3.000, 2));
+        expected.add(new Course(4, "ENG", 20200, "Literary Interpretation", 3.000, 3));
+        expected.add(new Course(5, "ENG", 20400, "Introduction to Fiction", 3.000, 3));
 
-        List<Course> actual = courseDAO.getAllCourses();
+        List<Course> actual = this.courseDAO.getAllCourses();
         Assert.assertEquals(expected, actual);
     }
 
@@ -51,12 +50,16 @@ public class CourseDAOTest {
      */
     @Test
     public void getCourseByIdSuccessfulTest() {
-        int id = 3;
-        String courseName = "Databases";
+        int id = 1;
+        String courseSubject = "MATH";
+        int courseNumber = 15000;
+        String courseName = "Number Systems";
+        double creditHours = 4.000;
         int teacherId = 1;
-        Course expected = new Course(id, courseName, teacherId);
-        System.out.println(expected);
-        Course actual = courseDAO.getCourseById(id);
+
+        Course expected = new Course(id, courseSubject, courseNumber, courseName, creditHours, teacherId);
+        Course actual = this.courseDAO.getCourseById(id);
+
         Assert.assertEquals(expected, actual);
     }
 
@@ -70,7 +73,7 @@ public class CourseDAOTest {
 
     @Test
     public void getCourseByIdUnsuccessfulTest() {
-        Course actual = courseDAO.getCourseById(-1);
+        Course actual = this.courseDAO.getCourseById(-1);
         Assert.assertNull(actual);
     }
 
@@ -85,11 +88,15 @@ public class CourseDAOTest {
 
     @Test
     public void addNewCourseTest() throws ItemAlreadyExistsException {
-        int id = 7;
-        String courseName = "Literature";
-        int teacher_id = 3;
-        Course expected = new Course(id, courseName, teacher_id);
-        courseDAO.addCourse(expected);
+        int id = 6;
+        String courseSubject = "CHEM";
+        int courseNumber = 34100;
+        String courseName = "Organic Chemistry I";
+        double creditHours = 5.000;
+        int teacherId = 1;
+
+        Course expected = new Course(id, courseSubject, courseNumber, courseName, creditHours, teacherId);
+        this.courseDAO.addCourse(expected);
 
         Course actual = courseDAO.getCourseById(id);
         Assert.assertEquals(expected, actual);
@@ -105,9 +112,13 @@ public class CourseDAOTest {
     @Test
     public void addCourseWithSameIdTest() {
         int id = 1;
-        String courseName = "Some Course";
-        int teacher_id = 3;
-        Course newCourse = new Course(id, courseName, teacher_id);
+        String courseSubject = "CHEM";
+        int courseNumber = 34100;
+        String courseName = "Organic Chemistry I";
+        double creditHours = 5.000;
+        int teacherId = 1;
+
+        Course newCourse = new Course(id, courseSubject, courseNumber, courseName, creditHours, teacherId);
 
         Assert.assertThrows(ItemAlreadyExistsException.class, () -> courseDAO.addCourse(newCourse));
     }
@@ -121,13 +132,17 @@ public class CourseDAOTest {
      *    If the record is not found, it throws an ItemDoesNotExistException.
      **/
     @Test
-    public void updateExistingCourseNameTest() throws ItemDoesNotExistException {
-        int id = 3;
-        String courseName = "New Course Name";
-        int teacherId = 3;
-        courseDAO.updateCourse(id, courseName, teacherId);
+    public void updateExistingCourseTest() throws ItemDoesNotExistException {
+        int id = 1;
+        String courseSubject = "CHEM";
+        int courseNumber = 34100;
+        String courseName = "Organic Chemistry I";
+        double creditHours = 5.000;
+        int teacherId = 1;
 
-        Course expected = new Course(id, courseName, teacherId);
+        Course expected = new Course(id, courseSubject, courseNumber, courseName, creditHours, teacherId);
+        courseDAO.updateCourse(expected);
+        
         Course actual = courseDAO.getCourseById(id);
         Assert.assertEquals(expected, actual);
     }
@@ -143,10 +158,15 @@ public class CourseDAOTest {
     @Test
     public void updateNonexistentCourseNameTest() {
         int id = -1;
-        String courseName = "New Course Name";
-        int teacherId = 3;
+        String courseSubject = "CHEM";
+        int courseNumber = 34100;
+        String courseName = "Organic Chemistry I";
+        double creditHours = 5.000;
+        int teacherId = 1;
 
-        Assert.assertThrows(ItemDoesNotExistException.class, () -> courseDAO.updateCourse(id, courseName, teacherId));
+        Course course = new Course(id, courseSubject, courseNumber, courseName, creditHours, teacherId);
+
+        Assert.assertThrows(ItemDoesNotExistException.class, () -> courseDAO.updateCourse(course));
     }
 
     /**

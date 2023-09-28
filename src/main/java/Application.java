@@ -1,15 +1,12 @@
 import Controller.Controller;
-import DAO.TeacherDAO;
-import Service.CourseService;
-import Service.StudentCoursesService;
-import Service.StudentService;
-import Service.TeacherService;
 import Util.ConnectionSingleton;
-import Util.LogUtil;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.sql.Connection;
-import java.util.List;
-import java.util.Scanner;
+import java.sql.SQLException;
+
+import org.h2.tools.RunScript;
 
 import static Util.LogUtil.log;
 
@@ -20,28 +17,20 @@ public class Application {
         Connection conn = ConnectionSingleton.getConnection();
         log.info("Got connectionSingleton");
 //        this line is for starting the javalin server
+        populateTables(conn);
         Controller controller = new Controller(conn);
         controller.getAPI().start();
+    }
 
-
-       /* // Console interface
-
-        Scanner sc = new Scanner(System.in);
-        boolean theEnd = false;
-        while(!theEnd){
-            System.out.println("1: Find a Teacher by id. 2: Exit");
-            int choice = Integer.parseInt(sc.nextLine());
-            if(choice == 1){
-                System.out.println("Enter id of teacher:");
-                int id = Integer.parseInt(sc.nextLine());
-                TeacherDAO teacherDAO = new TeacherDAO(ConnectionSingleton.getConnection());
-                System.out.println("Teacher with id="+id+": "+ teacherDAO.getTeacherById(id));
-            }else if(choice == 2){
-                theEnd=true;
-            }else if(choice >2) {
-                System.out.println("invalid choice");
-            }
-        }*/
-
+    // Probably a better way to do this but this loads in extra data that we
+    // want to use when actually running the application. It is separate from the
+    // the testing data that is used by how testing files.
+    private static void populateTables(Connection connection) {
+        try {
+            FileReader sqlReader = new FileReader("src/main/resources/data.sql");
+            RunScript.execute(connection, sqlReader);
+        } catch (SQLException | FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
