@@ -23,12 +23,9 @@ public class Application {
         Controller controller = new Controller(conn);
         controller.getAPI().start();
 
-        /*
-        TeacherDAO teacherDAO = new TeacherDAO(ConnectionSingleton.getConnection());
-        System.out.println("Teacher with id=1"+ teacherDAO.getTeacherById(1));*/
 
-        // Console interface
-        /*
+       /* // Console interface
+
         Scanner sc = new Scanner(System.in);
         boolean theEnd = false;
         while(!theEnd){
@@ -42,11 +39,9 @@ public class Application {
             }else if(choice == 2){
                 theEnd=true;
             }else if(choice >2) {
-
                 System.out.println("invalid choice");
             }
-        }
-         */
+        }*/
 
     }
 }
