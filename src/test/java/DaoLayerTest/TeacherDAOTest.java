@@ -23,6 +23,12 @@ public class TeacherDAOTest {
         teacherDAO = new TeacherDAO(ConnectionSingleton.getConnection());
     }
 
+    /**
+     * This test is testing the getAllTeachers() method in a TeacherDAO class.
+     *
+     * @Test verifies:
+     *    ...that method provides an ArrayList populated by instances of Teacher class.
+     */
     @Test
     public void getAllTeachersTest() {
         List<Teacher> expected = new ArrayList<>();
@@ -34,6 +40,12 @@ public class TeacherDAOTest {
         Assert.assertEquals(expected, actual);
     }
 
+    /**
+     * This test is testing the getTeacherById() method in a TeacherDAO class.
+     *
+     * @Test verifies:
+     *    ...that method provides an instance of Teacher class with a Teacher.Id=1.
+     */
     @Test
     public void getTeacherByIdSuccessfulTest() throws ItemDoesNotExistException {
         int id = 1;
@@ -44,14 +56,26 @@ public class TeacherDAOTest {
         Assert.assertEquals(expected, actual);
     }
 
+    /**
+     * This test is testing the getTeacherById() method in a TeacherDAO class.
+     *
+     * @Test verifies:
+     *    ...that the method throws an ItemDoesNotExistException when attempting to get
+     *    a nonexistent record in the Teacher table with Teacher.Id = -1.
+     */
     @Test
     public void getTeacherByIdUnsuccessfulTest() throws ItemDoesNotExistException {
         int id = -1;
-        //Teacher actual = teacherDAO.getTeacherById(id);
-        //Assert.assertNull(actual);
         Assert.assertThrows(ItemDoesNotExistException.class, () -> teacherDAO.getTeacherById(id));
     }
 
+    /**
+     * This test is testing the addTeacher() method in a TeacherDAO class.
+     *
+     * @Test verifies:
+     *    ...that the method performs an INSERT operation of a new record to the Teacher table.
+     *    If the record with that id is already exist in a table it throws ItemAlreadyExistsException.
+     */
     @Test
     public void addNewTeacherTest() throws ItemAlreadyExistsException, ItemDoesNotExistException {
         //ConnectionSingleton.resetTestDatabase();
@@ -64,6 +88,13 @@ public class TeacherDAOTest {
         Assert.assertEquals(expected, actual);
     }
 
+    /**
+     * This test is testing the addTeacher() method in a TeacherDAO class.
+     *
+     * @Test verifies:
+     *     ...that the method throws an ItemAlreadyExistsException when attempting to add
+     *    a record to the Teacher table with a value in the ID field that already exists in the table.
+     */
     @Test
     public void addTeacherWithSameIdTest() {
         int id = 1;
@@ -73,6 +104,14 @@ public class TeacherDAOTest {
         Assert.assertThrows(ItemAlreadyExistsException.class, () -> teacherDAO.addTeacher(newTeacher));
     }
 
+
+    /**
+     * This test is testing the updateTeacher() method in a TeacherDAO class.
+     *
+     * @Test verifies:
+     *    ...that the method performs an UPDATE operation on an existing record in the Teacher table.
+     *    If the record is not found, it throws an ItemDoesNotExistException.
+     **/
     @Test
     public void updateExistingTeacherNameTest() throws ItemDoesNotExistException {
         int id = 1;
@@ -84,6 +123,13 @@ public class TeacherDAOTest {
         Assert.assertEquals(expected, actual);
     }
 
+    /**
+     * This test is testing the updateTeacher() method in a TeacherDAO class.
+     *
+     * @Test verifies:
+     *    ...that the method throws an ItemDoesNotExistException when attempting to UPDATE
+     *    a nonexistent record in the Teacher table.
+     **/
     @Test
     public void updateNonexistentTeacherNameTest() {
         int id = -1;
@@ -92,16 +138,28 @@ public class TeacherDAOTest {
         Assert.assertThrows(ItemDoesNotExistException.class, () -> teacherDAO.updateTeacher(id, name));
     }
 
+    /**
+     * This test is testing the deleteTeacher() method in a TeacherDAO class.
+     *
+     * @Test verifies:
+     *    ...that the method performs an DELETE operation on an existing record in the Teacher table.
+     *    If the record is not found, it throws an ItemDoesNotExistException.
+     **/
     @Test
     public void deleteTeacherSuccessfulTest() throws ItemDoesNotExistException {
         int id = 1;
 
         teacherDAO.deleteTeacher(id);
-        //Teacher actual = teacherDAO.getTeacherById(id);
-        //Assert.assertNull(actual);
         Assert.assertThrows(ItemDoesNotExistException.class, () -> teacherDAO.getTeacherById(id));
     }
 
+    /**
+     * This test is testing the deleteTeacher() method in a TeacherDAO class.
+     *
+     * @Test verifies:
+     *    ...that the method throws an ItemDoesNotExistException when attempting to DELETE
+     *    a nonexistent record in the Teacher table.
+     **/
     @Test
     public void deleteTeacherUnsuccessfulTest() {
         int id = -1;
@@ -109,8 +167,16 @@ public class TeacherDAOTest {
         Assert.assertThrows(ItemDoesNotExistException.class, () -> teacherDAO.deleteTeacher(id));
     }
 
+    /**
+     * This test is testing the coursesByTeacher() method in a TeacherDAO class.
+     *
+     * @Test verifies:
+     *    ...that method provides an ArrayList populated by instances of Course class
+     *    related to particular instance of a Teacher class.
+     */
+
     @Test
-    public void coursesByTeacherSuccessfullTest() throws ItemDoesNotExistException {
+    public void coursesByTeacherSuccessfulTest() throws ItemDoesNotExistException {
         Teacher teacher = new Teacher(3,"Walt Whitman");
         List< Course> expected = new ArrayList<>();
 
@@ -120,32 +186,50 @@ public class TeacherDAOTest {
         Assert.assertEquals(expected,teacherDAO.coursesByTeacher(teacher));
     }
 
+    /**
+     * This test is testing the coursesByTeacher() method in a TeacherDAO class.
+     *
+     * @Test verifies:
+     *    ...that the method throws an ItemDoesNotExistException when attempting to get
+     *    a  record of a courses related to nonexistent record in the Teacher table.
+     **/
     @Test
-    public void coursesByTeacherUnsuccessfullTest() throws ItemDoesNotExistException{
+    public void coursesByTeacherUnsuccessfulTest() throws ItemDoesNotExistException{
         Teacher teacher = new Teacher(4,"Walt");
 
         Assert.assertThrows(ItemDoesNotExistException.class, () -> teacherDAO.coursesByTeacher(teacher));
 
     }
 
+    /**
+     * This test is testing the searchTeacher() method in a TeacherDAO class.
+     *
+     * @Test verifies:
+     *    ...that method provides an instance of Teacher class with a Teacher.name="Walt Whitman".
+     */
     @Test
-    public void searchTeacherSuccessfullTest() throws ItemDoesNotExistException {
+    public void searchTeacherSuccessfulTest() throws ItemDoesNotExistException {
         Teacher expected = new Teacher(3,"Walt Whitman");
         String name = "Walt Whitman";
 
         Assert.assertEquals(expected,teacherDAO.searchTeacherByName(name));
     }
 
+    /**
+     * This test is testing the searchTeacher() method in a TeacherDAO class.
+     *
+     * @Test verifies:
+     *    ...that method throws an ItemDoesNotExistException when attempting to get
+     *    an nonexistent record in the Teacher table with a Teacher.name="Walt".
+     */
+
     @Test
-    public void searchTeacherUnsuccessfullTest()  {
-        Teacher expected = new Teacher(3,"Walt Whitman");
+    public void searchTeacherUnsuccessfulTest()  {
         String name = "Walt";
 
         //Assert.assertEquals(expected,teacherDAO.searchTeacherByName(name));
         Assert.assertThrows(ItemDoesNotExistException.class, () -> teacherDAO.searchTeacherByName(name));
 
     }
-
-
 
 }
