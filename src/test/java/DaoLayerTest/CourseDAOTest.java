@@ -32,23 +32,23 @@ public class CourseDAOTest {
     @Test
     public void getAllCoursesTest() {
         List<Course> expected = new ArrayList<Course>();
-        expected.add(new Course(1, "MATH", 11000, "Fundamentals of Algebra", 4.000, 0));
-        expected.add(new Course(2, "MATH", 15100, "Algebra and Trigonometry", 4.000, 0));
-        expected.add(new Course(3, "MATH", 15400, "Trigonometry", 3.000, 0));
-        expected.add(new Course(4, "MATH", 15900, "Pre-calculus", 5.000, 0));
-        expected.add(new Course(5, "MATH", 16500, "Analytic Geometry and Calculus I", 4.000, 0));
-        expected.add(new Course(6, "MATH", 16600, "Analytic Geometry and Calculus II", 4.000, 0));
-        expected.add(new Course(7, "MATH", 26100, "Multivariate Calculus", 4.000, 0));
-        expected.add(new Course(8, "MATH", 26600, "Ordinary Differential Equations", 3.000, 0));
-        expected.add(new Course(9, "MATH", 30000, "Logic and the Foundations of Algebra", 3.000, 0));
-        expected.add(new Course(10, "MATH", 35100, "Elementary Linear Algebra", 3.000, 0));
-        expected.add(new Course(11, "MATH", 41400, "Numerical Methods", 3.000, 0));
-        expected.add(new Course(12, "MATH", 44400, "Real Analysis I", 3.000, 0));
-        expected.add(new Course(13, "MATH", 44500, "Real Analysis II", 3.000, 0));
-        expected.add(new Course(14, "MATH", 45300, "Elementary Abstract Algebra", 3.000, 0));
-        expected.add(new Course(15, "MATH", 46200, "Elementary Differential Geometry", 3.000, 0));
-        expected.add(new Course(16, "MATH", 52300, "Introduction to Partial Differential Equations", 3.000, 0));
-        expected.add(new Course(17, "MATH", 52500, "Introduction to Complex Analysis", 3.000, 0));
+        expected.add(new Course(1, "MATH", 11000, "Fundamentals of Algebra", 4.000, 1));
+        expected.add(new Course(2, "MATH", 15100, "Algebra and Trigonometry", 4.000, 2));
+        expected.add(new Course(3, "MATH", 15400, "Trigonometry", 3.000, 1));
+        expected.add(new Course(4, "MATH", 15900, "Pre-calculus", 5.000, 2));
+        expected.add(new Course(5, "MATH", 16500, "Analytic Geometry and Calculus I", 4.000, 1));
+        expected.add(new Course(6, "MATH", 16600, "Analytic Geometry and Calculus II", 4.000, 2));
+        expected.add(new Course(7, "MATH", 26100, "Multivariate Calculus", 4.000, 2));
+        expected.add(new Course(8, "MATH", 26600, "Ordinary Differential Equations", 3.000, 1));
+        expected.add(new Course(9, "MATH", 30000, "Logic and the Foundations of Algebra", 3.000, 1));
+        expected.add(new Course(10, "MATH", 35100, "Elementary Linear Algebra", 3.000, 2));
+        expected.add(new Course(11, "MATH", 41400, "Numerical Methods", 3.000, 1));
+        expected.add(new Course(12, "MATH", 44400, "Real Analysis I", 3.000, 2));
+        expected.add(new Course(13, "MATH", 44500, "Real Analysis II", 3.000, 2));
+        expected.add(new Course(14, "MATH", 45300, "Elementary Abstract Algebra", 3.000, 2));
+        expected.add(new Course(15, "MATH", 46200, "Elementary Differential Geometry", 3.000, 1));
+        expected.add(new Course(16, "MATH", 52300, "Introduction to Partial Differential Equations", 3.000, 1));
+        expected.add(new Course(17, "MATH", 52500, "Introduction to Complex Analysis", 3.000, 2));
         expected.add(new Course(18, "ENG", 20200, "Literary Interpretation", 3.000, 3));
         expected.add(new Course(19, "ENG", 20400, "Introduction to Fiction", 3.000, 3));
 
@@ -69,7 +69,7 @@ public class CourseDAOTest {
         int courseNumber = 11000;
         String courseName = "Fundamentals of Algebra";
         double creditHours = 4.000;
-        int teacherId = 0;
+        int teacherId = 1;
 
         Course expected = new Course(id, courseSubject, courseNumber, courseName, creditHours, teacherId);
         Course actual = this.courseDAO.getCourseById(id);
