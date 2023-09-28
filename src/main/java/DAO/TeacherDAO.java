@@ -127,9 +127,24 @@ public class TeacherDAO {
             PreparedStatement ps = conn.prepareStatement("select * from course where course.teacher_id=?");
             ps.setInt(1,teacher.getId());
             ResultSet rs = ps.executeQuery();
-            while (rs.next()){
 
-                courses.add(new Course(rs.getInt("id"), rs.getString("name"), rs.getInt("teacher_id")));
+            int id;
+            String subject;
+            int number;
+            String title;
+            double creditHours;
+            int teacherId;
+
+            while (rs.next()){
+                id = rs.getInt("id");
+                subject = rs.getString("subject");
+                number = rs.getInt("number");
+                title = rs.getString("title");
+                creditHours = rs.getDouble("credit_hours");
+                teacherId = rs.getInt("teacher_id");
+                Course tempCourse = new Course(id, subject, number, title, creditHours, teacherId);
+
+                courses.add(tempCourse);
                 log.info("courses: {}",courses);
             }
             if (courses.isEmpty()){

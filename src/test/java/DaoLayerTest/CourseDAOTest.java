@@ -49,6 +49,8 @@ public class CourseDAOTest {
         expected.add(new Course(15, "MATH", 46200, "Elementary Differential Geometry", 3.000, 0));
         expected.add(new Course(16, "MATH", 52300, "Introduction to Partial Differential Equations", 3.000, 0));
         expected.add(new Course(17, "MATH", 52500, "Introduction to Complex Analysis", 3.000, 0));
+        expected.add(new Course(18, "ENG", 20200, "Literary Interpretation", 3.000, 3));
+        expected.add(new Course(19, "ENG", 20400, "Introduction to Fiction", 3.000, 3));
 
         List<Course> actual = this.courseDAO.getAllCourses();
         Assert.assertEquals(expected, actual);
@@ -100,7 +102,7 @@ public class CourseDAOTest {
 
     @Test
     public void addNewCourseTest() throws ItemAlreadyExistsException {
-        int id = 18;
+        int id = 20;
         String courseSubject = "CHEM";
         int courseNumber = 34100;
         String courseName = "Organic Chemistry I";

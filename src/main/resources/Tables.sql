@@ -39,17 +39,6 @@ CREATE TABLE Course
   FOREIGN KEY (teacher_id) REFERENCES Teacher(id) ON DELETE CASCADE
 );
 
-/*
-CREATE TABLE Course
-(
-  id INT NOT NULL,
-  name VARCHAR(255) NOT NULL,
-  teacher_id INT,
-  PRIMARY KEY (id),
-  FOREIGN KEY (teacher_id) REFERENCES Teacher(id) ON DELETE CASCADE
-);
-*/
-
 CREATE TABLE StudentCourses
 (
   student_id INT NOT NULL,
@@ -59,7 +48,7 @@ CREATE TABLE StudentCourses
   FOREIGN KEY (course_id) REFERENCES Course(id) ON DELETE CASCADE
 );
 
--- Fill a data
+-- Populate tables with sample data
 
 -- Teacher table
 insert into teacher (id, name) values (1, 'Zachary Harris');
@@ -85,7 +74,46 @@ INSERT INTO Course (id, subject, number, title, credit_hours, teacher_id) VALUES
 (14, 'MATH', 45300, 'Elementary Abstract Algebra', 3.000, NULL),
 (15, 'MATH', 46200, 'Elementary Differential Geometry', 3.000, NULL),
 (16, 'MATH', 52300, 'Introduction to Partial Differential Equations', 3.000, NULL),
-(17, 'MATH', 52500, 'Introduction to Complex Analysis', 3.000, NULL);
+(17, 'MATH', 52500, 'Introduction to Complex Analysis', 3.000, NULL),
+(18, 'ENG', 20200, 'Literary Interpretation', 3.000, 3),
+(19, 'ENG', 20400, 'Introduction to Fiction', 3.000, 3);
+
+/*
+(, 'PHYS', 15200, 'Mechanics', 4.000, NULL)
+(, 'PHYS', 20000, 'General Physics', 4.000, NULL)
+(, 'PHYS', 24100, 'Electricity and Optics', 3.000, NULL)
+(, 'PHYS', 25100, 'Heat, Electricity and Optics', 5.000, NULL)
+(, 'PHYS', 29900, 'Introduction to Computational Physics', 3.000, NULL)
+(, 'PHYS', 30400, 'Relativity I', 4.000, NULL)
+(, 'PHYS', 31100, 'Quantum Physics I', 4.000, NULL)
+(, 'PHYS', 34000, 'Modern Physics', 4.000, NULL)
+(, 'PHYS', 34800, 'Nuclear Physics', 3.000, NULL)
+(, 'PHYS', 40400, 'Relativity II', 4.000, NULL)
+(, 'PHYS', 40500, 'Atomic and Molecular Physics', 3.000, NULL)
+(, 'PHYS', 41200, 'Quantum Physics II', 4.000, NULL)
+(, 'PHYS', 41800, 'Thermal and Statistical Physics', 4.000, NULL)
+(, 'PHYS', 42200, 'Waves and Oscillations', 3.000, NULL)
+(, 'PHYS', 42400, 'Nonlinear Optics', 3.000, NULL)
+(, 'PHYS', 44200, 'Quantum Mechanics', 5.000, NULL)
+(, 'PHYS', 44300, 'Quantum Computing and Cryptography', 3.000, NULL)
+(, 'PHYS', 44900, 'Neutron Physics', 3.000, NULL)
+(, 'PHYS', 51100, 'Laser Physics', 3.000, NULL)
+
+(, 'CHEM', 10500, 'General Chemistry I', 3.000, NULL)
+(, 'CHEM', 10600, 'General Chemistry II', 3.000, NULL)
+(, 'CHEM', 12500, 'Experimental Chemistry I', 4.000, NULL)
+(, 'CHEM', 12600, 'Experimental Chemistry II', 4.000, NULL)
+(, 'CHEM', 31000, 'Analytical Chemistry', 3.000, NULL)
+(, 'CHEM', 34100, 'Organic Chemistry I', 4.000, NULL)
+(, 'CHEM', 34200, 'Organic Chemistry II', 4.000, NULL)
+(, 'CHEM', 41000, 'Principles of Chemical Instrumentation', 3.000, NULL)
+(, 'CHEM', 34300, 'Inorganic Chemistry', 4.000, NULL)
+(, 'CHEM', 22200, 'Biochemistry', 3.000, NULL)
+(, 'CHEM', 35100, 'Nuclear Chemistry', 4.000, NULL)
+(, 'CHEM', 21000, 'Environmental Chemistry', 3.000, NULL)
+(, 'CHEM', 23200, 'Introduction to Material Science', 4.000, NULL)
+*/
+
 
 -- Student table
 insert into student (id, name, email) values (1, 'John Doe', 'johnD@someCompany.com');

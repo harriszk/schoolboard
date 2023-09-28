@@ -49,8 +49,8 @@ public class CourseServiceTest {
      *    transferred an instance of a Course class from DAO level.
      */
     @Test
-    public void getCourseByIdTest() {
-        Course expected = new Course(1,"Databases",1);
+    public void getCourseById() {
+        Course expected = new Course(1, "CHEM", 34100, "Organic Chemistry I", 4.000, 1);
         Mockito.when(mockCourseDAO.getCourseById(1)).thenReturn(expected);
         Course actual = courseService.getCourseById(1);
         Mockito.verify(mockCourseDAO,Mockito.times(1)).getCourseById(1);
