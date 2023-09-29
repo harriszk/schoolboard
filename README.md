@@ -16,6 +16,10 @@
      <li>Java code</li>
      <li><a href="#Available-Endpoints">Endpoints</a>
        <ul>
+
+         <li><a href='#Courses-endpoints'>Courses endpoints</a></li>
+         <li><a href='#Students-endpoints'>Students endpoints</a></li>
+         <li><a href='#Courses-endpoints'>Courses endpoints</a></li>
          <li><a href='#Teacher-endpoints'>Teacher endpoints</a></li>
        </ul>
      </li>
@@ -34,22 +38,7 @@
 - Be able to delete existing students, courses, and teachers
 - Be able to update existing new students, courses, and teachers
 
-## Database Tables
-- Students
-  - id
-  - name
-  - email
-  - phone_number
-- Teachers
-  - id
-  - name
-- Courses
-  - id
-  - name
-  - teacher_id
-- Student Courses Junction
-  - student_id
-  - course_id
+## Database
 
 ## Schema
 ![ER Diagram](https://github.com/harriszk/schoolboard/blob/main/src/main/resources/er_diagram.png?raw=true "ER Diagram")
@@ -58,6 +47,8 @@
 
 ## Available Endpoints
 
+
+#### Courses endpoints
 ----------------
 #### Get all of the courses
 
@@ -239,8 +230,10 @@ Else, an empty array will be returned in the body.
 ```json
 []
 ```
-
 ----------------
+
+
+
 #### Get all of the courses that a student is taking with a specific teacher
 
 ###### Request
