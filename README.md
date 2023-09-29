@@ -283,10 +283,40 @@ Else, an empty array will be returned in the body.
 ```GET /teachers```
 
 ###### Response
-The response will always return a 200 status code. If there exists a student with the provided id as well as a teacher with the provided id and that student is taking a course/courses with that teacher, then a similar body as below will be returned.
+The response will always return a 200 status code.
+If there exists a teacher then a similar body as below will be returned otherwise will be return an empty array
 ```json
-app.get("", this::getAllTeachersHandler);
-app.get("/teachers/{id}", this::getTeacherByIdHandler);
+[
+    {
+        "id": 1,
+        "name": "Zachary Harris"
+    },
+    {
+        "id": 2,
+        "name": "Ralph Fatkullin"
+    }
+...
+  ]
+```
+----------------
+
+##### Get a teacher
+
+###### Request
+```GET /teachers/{id}```
+
+###### Response
+The response will always return a 200 status code.
+If there exists a teacher then a similar body as below will be returned otherwise will be return an empty array
+
+```json
+{
+"id": 1,
+"name": "Zachary Harris"
+}
+```
+----------------
+
 app.get("/teachers-courses/{name}", this::getCoursesByTeacherHandler);
 app.post("/teachers", this::addNewTeacherHandler);
 app.put("/teachers", this::updateTeacherHandler);
