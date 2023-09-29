@@ -621,11 +621,11 @@ If there exists a teacher then a similar body as below will be returned otherwis
 [
   {
     "id": 1,
-    "name": "Zachary Harris"
+    "name": "Zachary Domingo"
   },
   {
     "id": 2,
-    "name": "Ralph Fatkullin"
+    "name": "Ralph Gutieres"
   },
   ...
 ]
@@ -646,7 +646,7 @@ If there exists a teacher then a similar body as below will be returned.
 ```json
 {
   "id": 1,
-  "name": "Zachary Harris"
+  "name": "Zachary Domingo"
 }
 ```
 Else, a message will be returned in the body.
