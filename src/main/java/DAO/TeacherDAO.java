@@ -70,7 +70,8 @@ public class TeacherDAO {
             if(rs.next()){
                 teacher = new Teacher(rs.getInt("id"), rs.getString("name"));
             }else {
-                throw new ItemDoesNotExistException("teacher");
+                teacher = null;
+                //throw new ItemDoesNotExistException("teacher");
             }
 
         }catch(SQLException e){
