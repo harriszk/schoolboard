@@ -18,6 +18,10 @@
   - course_id
 
 
+
+
+![alt text](https://github.com/harriszk/schoolboard/blob/main/src/main/resources/er_diagram.png?raw=true "Logo Title Text 1")
+
 ## User Stories
 - Teachers can look up which student is in a particular class
 - Student can find which courses they are taking are from a particular teacher.
