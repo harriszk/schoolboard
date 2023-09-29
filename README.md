@@ -307,7 +307,7 @@ If there exists a teacher then a similar body as below will be returned otherwis
 
 ###### Response
 The response will always return a 200 status code.
-If there exists a teacher then a similar body as below will be returned otherwise will be return an empty array
+If there exists a teacher then a similar body as below will be returned.
 
 ```json
 {
@@ -315,9 +315,114 @@ If there exists a teacher then a similar body as below will be returned otherwis
 "name": "Zachary Harris"
 }
 ```
+Else, a message will be returned in the body.
+
+```json
+No teacher with that id!
+```
 ----------------
 
-app.get("/teachers-courses/{name}", this::getCoursesByTeacherHandler);
-app.post("/teachers", this::addNewTeacherHandler);
-app.put("/teachers", this::updateTeacherHandler);
-app.delete("/teachers/{id}", this::deleteTeacherHandler);
+##### Get all courses of a particular teacher by a name
+
+###### Request
+```GET /teachers-courses/{name}```
+
+###### Response
+The response will always return a 200 status code.
+If there exists a teacher and courses then a similar body as below will be returned.
+
+```json
+[
+{
+"id": 4,
+"subject": "ENG",
+"number": 20200,
+"title": "Literary Interpretation",
+"creditHours": 3.0,
+"teacherId": 3
+},
+...
+]
+```
+Else, a message will be returned in the body.
+
+```json
+Exception.ItemDoesNotExistException: teacher Walt does not exist
+```
+----------------
+
+##### Add a new teacher
+
+###### Request
+```POST /teachers```
+```json
+{
+"id": 29,
+"name": "Edgar F. Codd"
+}
+```
+
+###### Response
+The response will always return a 200 status code.
+If there exists a teacher and courses then a similar body as below will be returned.
+
+```json
+  Successfully added teacher!
+```
+Else, a message will be returned in the body.
+
+```json
+Exception.ItemAlreadyExistsException: teacher already exists
+```
+----------------
+
+##### Update a teacher
+
+###### Request
+```PUT /teachers```
+```json
+{
+  "id": 29,
+  "name": "Edgar "
+}
+```
+
+###### Response
+The response will always return a 200 status code.
+If there exists a teacher then a similar body as below will be returned.
+
+```json
+  Successfully updated teacher!
+```
+Else, a message will be returned in the body.
+
+```json
+Exception.ItemDoesNotExistException: teacher does not exist
+```
+----------------
+
+
+##### Delete a teacher
+
+###### Request
+```DELETE /teachers/{id}```
+```json
+{
+  "id": 29,
+  "name": "Edgar "
+}
+```
+
+###### Response
+The response will always return a 200 status code.
+If there exists a teacher then a similar body as below will be returned.
+
+```json
+ Successfully deleted teacher!
+```
+Else, a message will be returned in the body.
+
+```json
+Exception.ItemDoesNotExistException: teacher does not exist
+```
+----------------
