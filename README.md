@@ -17,14 +17,9 @@
   - student_id
   - course_id
 
-
-
-
-![alt text](https://github.com/harriszk/schoolboard/blob/main/src/main/resources/er_diagram.png?raw=true "Logo Title Text 1")
-
+![ER Diagram](https://github.com/harriszk/schoolboard/blob/main/src/main/resources/er_diagram.png?raw=true "ER Diagram")
 
 [JavaDocs link](https://github.com/harriszk/schoolboard/blob/main/JavaDocs/index.html)
-
 
 ## User Stories
 - Teachers can look up which student is in a particular class
@@ -35,13 +30,6 @@
 - Be able to delete existing students, courses, and teachers
 - Be able to update existing new students, courses, and teachers
 
-Format
-<Action><Request Body>
-
-Response:
-<Status Code>
-<Response Body>
-
 Add a new flight
 POST localhost:8080/flight, with a request body
 {"flight_id":1, "departure_city":"tampa", "arrival_city":"nyc"}
@@ -50,8 +38,6 @@ Should be 201 Created with the response body
 {"flight_id":1, "departure_city":"tampa", "arrival_city":"nyc"}
 if successful,
 400 client error with no response body if unsuccessful (id already in use, city doesn't exist, etc)
-
-![ER Diagram](src/main/resources/er_diagram.png "ER Diagram")
 
 ## Available Endpoints
 
