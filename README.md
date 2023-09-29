@@ -6,7 +6,7 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
-       <li><a href="#Current-version-functionality">Current version functionality</a></li>
+       <li><a href="#User-Stories">User Stories</a></li>
         <li><a href="#built-with">Used technology</a></li>
       </ul>
     </li>
@@ -18,7 +18,6 @@
        <ul>
          <li><a href='#Courses-endpoints'>Courses endpoints</a></li>
          <li><a href='#Students-endpoints'>Students endpoints</a></li>
-         <li><a href='#Courses-endpoints'>Courses endpoints</a></li>
          <li><a href='#Teacher-endpoints'>Teacher endpoints</a></li>
        </ul>
      </li>
