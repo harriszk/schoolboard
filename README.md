@@ -691,6 +691,7 @@ If there exists a teacher and courses then a similar body as below will be retur
 Else, a message will be returned in the body.
 
 ```Exception.ItemAlreadyExistsException: teacher already exists```
+
 ----------------
 
 ##### Update a teacher
@@ -715,6 +716,7 @@ If there exists a teacher then a similar body as below will be returned.
 Else, a message will be returned in the body.
 
 ```Exception.ItemDoesNotExistException: teacher does not exist```
+
 ----------------
 
 
@@ -740,4 +742,5 @@ If there exists a teacher then a similar body as below will be returned.
 Else, a message will be returned in the body.
 
 ```Exception.ItemDoesNotExistException: teacher does not exist```
+
 ----------------
