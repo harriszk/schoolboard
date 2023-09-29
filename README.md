@@ -42,14 +42,17 @@
 ## Schema
 ![ER Diagram](https://github.com/harriszk/schoolboard/blob/main/src/main/resources/er_diagram.png?raw=true "ER Diagram")
 
+<p align="left">(<a href="#top">back to top</a>)</p>
+
 [JavaDocs link](JavaDocs/index.html)
 
 ## Available Endpoints
 
 
-#### Courses endpoints
+#### Courses endpoints 
 ----------------
 #### Get all of the courses
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
 ```GET /courses```
@@ -79,6 +82,7 @@ Status code will return a 200 with a similar body.
 ```
 ----------------
 #### Add a new course
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
 ```POST /course```
@@ -104,6 +108,7 @@ Errors
 ```Exception.ItemAlreadyExistsException: Course already exists```
 ----------------
 #### Update an existing course
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
 ```PUT /course```
@@ -126,6 +131,7 @@ Status code will return a 200 with the following body.
 
 ----------------
 #### Delete an existing course
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
 ```DELETE /course/{course_id}```
@@ -140,6 +146,7 @@ If no course with that id exists then a status code of 400 will be returned with
 
 ----------------
 #### Get a course by its id
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
 ```GET /course/{course_id}```
@@ -163,6 +170,7 @@ If no such course with the requested id exists then the request is unsuccessful 
 
 ----------------
 #### Get all of the courses that a teacher is teaching
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
 ```GET /course/teacher/{teacher_id}```
@@ -198,6 +206,7 @@ Else, an empty array will be returned in the body.
 
 ----------------
 #### Get all of the courses that a student is taking
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
 ```GET /course/student/{student_id}```
@@ -234,6 +243,7 @@ Else, an empty array will be returned in the body.
 
 
 #### Get all of the courses that a student is taking with a specific teacher
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
 ```GET /course/student/{student_id}/teacher/{teacher_id}```
@@ -268,6 +278,7 @@ Else, an empty array will be returned in the body.
 ----------------
 
 #### Teacher endpoints
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ##### Get all of  a teachers
 
@@ -293,6 +304,7 @@ If there exists a teacher then a similar body as below will be returned otherwis
 ----------------
 
 ##### Get a teacher
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
 ```GET /teachers/{id}```
@@ -315,6 +327,7 @@ No teacher with that id!
 ----------------
 
 ##### Get all courses of a particular teacher by a name
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
 ```GET /teachers-courses/{name}```
@@ -344,6 +357,7 @@ Exception.ItemDoesNotExistException: teacher Walt does not exist
 ----------------
 
 ##### Add a new teacher
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
 ```POST /teachers```
@@ -369,6 +383,7 @@ Exception.ItemAlreadyExistsException: teacher already exists
 ----------------
 
 ##### Update a teacher
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
 ```PUT /teachers```
@@ -395,6 +410,7 @@ Exception.ItemDoesNotExistException: teacher does not exist
 
 
 ##### Delete a teacher
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
 ```DELETE /teachers/{id}```
