@@ -16,7 +16,7 @@
      <li>Java code</li>
      <li><a href="#Available-Endpoints">Endpoints</a>
        <ul>
-         <li><a href='#Teacher endpoints'>Teacher endpoints</a></li>
+         <li><a href='#Teacher-endpoints'>Teacher endpoints</a></li>
        </ul>
      </li>
      <li>Tests</li>
