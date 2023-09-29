@@ -54,6 +54,7 @@
 #### Courses endpoints 
 ----------------
 #### Get all of the courses
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
@@ -84,6 +85,7 @@ Status code will return a 200 with a similar body.
 ```
 ----------------
 #### Add a new course
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
@@ -110,6 +112,7 @@ Errors
 ```Exception.ItemAlreadyExistsException: Course already exists```
 ----------------
 #### Update an existing course
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
@@ -133,6 +136,7 @@ Status code will return a 200 with the following body.
 
 ----------------
 #### Delete an existing course
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
@@ -147,6 +151,7 @@ If no course with that id exists then a status code of 400 will be returned with
 
 ----------------
 #### Get a course by its id
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
@@ -171,6 +176,7 @@ If no such course with the requested id exists then the request is unsuccessful 
 
 ----------------
 #### Get all of the courses that a teacher is teaching
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
@@ -206,6 +212,7 @@ Else, an empty array will be returned in the body.
 
 ----------------
 #### Get all of the courses that a student is taking
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
@@ -243,6 +250,7 @@ Else, an empty array will be returned in the body.
 
 
 #### Get all of the courses that a student is taking with a specific teacher
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
@@ -595,6 +603,7 @@ Errors
 ----------------
 
 #### Teacher endpoints
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ##### Get all of  a teachers
@@ -621,6 +630,7 @@ If there exists a teacher then a similar body as below will be returned otherwis
 ----------------
 
 ##### Get a teacher
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
@@ -642,6 +652,7 @@ Else, a message will be returned in the body.
 ----------------
 
 ##### Get all courses of a particular teacher by a name
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
@@ -670,6 +681,7 @@ Else, a message will be returned in the body.
 ----------------
 
 ##### Add a new teacher
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
@@ -695,6 +707,7 @@ Else, a message will be returned in the body.
 ----------------
 
 ##### Update a teacher
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
@@ -721,6 +734,7 @@ Else, a message will be returned in the body.
 
 
 ##### Delete a teacher
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
