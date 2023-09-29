@@ -39,6 +39,7 @@
 
 ## Database
 <p align="right">(<a href="#top">back to top</a>)</p>
+
 ## Schema
 ![ER Diagram](https://github.com/harriszk/schoolboard/blob/main/src/main/resources/er_diagram.png?raw=true "ER Diagram")
 
