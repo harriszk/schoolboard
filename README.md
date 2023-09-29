@@ -39,8 +39,7 @@
 
 ## Database
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-## Schema
+## ER Diagram
 ![ER Diagram](https://github.com/harriszk/schoolboard/blob/main/src/main/resources/er_diagram.png?raw=true "ER Diagram")
 
 
@@ -138,7 +137,6 @@ Status code will return a 200 with the following body.
 ```DELETE /course/{course_id}```
 
 ###### Response
-
 If successful a status code of 200 will be returned with the following body.
 ```Successfully deleted course!```
 
@@ -177,8 +175,7 @@ If no such course with the requested id exists then the request is unsuccessful 
 ```GET /course/teacher/{teacher_id}```
 
 ###### Response
-
-The response will always return a 200 status code. If there exists a teacher whose id is associated with a course then a similar body as below will be returned.
+The response will always return a 200 status code. If there exists a teacher whose id is associated with a course(s) then a similar body as below will be returned.
 ```json
 [
   {
@@ -276,6 +273,323 @@ Else, an empty array will be returned in the body.
 ```json
 []
 ```
+
+
+#### Student endpoints
+----------------
+#### Get all of the students
+
+###### Request
+```GET /students```
+
+###### Response
+Status code will always return a 200 with a similar body.
+```json
+[
+  {
+    "id": 1,
+    "name": "John Doe",
+    "email": "johnD@someCompany.com"
+  },
+  {
+    "id": 2,
+    "name": "Jane Doe",
+    "email": "janeD@someCompany.com"
+  },
+  ...
+]
+```
+----------------
+#### Get a student by its id
+
+###### Request
+```GET /student/{student_id}```
+
+###### Response
+If successful a status code of 200 will be returned with a similar body for the specific course requested.
+```json
+{
+  "id": 1,
+  "name": "John Doe",
+  "email": "johnD@someCompany.com"
+}
+```
+
+If no such student with the requested id exists then the request is unsuccessful and a status code of 404 will be returned with the following body.
+```No students with this id```
+
+----------------
+#### Add a new student
+
+###### Request
+```POST /student```
+
+Body:
+```json
+{
+  "id": 100,
+  "name": "New Student",
+  "email": "newstudent@email.com"
+}
+```
+
+###### Response
+If successful a status code of 200 will be returned with the following body.
+```Student successfully added!```
+
+Errors
+- If the student id that was sent is already in use then a status code of 400 is returned with the following body.
+```Exception.ItemAlreadyExistsException: Student already exists```
+
+----------------
+#### Update an existing student
+
+###### Request
+```PUT /student```
+
+Body:
+```json
+{
+  "id": 1,
+  "name": "Updated Student",
+  "email": "updatedstudent@email.com"
+}
+```
+
+###### Response
+If successful a status code of 200 will be returned with the following body.
+```Updated successfully!```
+
+Errors
+- If the student id that was sent is not associated with any existing student then a status code of 400 is returned with the following body.
+```Exception.ItemDoesNotExistException: Student does not exist```
+
+----------------
+#### Delete an existing student
+
+###### Request
+```DELETE /student/{student_id}```
+
+###### Response
+If successful a status code of 200 will be returned with the following body.
+```Successfully deleted student!```
+
+Errors
+- If no student with that id exists then a status code of 400 will be returned with the following body.
+```Exception.ItemDoesNotExistException: Student does not exist```
+
+----------------
+#### Get all of the students in a particular course by the course id
+
+###### Request
+```GET /students/course/{course_id}```
+
+###### Response
+The response will always return a 200 status code. If the course has any students that have registered for that course then a similar body as below will be returned.
+```json
+[
+  {
+    "id": 2,
+    "name": "Jane Doe",
+    "email": "janeD@someCompany.com"
+  },
+  {
+    "id": 3,
+    "name": "Daisy Moyer",
+    "email": "DaisyMoyer@CrystalEngineer.com"
+  },
+  ...
+]
+```
+Else, an empty array will be returned in the body.
+```json
+[]
+```
+
+----------------
+#### Register a student for a course
+
+###### Request
+```POST /students/{student_id}/register/{course_id}```
+
+###### Response
+If successful a status code of 200 will be returned with the following body.
+```Successfully registered student for the course!```
+
+Errors:
+We need to check how this method works because there can be multiple different errors!
+
+----------------
+#### Unregister a student for a course
+
+###### Request
+```PUT /students/{student_id}/unregister/{course_id}```
+
+###### Response
+If successful a status code of 200 will be returned with the following body.
+```Successfully unregistered student for the course!```
+
+Errors
+- If the student id that was sent is not registered for that course then a status code of 200 is returned with the following body.
+```Exception.ItemDoesNotExistException: StudentCourses does not exist```
+
+----------------
+#### Get all of the students
+
+###### Request
+```GET /students```
+
+###### Response
+Status code will always return a 200 with a similar body.
+```json
+[
+  {
+    "id": 1,
+    "name": "John Doe",
+    "email": "johnD@someCompany.com"
+  },
+  {
+    "id": 2,
+    "name": "Jane Doe",
+    "email": "janeD@someCompany.com"
+  },
+  ...
+]
+```
+----------------
+#### Get a student by its id
+
+###### Request
+```GET /student/{student_id}```
+
+###### Response
+If successful a status code of 200 will be returned with a similar body for the specific course requested.
+```json
+{
+  "id": 1,
+  "name": "John Doe",
+  "email": "johnD@someCompany.com"
+}
+```
+
+If no such student with the requested id exists then the request is unsuccessful and a status code of 404 will be returned with the following body.
+```No students with this id```
+
+----------------
+#### Add a new student
+
+###### Request
+```POST /student```
+
+Body:
+```json
+{
+  "id": 100,
+  "name": "New Student",
+  "email": "newstudent@email.com"
+}
+```
+
+###### Response
+If successful a status code of 200 will be returned with the following body.
+```Student successfully added!```
+
+Errors
+- If the student id that was sent is already in use then a status code of 400 is returned with the following body.
+```Exception.ItemAlreadyExistsException: Student already exists```
+
+----------------
+#### Update an existing student
+
+###### Request
+```PUT /student```
+
+Body:
+```json
+{
+  "id": 1,
+  "name": "Updated Student",
+  "email": "updatedstudent@email.com"
+}
+```
+
+###### Response
+If successful a status code of 200 will be returned with the following body.
+```Updated successfully!```
+
+Errors
+- If the student id that was sent is not associated with any existing student then a status code of 400 is returned with the following body.
+```Exception.ItemDoesNotExistException: Student does not exist```
+
+----------------
+#### Delete an existing student
+
+###### Request
+```DELETE /student/{student_id}```
+
+###### Response
+If successful a status code of 200 will be returned with the following body.
+```Successfully deleted student!```
+
+Errors
+- If no student with that id exists then a status code of 400 will be returned with the following body.
+```Exception.ItemDoesNotExistException: Student does not exist```
+
+----------------
+#### Get all of the students in a particular course by the course id
+
+###### Request
+```GET /students/course/{course_id}```
+
+###### Response
+The response will always return a 200 status code. If the course has any students that have registered for that course then a similar body as below will be returned.
+```json
+[
+  {
+    "id": 2,
+    "name": "Jane Doe",
+    "email": "janeD@someCompany.com"
+  },
+  {
+    "id": 3,
+    "name": "Daisy Moyer",
+    "email": "DaisyMoyer@CrystalEngineer.com"
+  },
+  ...
+]
+```
+Else, an empty array will be returned in the body.
+```json
+[]
+```
+
+----------------
+#### Register a student for a course
+
+###### Request
+```POST /students/{student_id}/register/{course_id}```
+
+###### Response
+If successful a status code of 200 will be returned with the following body.
+```Successfully registered student for the course!```
+
+Errors:
+We need to check how this method works because there can be multiple different errors!
+
+----------------
+#### Unregister a student for a course
+
+###### Request
+```PUT /students/{student_id}/unregister/{course_id}```
+
+###### Response
+If successful a status code of 200 will be returned with the following body.
+```Successfully unregistered student for the course!```
+
+Errors
+- If the student id that was sent is not registered for that course then a status code of 200 is returned with the following body.
+```Exception.ItemDoesNotExistException: StudentCourses does not exist```
+
 ----------------
 
 #### Teacher endpoints
@@ -291,16 +605,16 @@ The response will always return a 200 status code.
 If there exists a teacher then a similar body as below will be returned otherwise will be return an empty array
 ```json
 [
-    {
-        "id": 1,
-        "name": "Zachary Harris"
-    },
-    {
-        "id": 2,
-        "name": "Ralph Fatkullin"
-    }
-...
-  ]
+  {
+    "id": 1,
+    "name": "Zachary Harris"
+  },
+  {
+    "id": 2,
+    "name": "Ralph Fatkullin"
+  },
+  ...
+]
 ```
 ----------------
 
@@ -316,15 +630,13 @@ If there exists a teacher then a similar body as below will be returned.
 
 ```json
 {
-"id": 1,
-"name": "Zachary Harris"
+  "id": 1,
+  "name": "Zachary Harris"
 }
 ```
 Else, a message will be returned in the body.
+```No teacher with that id!```
 
-```json
-No teacher with that id!
-```
 ----------------
 
 ##### Get all courses of a particular teacher by a name
@@ -339,22 +651,20 @@ If there exists a teacher and courses then a similar body as below will be retur
 
 ```json
 [
-{
-"id": 4,
-"subject": "ENG",
-"number": 20200,
-"title": "Literary Interpretation",
-"creditHours": 3.0,
-"teacherId": 3
-},
-...
+  {
+    "id": 4,
+    "subject": "ENG",
+    "number": 20200,
+    "title": "Literary Interpretation",
+    "creditHours": 3.0,
+    "teacherId": 3
+  },
+  ...
 ]
 ```
 Else, a message will be returned in the body.
+```Exception.ItemDoesNotExistException: teacher Walt does not exist```
 
-```json
-Exception.ItemDoesNotExistException: teacher Walt does not exist
-```
 ----------------
 
 ##### Add a new teacher
@@ -362,10 +672,12 @@ Exception.ItemDoesNotExistException: teacher Walt does not exist
 
 ###### Request
 ```POST /teachers```
+
+Body:
 ```json
 {
-"id": 29,
-"name": "Edgar F. Codd"
+  "id": 29,
+  "name": "Edgar F. Codd"
 }
 ```
 
@@ -373,14 +685,10 @@ Exception.ItemDoesNotExistException: teacher Walt does not exist
 The response will always return a 200 status code.
 If there exists a teacher and courses then a similar body as below will be returned.
 
-```json
-  Successfully added teacher!
-```
+```Successfully added teacher!```
 Else, a message will be returned in the body.
 
-```json
-Exception.ItemAlreadyExistsException: teacher already exists
-```
+```Exception.ItemAlreadyExistsException: teacher already exists```
 ----------------
 
 ##### Update a teacher
@@ -388,6 +696,8 @@ Exception.ItemAlreadyExistsException: teacher already exists
 
 ###### Request
 ```PUT /teachers```
+
+Body:
 ```json
 {
   "id": 29,
@@ -399,14 +709,10 @@ Exception.ItemAlreadyExistsException: teacher already exists
 The response will always return a 200 status code.
 If there exists a teacher then a similar body as below will be returned.
 
-```json
-  Successfully updated teacher!
-```
+```Successfully updated teacher!```
 Else, a message will be returned in the body.
 
-```json
-Exception.ItemDoesNotExistException: teacher does not exist
-```
+```Exception.ItemDoesNotExistException: teacher does not exist```
 ----------------
 
 
@@ -415,6 +721,8 @@ Exception.ItemDoesNotExistException: teacher does not exist
 
 ###### Request
 ```DELETE /teachers/{id}```
+
+Body:
 ```json
 {
   "id": 29,
@@ -426,12 +734,8 @@ Exception.ItemDoesNotExistException: teacher does not exist
 The response will always return a 200 status code.
 If there exists a teacher then a similar body as below will be returned.
 
-```json
- Successfully deleted teacher!
-```
+```Successfully deleted teacher!```
 Else, a message will be returned in the body.
 
-```json
-Exception.ItemDoesNotExistException: teacher does not exist
-```
+```Exception.ItemDoesNotExistException: teacher does not exist```
 ----------------
