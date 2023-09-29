@@ -54,7 +54,7 @@
 ## Schema
 ![ER Diagram](https://github.com/harriszk/schoolboard/blob/main/src/main/resources/er_diagram.png?raw=true "ER Diagram")
 
-[JavaDocs link](https://github.com/harriszk/schoolboard/blob/main/JavaDocs/index.html)
+[JavaDocs link](JavaDocs/index.html)
 
 ## Available Endpoints
 
