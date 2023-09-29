@@ -14,7 +14,11 @@
      <li><a href="#Implementation">Implementation</a>
 <ul> <li><a href="#Database">Database</a></li>
      <li>Java code</li>
-     <li><a href="#Available-Endpoints">Endpoints</a></li>
+     <li><a href="#Available-Endpoints">Endpoints</a>
+       <ul>
+         <li><a href='#Teacher endpoints'>Teacher endpoints</a></li>
+       </ul>
+     </li>
      <li>Tests</li>
 </ul>
 </li>
@@ -270,3 +274,20 @@ Else, an empty array will be returned in the body.
 []
 ```
 ----------------
+
+#### Teacher endpoints
+
+##### Get all of  a teachers
+
+###### Request
+```GET /teachers```
+
+###### Response
+The response will always return a 200 status code. If there exists a student with the provided id as well as a teacher with the provided id and that student is taking a course/courses with that teacher, then a similar body as below will be returned.
+```json
+app.get("", this::getAllTeachersHandler);
+app.get("/teachers/{id}", this::getTeacherByIdHandler);
+app.get("/teachers-courses/{name}", this::getCoursesByTeacherHandler);
+app.post("/teachers", this::addNewTeacherHandler);
+app.put("/teachers", this::updateTeacherHandler);
+app.delete("/teachers/{id}", this::deleteTeacherHandler);
