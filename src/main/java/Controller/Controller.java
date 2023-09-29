@@ -121,16 +121,22 @@ public class Controller {
      * @param context
      */
     private void getCourseByIdHandler(Context context) {
-        Course course = this.courseService.getCourseById(
-                Integer.parseInt(context.pathParam("id")));
+        try {
+            int courseId = Integer.parseInt(context.pathParam("id"));
 
-        if(course == null) {
-            context.html("No course with that id!");
-            context.status(404);
-            return;
+            Course course = this.courseService.getCourseById(courseId);
+
+            if(course == null) {
+                context.html("No course with that id!");
+                context.status(404);
+                return;
+            }
+
+            context.json(course);
+        } catch (NumberFormatException e) {
+            context.html("Invalid input: '" + context.pathParam("id") + "' is not an integer!");
+            context.status(400);
         }
-
-        context.json(course);
     }
 
     /**
