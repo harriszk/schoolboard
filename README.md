@@ -28,6 +28,7 @@
 </details>
 
 ## User Stories
+<p align="right">(<a href="#top">back to top</a>)</p>
 - Teachers can look up which student is in a particular class
 - Student can find which courses they are taking are from a particular teacher.
 - Be able to loop up which courses a teacher is teaching
@@ -37,11 +38,11 @@
 - Be able to update existing new students, courses, and teachers
 
 ## Database
-
+<p align="right">(<a href="#top">back to top</a>)</p>
 ## Schema
 ![ER Diagram](https://github.com/harriszk/schoolboard/blob/main/src/main/resources/er_diagram.png?raw=true "ER Diagram")
 
-<p align="left">(<a href="#top">back to top</a>)</p>
+
 
 [JavaDocs link](JavaDocs/index.html)
 
