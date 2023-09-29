@@ -1,6 +1,28 @@
 # Read Me
 
-## Tables
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+       <li><a href="#Current-version-functionality">Current version functionality</a></li>
+        <li><a href="#built-with">Used technology</a></li>
+      </ul>
+    </li>
+    <li><a href="#roadmap">Roadmap</a></li>
+     <li><a href="#Implementation">Implementation</a>
+<ul> <li>Database</li>
+     <li>Java code</li>
+     <li>Endpoints</li>
+     <li>Tests</li>
+</ul>
+</li>
+  </ol>
+</details>
+
+## Database
+### Tables
 - Students
   - id
   - name
@@ -17,6 +39,7 @@
   - student_id
   - course_id
 
+##Schema
 ![ER Diagram](https://github.com/harriszk/schoolboard/blob/main/src/main/resources/er_diagram.png?raw=true "ER Diagram")
 
 [JavaDocs link](https://github.com/harriszk/schoolboard/blob/main/JavaDocs/index.html)
