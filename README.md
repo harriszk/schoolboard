@@ -12,9 +12,9 @@
     </li>
     <li><a href="#roadmap">Roadmap</a></li>
      <li><a href="#Implementation">Implementation</a>
-<ul> <li>Database</li>
+<ul> <li><a href="#Database">Database</a></li>
      <li>Java code</li>
-     <li>Endpoints</li>
+     <li><a href="#Available-Endpoints">Endpoints</a></li>
      <li>Tests</li>
 </ul>
 </li>
