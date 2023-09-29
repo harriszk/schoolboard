@@ -58,7 +58,6 @@ public class TeacherDAO {
         return teachers;
     }
 
-
     public Teacher getTeacherById(int id) throws ItemDoesNotExistException{
         Teacher teacher = new Teacher();
         try{
