@@ -201,7 +201,6 @@ public class Controller {
             context.json("Invalid JSON data in the request body.");
             context.status(400);
         } catch(ItemDoesNotExistException e) {
-            e.printStackTrace();
             context.json(e.toString());
             context.status(404);
         }

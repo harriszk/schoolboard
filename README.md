@@ -6,7 +6,7 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
-       <li><a href="#User-Stories">User Stories</a></li>
+        <li><a href="#User-Stories">User Stories</a></li>
         <li><a href="#built-with">Used technology</a></li>
       </ul>
     </li>
@@ -47,24 +47,22 @@
 
 ![ER Diagram](https://github.com/harriszk/schoolboard/blob/main/src/main/resources/er_diagram.png?raw=true "ER Diagram")
 
-
-
 [JavaDocs link](JavaDocs/index.html)
 
 ## Available Endpoints
 
 
-#### Courses endpoints 
+##### Courses endpoints 
 ----------------
 #### Get all of the courses
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
-```GET /courses```
+```GET /course```
 
 ###### Response
-Status code will return a 200 with a similar body.
+Status code will always return a 200 with a similar body.
 ```json
 [
   {
@@ -113,6 +111,11 @@ If successful a status code of 200 will be returned with the following body.
 Errors
 - If the course id that was sent is already in use then a status code of 400 is returned with the following body.
 ```Exception.ItemAlreadyExistsException: Course already exists```
+- If the teacher id that was send with the course does not exist in the database then a status code of 404 is returned with the following body.
+```Exception.ItemDoesNotExistException: Teacher does not exist```
+- If the body is not in the correct JSON format for a course then a status code of 400 is returned with the following body.
+```Invalid JSON data in the request body.```
+
 ----------------
 #### Update an existing course
 
@@ -137,6 +140,14 @@ Body:
 Status code will return a 200 with the following body.
 ```Successfully updated course!```
 
+Errors
+- If the course id that was sent is not in use then a status code of 404 is returned with the following body.
+```Exception.ItemDoesNotExistException: Course does not exist```
+- If the teacher id that was send with the course does not exist in the database then a status code of 404 is returned with the following body.
+```Exception.ItemDoesNotExistException: Teacher does not exist```
+- If the body is not in the correct JSON format for a course then a status code of 400 is returned with the following body.
+```Invalid JSON data in the request body.```
+
 ----------------
 #### Delete an existing course
 
@@ -149,8 +160,11 @@ Status code will return a 200 with the following body.
 If successful a status code of 200 will be returned with the following body.
 ```Successfully deleted course!```
 
-If no course with that id exists then a status code of 400 will be returned with the following body.
+Errors
+- If the course id that was sent is not in use then a status code of 404 is returned with the following body.
 ```Exception.ItemDoesNotExistException: Course does not exist```
+- If the course_id is not parsable as an integer then a status code of 400 is returned with a similar body as below.
+```Invalid input: {course_id) is not an integer!```
 
 ----------------
 #### Get a course by its id
@@ -174,8 +188,11 @@ If successful a status code of 200 will be returned with a similar body for the 
 }
 ```
 
-If no such course with the requested id exists then the request is unsuccessful and a status code of 404 will be returned with the following body.
-```No course with that id!```
+Errors
+- If no such course with the requested id exists then the request is unsuccessful and a status code of 404 will be returned with the following body.
+```Exception.ItemDoesNotExistException: Course does not exist```
+- If the body is not in the correct JSON format for a course then a status code of 400 is returned with the following body.
+```Invalid JSON data in the request body.```
 
 ----------------
 #### Get all of the courses that a teacher is teaching
@@ -186,7 +203,7 @@ If no such course with the requested id exists then the request is unsuccessful 
 ```GET /course/teacher/{teacher_id}```
 
 ###### Response
-The response will always return a 200 status code. If there exists a teacher whose id is associated with a course(s) then a similar body as below will be returned.
+If the teacher_id that was given is an integer then the response will always return a 200 status code. If there exists a teacher whose id is associated with a course(s) then a similar body as below will be returned.
 ```json
 [
   {
@@ -213,6 +230,10 @@ Else, an empty array will be returned in the body.
 []
 ```
 
+Errors
+- If the teacher_id is not parsable as an integer then a status code of 400 is returned with a similar body as below.
+```Invalid input: {teacher_id) is not an integer!```
+
 ----------------
 #### Get all of the courses that a student is taking
 
@@ -222,7 +243,7 @@ Else, an empty array will be returned in the body.
 ```GET /course/student/{student_id}```
 
 ###### Response
-The response will always return a 200 status code. If there exists a student with the provided id and that student is associated with some courses then a similar body as below will be returned. 
+If the student_id that was given is an integer then the response will always return a 200 status code. If there exists a student with the provided id and that student is associated with some courses then a similar body as below will be returned. 
 ```json
 [
   {
@@ -248,10 +269,12 @@ Else, an empty array will be returned in the body.
 ```json
 []
 ```
+
+Errors
+- If the student_id is not parsable as an integer then a status code of 400 is returned with a similar body as below.
+```Invalid input: {student_id) is not an integer!```
+
 ----------------
-
-
-
 #### Get all of the courses that a student is taking with a specific teacher
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -260,7 +283,7 @@ Else, an empty array will be returned in the body.
 ```GET /course/student/{student_id}/teacher/{teacher_id}```
 
 ###### Response
-The response will always return a 200 status code. If there exists a student with the provided id as well as a teacher with the provided id and that student is taking a course/courses with that teacher, then a similar body as below will be returned.
+If the student_id and teacher_id that was given is an integer then the response will always return a 200 status code. If there exists a student with the provided id as well as a teacher with the provided id and that student is taking a course/courses with that teacher, then a similar body as below will be returned.
 ```json
 [
   {
@@ -287,13 +310,16 @@ Else, an empty array will be returned in the body.
 []
 ```
 
+Errors
+- If the student_id or teacher_id are not parsable as integers then a status code of 400 is returned with a similar body as below.
+```Invalid input: {student_id) or {teacher_id} is not an integer!```
 
-#### Student endpoints
+##### Student endpoints
 ----------------
 #### Get all of the students
 
 ###### Request
-```GET /students```
+```GET /student```
 
 ###### Response
 Status code will always return a 200 with a similar body.
@@ -395,7 +421,7 @@ Errors
 #### Get all of the students in a particular course by the course id
 
 ###### Request
-```GET /students/course/{course_id}```
+```GET /student/course/{course_id}```
 
 ###### Response
 The response will always return a 200 status code. If the course has any students that have registered for that course then a similar body as below will be returned.
@@ -423,7 +449,7 @@ Else, an empty array will be returned in the body.
 #### Register a student for a course
 
 ###### Request
-```POST /students/{student_id}/register/{course_id}```
+```POST /student/{student_id}/register/{course_id}```
 
 ###### Response
 If successful a status code of 200 will be returned with the following body.
@@ -436,7 +462,7 @@ We need to check how this method works because there can be multiple different e
 #### Unregister a student for a course
 
 ###### Request
-```PUT /students/{student_id}/unregister/{course_id}```
+```PUT /student/{student_id}/unregister/{course_id}```
 
 ###### Response
 If successful a status code of 200 will be returned with the following body.
@@ -450,7 +476,7 @@ Errors
 #### Get all of the students
 
 ###### Request
-```GET /students```
+```GET /student```
 
 ###### Response
 Status code will always return a 200 with a similar body.
@@ -552,7 +578,7 @@ Errors
 #### Get all of the students in a particular course by the course id
 
 ###### Request
-```GET /students/course/{course_id}```
+```GET /student/course/{course_id}```
 
 ###### Response
 The response will always return a 200 status code. If the course has any students that have registered for that course then a similar body as below will be returned.
@@ -580,7 +606,7 @@ Else, an empty array will be returned in the body.
 #### Register a student for a course
 
 ###### Request
-```POST /students/{student_id}/register/{course_id}```
+```POST /student/{student_id}/register/{course_id}```
 
 ###### Response
 If successful a status code of 200 will be returned with the following body.
@@ -593,7 +619,7 @@ We need to check how this method works because there can be multiple different e
 #### Unregister a student for a course
 
 ###### Request
-```PUT /students/{student_id}/unregister/{course_id}```
+```PUT /student/{student_id}/unregister/{course_id}```
 
 ###### Response
 If successful a status code of 200 will be returned with the following body.
@@ -605,14 +631,14 @@ Errors
 
 ----------------
 
-#### Teacher endpoints
+##### Teacher endpoints
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ##### Get all of  a teachers
 
 ###### Request
-```GET /teachers```
+```GET /teacher```
 
 ###### Response
 The response will always return a 200 status code.
@@ -637,7 +663,7 @@ If there exists a teacher then a similar body as below will be returned otherwis
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
-```GET /teachers/{id}```
+```GET /teacher/{id}```
 
 ###### Response
 The response will always return a 200 status code.
@@ -688,7 +714,7 @@ Else, a message will be returned in the body.
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
-```POST /teachers```
+```POST /teacher```
 
 Body:
 ```json
@@ -714,7 +740,7 @@ Else, a message will be returned in the body.
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
-```PUT /teachers```
+```PUT /teacher```
 
 Body:
 ```json
@@ -741,7 +767,7 @@ Else, a message will be returned in the body.
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
-```DELETE /teachers/{id}```
+```DELETE /teacher/{id}```
 
 Body:
 ```json

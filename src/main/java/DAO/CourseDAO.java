@@ -206,6 +206,10 @@ public class CourseDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+
+            if (e.getErrorCode() == FOREIGN_KEY_VIOLATION_CODE) {
+                throw new ItemDoesNotExistException("Teacher");
+            }
         }
     }
 
