@@ -91,7 +91,7 @@ public class TeacherDAO {
                 teacher = new Teacher(rs.getInt("id"), rs.getString("name"));
             }else {
                 teacher = null;
-                //throw new ItemDoesNotExistException("teacher");
+                throw new ItemDoesNotExistException("Teacher");
             }
 
         }catch(SQLException e){
