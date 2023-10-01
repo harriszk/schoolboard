@@ -29,8 +29,6 @@
 
 ## User Stories
 
-<p align="right">(<a href="#top">back to top</a>)</p>
-
 - Teachers can look up which student is in a particular class
 - Student can find which courses they are taking are from a particular teacher.
 - Be able to loop up which courses a teacher is teaching
@@ -38,6 +36,10 @@
 - Be able to add new students, courses, and teachers
 - Be able to delete existing students, courses, and teachers
 - Be able to update existing new students, courses, and teachers
+
+## Coverage Results
+
+![Coverage Results](src/main/resources/coverage_results.jpg "Coverage Results")
 
 ## Database
 
@@ -51,8 +53,8 @@
 
 ## Available Endpoints
 
+### Courses endpoints 
 
-##### Courses endpoints 
 ----------------
 #### Get all of the courses
 
@@ -191,8 +193,8 @@ If successful a status code of 200 will be returned with a similar body for the 
 Errors
 - If no such course with the requested id exists then the request is unsuccessful and a status code of 404 will be returned with the following body.
 ```Exception.ItemDoesNotExistException: Course does not exist```
-- If the body is not in the correct JSON format for a course then a status code of 400 is returned with the following body.
-```Invalid JSON data in the request body.```
+- If the course_id is not parsable as an integer then a status code of 400 is returned with a similar body as below.
+```Invalid input: {course_id) is not an integer!```
 
 ----------------
 #### Get all of the courses that a teacher is teaching
@@ -314,328 +316,205 @@ Errors
 - If the student_id or teacher_id are not parsable as integers then a status code of 400 is returned with a similar body as below.
 ```Invalid input: {student_id) or {teacher_id} is not an integer!```
 
-##### Student endpoints
-----------------
-#### Get all of the students
-
-###### Request
-```GET /student```
-
-###### Response
-Status code will always return a 200 with a similar body.
-```json
-[
-  {
-    "id": 1,
-    "name": "John Doe",
-    "email": "johnD@someCompany.com"
-  },
-  {
-    "id": 2,
-    "name": "Jane Doe",
-    "email": "janeD@someCompany.com"
-  },
-  ...
-]
-```
-----------------
-#### Get a student by its id
-
-###### Request
-```GET /student/{student_id}```
-
-###### Response
-If successful a status code of 200 will be returned with a similar body for the specific course requested.
-```json
-{
-  "id": 1,
-  "name": "John Doe",
-  "email": "johnD@someCompany.com"
-}
-```
-
-If no such student with the requested id exists then the request is unsuccessful and a status code of 404 will be returned with the following body.
-```No students with this id```
-
-----------------
-#### Add a new student
-
-###### Request
-```POST /student```
-
-Body:
-```json
-{
-  "id": 100,
-  "name": "New Student",
-  "email": "newstudent@email.com"
-}
-```
-
-###### Response
-If successful a status code of 200 will be returned with the following body.
-```Student successfully added!```
-
-Errors
-- If the student id that was sent is already in use then a status code of 400 is returned with the following body.
-```Exception.ItemAlreadyExistsException: Student already exists```
-
-----------------
-#### Update an existing student
-
-###### Request
-```PUT /student```
-
-Body:
-```json
-{
-  "id": 1,
-  "name": "Updated Student",
-  "email": "updatedstudent@email.com"
-}
-```
-
-###### Response
-If successful a status code of 200 will be returned with the following body.
-```Updated successfully!```
-
-Errors
-- If the student id that was sent is not associated with any existing student then a status code of 400 is returned with the following body.
-```Exception.ItemDoesNotExistException: Student does not exist```
-
-----------------
-#### Delete an existing student
-
-###### Request
-```DELETE /student/{student_id}```
-
-###### Response
-If successful a status code of 200 will be returned with the following body.
-```Successfully deleted student!```
-
-Errors
-- If no student with that id exists then a status code of 400 will be returned with the following body.
-```Exception.ItemDoesNotExistException: Student does not exist```
-
-----------------
-#### Get all of the students in a particular course by the course id
-
-###### Request
-```GET /student/course/{course_id}```
-
-###### Response
-The response will always return a 200 status code. If the course has any students that have registered for that course then a similar body as below will be returned.
-```json
-[
-  {
-    "id": 2,
-    "name": "Jane Doe",
-    "email": "janeD@someCompany.com"
-  },
-  {
-    "id": 3,
-    "name": "Daisy Moyer",
-    "email": "DaisyMoyer@CrystalEngineer.com"
-  },
-  ...
-]
-```
-Else, an empty array will be returned in the body.
-```json
-[]
-```
-
-----------------
-#### Register a student for a course
-
-###### Request
-```POST /student/{student_id}/register/{course_id}```
-
-###### Response
-If successful a status code of 200 will be returned with the following body.
-```Successfully registered student for the course!```
-
-Errors:
-We need to check how this method works because there can be multiple different errors!
-
-----------------
-#### Unregister a student for a course
-
-###### Request
-```PUT /student/{student_id}/unregister/{course_id}```
-
-###### Response
-If successful a status code of 200 will be returned with the following body.
-```Successfully unregistered student for the course!```
-
-Errors
-- If the student id that was sent is not registered for that course then a status code of 200 is returned with the following body.
-```Exception.ItemDoesNotExistException: StudentCourses does not exist```
+### Student endpoints
 
 ----------------
 #### Get all of the students
-
-###### Request
-```GET /student```
-
-###### Response
-Status code will always return a 200 with a similar body.
-```json
-[
-  {
-    "id": 1,
-    "name": "John Doe",
-    "email": "johnD@someCompany.com"
-  },
-  {
-    "id": 2,
-    "name": "Jane Doe",
-    "email": "janeD@someCompany.com"
-  },
-  ...
-]
-```
-----------------
-#### Get a student by its id
-
-###### Request
-```GET /student/{student_id}```
-
-###### Response
-If successful a status code of 200 will be returned with a similar body for the specific course requested.
-```json
-{
-  "id": 1,
-  "name": "John Doe",
-  "email": "johnD@someCompany.com"
-}
-```
-
-If no such student with the requested id exists then the request is unsuccessful and a status code of 404 will be returned with the following body.
-```No students with this id```
-
-----------------
-#### Add a new student
-
-###### Request
-```POST /student```
-
-Body:
-```json
-{
-  "id": 100,
-  "name": "New Student",
-  "email": "newstudent@email.com"
-}
-```
-
-###### Response
-If successful a status code of 200 will be returned with the following body.
-```Student successfully added!```
-
-Errors
-- If the student id that was sent is already in use then a status code of 400 is returned with the following body.
-```Exception.ItemAlreadyExistsException: Student already exists```
-
-----------------
-#### Update an existing student
-
-###### Request
-```PUT /student```
-
-Body:
-```json
-{
-  "id": 1,
-  "name": "Updated Student",
-  "email": "updatedstudent@email.com"
-}
-```
-
-###### Response
-If successful a status code of 200 will be returned with the following body.
-```Updated successfully!```
-
-Errors
-- If the student id that was sent is not associated with any existing student then a status code of 400 is returned with the following body.
-```Exception.ItemDoesNotExistException: Student does not exist```
-
-----------------
-#### Delete an existing student
-
-###### Request
-```DELETE /student/{student_id}```
-
-###### Response
-If successful a status code of 200 will be returned with the following body.
-```Successfully deleted student!```
-
-Errors
-- If no student with that id exists then a status code of 400 will be returned with the following body.
-```Exception.ItemDoesNotExistException: Student does not exist```
-
-----------------
-#### Get all of the students in a particular course by the course id
-
-###### Request
-```GET /student/course/{course_id}```
-
-###### Response
-The response will always return a 200 status code. If the course has any students that have registered for that course then a similar body as below will be returned.
-```json
-[
-  {
-    "id": 2,
-    "name": "Jane Doe",
-    "email": "janeD@someCompany.com"
-  },
-  {
-    "id": 3,
-    "name": "Daisy Moyer",
-    "email": "DaisyMoyer@CrystalEngineer.com"
-  },
-  ...
-]
-```
-Else, an empty array will be returned in the body.
-```json
-[]
-```
-
-----------------
-#### Register a student for a course
-
-###### Request
-```POST /student/{student_id}/register/{course_id}```
-
-###### Response
-If successful a status code of 200 will be returned with the following body.
-```Successfully registered student for the course!```
-
-Errors:
-We need to check how this method works because there can be multiple different errors!
-
-----------------
-#### Unregister a student for a course
-
-###### Request
-```PUT /student/{student_id}/unregister/{course_id}```
-
-###### Response
-If successful a status code of 200 will be returned with the following body.
-```Successfully unregistered student for the course!```
-
-Errors
-- If the student id that was sent is not registered for that course then a status code of 200 is returned with the following body.
-```Exception.ItemDoesNotExistException: StudentCourses does not exist```
-
-----------------
-
-##### Teacher endpoints
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-##### Get all of  a teachers
+###### Request
+```GET /student```
+
+###### Response
+Status code will always return a 200 with a similar body.
+```json
+[
+  {
+    "id": 1,
+    "name": "John Doe",
+    "email": "johnD@someCompany.com"
+  },
+  {
+    "id": 2,
+    "name": "Jane Doe",
+    "email": "janeD@someCompany.com"
+  },
+  ...
+]
+```
+----------------
+#### Get a student by its id
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+###### Request
+```GET /student/{student_id}```
+
+###### Response
+If successful a status code of 200 will be returned with a similar body for the specific course requested.
+```json
+{
+  "id": 1,
+  "name": "John Doe",
+  "email": "johnD@someCompany.com"
+}
+```
+
+Errors
+-  If no such student with the requested id exists then the request is unsuccessful and a status code of 404 will be returned with the following body.
+```No students with this id```
+- If the student_id is not parsable as an integer then a status code of 400 is returned with a similar body as below.
+```Invalid input: {student_id) is not an integer!```
+
+----------------
+#### Add a new student
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+###### Request
+```POST /student```
+
+Body:
+```json
+{
+  "id": 100,
+  "name": "New Student",
+  "email": "newstudent@email.com"
+}
+```
+
+###### Response
+If successful a status code of 200 will be returned with the following body.
+```Student successfully added!```
+
+Errors
+- If the student id that was sent is already in use then a status code of 400 is returned with the following body.
+```Exception.ItemAlreadyExistsException: Student already exists```
+- If the body is not in the correct JSON format for a course then a status code of 400 is returned with the following body.
+```Invalid JSON data in the request body.```
+
+----------------
+#### Delete an existing student
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+###### Request
+```DELETE /student/{student_id}```
+
+###### Response
+If successful a status code of 200 will be returned with the following body.
+```Successfully deleted student!```
+
+Errors
+- If no student with that id exists then a status code of 400 will be returned with the following body.
+```Exception.ItemDoesNotExistException: Student does not exist```
+- If the student_id is not parsable as an integer then a status code of 400 is returned with a similar body as below.
+```Invalid input: {student_id) is not an integer!```
+
+----------------
+#### Get all of the students in a particular course by the course id
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+###### Request
+```GET /student/course/{course_id}```
+
+###### Response
+If the course_id is parsable as an integer then the response will always return a 200 status code. If the course has any students that have registered for that course then a similar body as below will be returned.
+```json
+[
+  {
+    "id": 2,
+    "name": "Jane Doe",
+    "email": "janeD@someCompany.com"
+  },
+  {
+    "id": 3,
+    "name": "Daisy Moyer",
+    "email": "DaisyMoyer@CrystalEngineer.com"
+  },
+  ...
+]
+```
+Else, an empty array will be returned in the body.
+```json
+[]
+```
+
+Errors
+- If the course_id is not parsable as an integer then a status code of 400 is returned with a similar body as below.
+```Invalid input: {course_id) is not an integer!```
+
+----------------
+#### Register a student for a course
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+###### Request
+```POST /student/{student_id}/register/{course_id}```
+
+###### Response
+If successful a status code of 200 will be returned with the following body.
+```Successfully registered student for the course!```
+
+Errors:
+- If the student_id and course_id are not unique entries then a status code of 200 is returned with the following body.
+```Exception.ItemAlreadyExistsException: StudentCourses already exists```
+- If the student_id or course_id are not parsable as an integer then a status code of 400 is returned with a similar body as below.
+```Invalid input: {student_id) or {course_id} is not an integer!```
+
+----------------
+#### Unregister a student for a course
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+###### Request
+```PUT /student/{student_id}/unregister/{course_id}```
+
+###### Response
+If successful a status code of 200 will be returned with the following body.
+```Successfully unregistered student for the course!```
+
+Errors
+- If the student id that was sent is not registered for that course then a status code of 200 is returned with the following body.
+```Exception.ItemDoesNotExistException: StudentCourses does not exist```
+- If the student_id or course_id are not parsable as an integer then a status code of 400 is returned with a similar body as below.
+```Invalid input: {student_id) or {course_id} is not an integer!```
+
+----------------
+#### Update an existing student
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+###### Request
+```PUT /student```
+
+Body:
+```json
+{
+  "id": 1,
+  "name": "Updated Student",
+  "email": "updatedstudent@email.com"
+}
+```
+
+###### Response
+If successful a status code of 200 will be returned with the following body.
+```Updated successfully!```
+
+Errors
+- If the student id that was sent is not associated with any existing student then a status code of 400 is returned with the following body.
+```Exception.ItemDoesNotExistException: Student does not exist```
+- If the body is not in the correct JSON format for a course then a status code of 400 is returned with the following body.
+```Invalid JSON data in the request body.```
+
+### Teacher endpoints
+
+----------------
+#### Get all of  a teachers
+
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
 ```GET /teacher```
@@ -657,8 +536,7 @@ If there exists a teacher then a similar body as below will be returned otherwis
 ]
 ```
 ----------------
-
-##### Get a teacher
+#### Get a teacher
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -666,8 +544,7 @@ If there exists a teacher then a similar body as below will be returned otherwis
 ```GET /teacher/{id}```
 
 ###### Response
-The response will always return a 200 status code.
-If there exists a teacher then a similar body as below will be returned.
+If successful a status code of 200 will be returned with the following body.
 
 ```json
 {
@@ -675,12 +552,15 @@ If there exists a teacher then a similar body as below will be returned.
   "name": "Zachary Domingo"
 }
 ```
-Else, a message will be returned in the body.
+
+Errors
+-  If no teacher exists with the given teacher_id then a status code of 404 is returned with the following body.
 ```No teacher with that id!```
+- If the teacher_id is not parsable as an integer then a status code of 400 is returned with a similar body as below.
+```Invalid input: {teacher_id) is not an integer!```
 
 ----------------
-
-##### Get all courses of a particular teacher by a name
+#### Get all courses of a particular teacher by a name
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -708,8 +588,7 @@ Else, a message will be returned in the body.
 ```Exception.ItemDoesNotExistException: teacher Walt does not exist```
 
 ----------------
-
-##### Add a new teacher
+#### Add a new teacher
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -725,17 +604,17 @@ Body:
 ```
 
 ###### Response
-The response will always return a 200 status code.
-If there exists a teacher and courses then a similar body as below will be returned.
-
+If successful a status code of 200 will be returned with the following body.
 ```Successfully added teacher!```
-Else, a message will be returned in the body.
 
+Errors
+- If the teacher id that was sent is already in use then a status code of 400 is returned with the following body.
 ```Exception.ItemAlreadyExistsException: teacher already exists```
+- If the body is not in the correct JSON format for a course then a status code of 400 is returned with the following body.
+```Invalid JSON data in the request body.```
 
 ----------------
-
-##### Update a teacher
+#### Update a teacher
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -750,24 +629,25 @@ Body:
 }
 ```
 
-###### Response
-The response will always return a 200 status code.
-If there exists a teacher then a similar body as below will be returned.
-
+##### Response
+If successful a status code of 200 will be returned with the following body.
 ```Successfully updated teacher!```
+
+Errors
+- If the teacher id that was sent is not associated with any existing teacher then a status code of 400 is returned with the following body.
+```Exception.ItemDoesNotExistException: teacher does not exist```
+- If the body is not in the correct JSON format for a course then a status code of 400 is returned with the following body.
+```Invalid JSON data in the request body.```
+
 Else, a message will be returned in the body.
 
-```Exception.ItemDoesNotExistException: teacher does not exist```
-
 ----------------
-
-
-##### Delete a teacher
+#### Delete a teacher
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ###### Request
-```DELETE /teacher/{id}```
+```DELETE /teacher/{teacher_id}```
 
 Body:
 ```json
@@ -778,12 +658,13 @@ Body:
 ```
 
 ###### Response
-The response will always return a 200 status code.
-If there exists a teacher then a similar body as below will be returned.
-
+If there exists a teacher then a status code of 200 and the following body will be returned.
 ```Successfully deleted teacher!```
-Else, a message will be returned in the body.
 
+Errors
+- If the teacher id that was sent is not in use then a status code of 404 is returned with the following body.
 ```Exception.ItemDoesNotExistException: teacher does not exist```
+- If the teacher_id is not parsable as an integer then a status code of 400 is returned with a similar body as below.
+```Invalid input: {teacher_id) is not an integer!```
 
 ----------------
