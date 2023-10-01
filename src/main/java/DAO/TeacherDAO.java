@@ -18,11 +18,21 @@ import static Util.LogUtil.log;
 public class TeacherDAO {
     private Connection conn;
 
+    /**
+     * 
+     * @param conn
+     */
     public TeacherDAO(Connection conn) {
         this.conn = conn;
     }
 
-    //Make a search a teachers by a name and return Arraylist
+    /**
+     * Make a search a teachers by a name and return Arraylist
+     * 
+     * @param name
+     * @return
+     * @throws ItemDoesNotExistException
+     */
     public Teacher searchTeacherByName(String name) throws ItemDoesNotExistException {
         //get a List of all teachers
         List<Teacher> allTeachers = this.getAllTeachers();
@@ -43,6 +53,10 @@ public class TeacherDAO {
         return teacher;
     }
 
+    /**
+     * 
+     * @return
+     */
     public List<Teacher> getAllTeachers() {
         List<Teacher> teachers = new ArrayList<>();
         try {
@@ -58,11 +72,17 @@ public class TeacherDAO {
         return teachers;
     }
 
-    public Teacher getTeacherById(int id) throws ItemDoesNotExistException{
+    /**
+     * 
+     * @param teacherId
+     * @return
+     * @throws ItemDoesNotExistException
+     */
+    public Teacher getTeacherById(int teacherId) throws ItemDoesNotExistException{
         Teacher teacher = new Teacher();
         try{
             PreparedStatement ps = conn.prepareStatement("select * from teacher where teacher.id = ?");
-            ps.setInt(1, id);
+            ps.setInt(1, teacherId);
             ResultSet rs = ps.executeQuery();
             log.info("rs={}",rs);
             //!!!!!!!!!!!!!!!!!!
@@ -80,6 +100,11 @@ public class TeacherDAO {
         return teacher;
     }
 
+    /**
+     * 
+     * @param teacher
+     * @throws ItemAlreadyExistsException
+     */
     public void addTeacher(Teacher teacher) throws ItemAlreadyExistsException {
         try {
             log.info("Add teacher:{}",teacher);
@@ -94,6 +119,12 @@ public class TeacherDAO {
         }
     }
 
+    /**
+     * 
+     * @param id
+     * @param name
+     * @throws ItemDoesNotExistException
+     */
     public void updateTeacher(int id, String name) throws ItemDoesNotExistException {
         try {
             PreparedStatement ps = conn.prepareStatement("update teacher set name=? where id=?");
@@ -108,10 +139,15 @@ public class TeacherDAO {
 
     }
 
-    public void deleteTeacher(int id) throws ItemDoesNotExistException {
+    /**
+     * 
+     * @param teacherId
+     * @throws ItemDoesNotExistException
+     */
+    public void deleteTeacher(int teacherId) throws ItemDoesNotExistException {
         try {
             PreparedStatement ps = conn.prepareStatement("delete from teacher where id=?");
-            ps.setInt(1,id);
+            ps.setInt(1,teacherId);
             int rs= ps.executeUpdate();
             log.info("rs={}",rs);
             if (rs==0) throw new ItemDoesNotExistException("teacher");
@@ -120,6 +156,12 @@ public class TeacherDAO {
         }
     }
 
+    /**
+     * 
+     * @param teacher
+     * @return
+     * @throws ItemDoesNotExistException
+     */
     public List<Course> coursesByTeacher(Teacher teacher) throws ItemDoesNotExistException{
         List<Course> courses = new ArrayList<>();
         log.info("*************************************");

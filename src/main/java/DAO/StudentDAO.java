@@ -15,10 +15,18 @@ import java.util.List;
 public class StudentDAO {
     private Connection conn;
     
+    /**
+     * 
+     * @param conn
+     */
     public StudentDAO(Connection conn){
         this.conn = conn;
     }
 
+    /**
+     * 
+     * @return
+     */
     public List<Student> getAllStudents(){
         List<Student> students = new ArrayList<>();
 
@@ -36,12 +44,17 @@ public class StudentDAO {
         return students;
     }
 
-    public Student getStudentById(int id){
+    /**
+     * 
+     * @param studentId
+     * @return
+     */
+    public Student getStudentById(int studentId){
         Student student = null;
 
         try{
             PreparedStatement ps = conn.prepareStatement("select * from student where id=?");
-            ps.setInt(1, id);
+            ps.setInt(1, studentId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
                 student = new Student(rs.getInt("id"), rs.getString("name"), rs.getString("email"));
@@ -55,6 +68,11 @@ public class StudentDAO {
 
     }
 
+    /**
+     * 
+     * @param student
+     * @throws ItemAlreadyExistsException
+     */
     public void addStudent(Student student) throws ItemAlreadyExistsException {
         try {
             PreparedStatement ps = conn.prepareStatement("insert into student (id, name, email) values (?,?,?)");
@@ -68,6 +86,13 @@ public class StudentDAO {
         }
     }
 
+    /**
+     * 
+     * @param id
+     * @param name
+     * @param email
+     * @throws ItemDoesNotExistException
+     */
     public void updateStudent(int id, String name, String email) throws ItemDoesNotExistException {
 
         try {
@@ -85,10 +110,15 @@ public class StudentDAO {
 
     }
 
-    public void deleteStudentById(int id) throws ItemDoesNotExistException {
+    /**
+     * 
+     * @param studentId
+     * @throws ItemDoesNotExistException
+     */
+    public void deleteStudentById(int studentId) throws ItemDoesNotExistException {
         try {
             PreparedStatement ps = conn.prepareStatement("delete from student where id=?");
-            ps.setInt(1,id);
+            ps.setInt(1,studentId);
             int rs = ps.executeUpdate();
 
             //if delete succeded

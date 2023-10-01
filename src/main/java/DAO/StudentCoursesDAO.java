@@ -15,7 +15,6 @@ import java.util.List;
 public class StudentCoursesDAO {
     private Connection conn;
 
-    // TODO: Add comments!
     /**
      * 
      * @param conn
@@ -141,13 +140,13 @@ public class StudentCoursesDAO {
 
     /**
      * 
-     * @param id
+     * @param studentId
      */
-    public void deleteEntriesByStudentId(int id) {
+    public void deleteEntriesByStudentId(int studentId) {
         try {
             String sql = "DELETE FROM StudentCourses WHERE StudentCourses.student_id = ?;";
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, id);
+            ps.setInt(1, studentId);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -156,13 +155,13 @@ public class StudentCoursesDAO {
 
     /**
      * 
-     * @param id
+     * @param courseId
      */
-    public void deleteEntriesByCourseId(int id) {
+    public void deleteEntriesByCourseId(int courseId) {
         try {
             String sql = "DELETE FROM StudentCourses WHERE StudentCourses.course_id = ?;";
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, id);
+            ps.setInt(1, courseId);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
