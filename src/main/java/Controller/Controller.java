@@ -14,7 +14,9 @@ import Exception.ItemDoesNotExistException;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.sql.Connection;
@@ -29,6 +31,14 @@ public class Controller {
     private StudentCoursesService studentCoursesService;
     private TeacherService teacherService;
 
+    /**
+     * Initializes a new Controller instance.
+     * 
+     * This constructor creates a new Controller object and initializes various services required for
+     * managing courses, students, teachers, and student courses using the provided database connection.
+     * 
+     * @param conn The database connection used for interacting with the underlying data store.
+     */
     public Controller(Connection conn) {
         this.courseService = new CourseService(conn);
         this.studentService = new StudentService(conn);
@@ -40,34 +50,32 @@ public class Controller {
         Javalin app = Javalin.create();
 
         // Courses endpoints
-        app.get("/courses", this::getAllCoursesHandler);
+        app.get("/course", this::getAllCoursesHandler);
         app.post("/course", this::addCourseHandler);
         app.put("/course", this::updateCourseHandler);
-        app.delete("/course/{id}", this::deleteCourseHandler);
-
-        app.get("/course/{id}", this::getCourseByIdHandler);
-        app.get("/courses/teacher/{id}", this::getCoursesByTeacherIdHandler);
-        app.get("/courses/student/{id}", this::getCoursesByStudentIdHandler);
-        app.get("/courses/student/{student_id}/teacher/{teacher_id}", this::getCoursesByStudentAndTeacherIdHandler);
+        app.delete("/course/{course_id}", this::deleteCourseHandler);
+        app.get("/course/{course_id}", this::getCourseByIdHandler);
+        app.get("/course/teacher/{teacher_id}", this::getCoursesByTeacherIdHandler);
+        app.get("/course/student/{student_id}", this::getCoursesByStudentIdHandler);
+        app.get("/course/student/{student_id}/teacher/{teacher_id}", this::getCoursesByStudentAndTeacherIdHandler);
 
         // Student endpoints
-        app.get("/students", this::getAllStudentsHandler);
-        app.get("/student/{id}", this::getStudentByIdHandler);
+        app.get("/student", this::getAllStudentsHandler);
+        app.get("/student/{student_id}", this::getStudentByIdHandler);
         app.post("/student", this::addNewStudentHandler);
         app.put("/student", this::updateStudentHandler);
-        app.delete("/student/{id}", this::deleteStudentHandler);
-
-        app.get("/students/course/{id}", this::getStudentsByCourseIdHandler);
-        app.post("/students/{student_id}/register/{course_id}", this::registerForCourseHandler);
-        app.put("/students/{student_id}/unregister/{course_id}", this::unregisterForCourseHandler);
+        app.delete("/student/{student_id}", this::deleteStudentHandler);
+        app.get("/student/course/{course_id}", this::getStudentsByCourseIdHandler);
+        app.post("/student/{student_id}/register/{course_id}", this::registerForCourseHandler);
+        app.put("/student/{student_id}/unregister/{course_id}", this::unregisterForCourseHandler);
 
         // Teacher endpoints
-        app.get("/teachers", this::getAllTeachersHandler);
-        app.get("/teachers/{id}", this::getTeacherByIdHandler);
-        app.get("/teachers-courses/{name}", this::getCoursesByTeacherHandler);
-        app.post("/teachers", this::addNewTeacherHandler);
-        app.put("/teachers", this::updateTeacherHandler);
-        app.delete("/teachers/{id}", this::deleteTeacherHandler);
+        app.get("/teacher", this::getAllTeachersHandler);
+        app.get("/teacher/{teacher_id}", this::getTeacherByIdHandler);
+        app.get("/teachers-courses/{teacher_name}", this::getCoursesByTeacherHandler);
+        app.post("/teacher", this::addNewTeacherHandler);
+        app.put("/teacher", this::updateTeacherHandler);
+        app.delete("/teacher/{teacher_id}", this::deleteTeacherHandler);
 
         return app;
     }
@@ -76,11 +84,15 @@ public class Controller {
     /**
      * This handler displays all of courses in the database.
      * 
-     * GET -> "/course"
+     * GET /course
      * 
      * @param context
      */
     private void getAllCoursesHandler(Context context) {
+        List<Course> courses = this.courseService.getAllCourses();
+        context.json(courses);
+
+        /*
         String courseIdString = context.queryParam("courseId");
         String studentIdString = context.queryParam("studentId");
         String teacherIdString = context.queryParam("teacherId");
@@ -106,9 +118,9 @@ public class Controller {
 
             context.json(courses);
         } else {
-            List<Course> courses = this.courseService.getAllCourses();
-            context.json(courses);
+            
         }
+        */
     }
 
     /**
@@ -116,25 +128,23 @@ public class Controller {
      * database that is gotten by its id. If no course with the given id
      * exists then a 404 is returned.
      * 
-     * GET -> "/course/{id}"
+     * GET /course/{course_id}
      * 
      * @param context
      */
     private void getCourseByIdHandler(Context context) {
-        try {
-            int courseId = Integer.parseInt(context.pathParam("id"));
+        String input = context.pathParam("course_id");
 
+        try {
+            int courseId = Integer.parseInt(input);
             Course course = this.courseService.getCourseById(courseId);
 
-            if(course == null) {
-                context.html("No course with that id!");
-                context.status(404);
-                return;
-            }
-
             context.json(course);
+        } catch (ItemDoesNotExistException e) {
+            context.json(e.toString());
+            context.status(404);
         } catch (NumberFormatException e) {
-            context.html("Invalid input: '" + context.pathParam("id") + "' is not an integer!");
+            context.html("Invalid input: '" + input + "' is not an integer!");
             context.status(400);
         }
     }
@@ -143,22 +153,28 @@ public class Controller {
      * This handler adds a new course to the database, given that it is a course with a
      * new unique id.
      * 
-     * POST -> "/course"
+     * POST /course
      * 
      * @param context
      * @throws JsonProcessingException
      */
     private void addCourseHandler(Context context) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        Course course = mapper.readValue(context.body(), Course.class);
-
+        
         try {
+            Course course = mapper.readValue(context.body(), Course.class);
+
             this.courseService.addCourse(course);
             context.json("Successfully added course!");
+        } catch(JsonParseException | JsonMappingException e) {
+            context.json("Invalid JSON data in the request body.");
+            context.status(400);
         } catch(ItemAlreadyExistsException e) {
-            e.printStackTrace();
             context.json(e.toString());
             context.status(400);
+        } catch(ItemDoesNotExistException e) {
+            context.json(e.toString());
+            context.status(404);
         }
     }
 
@@ -168,22 +184,26 @@ public class Controller {
      * nothing is updated. The SQL request by default won't do anything and all is fine but we
      * show a 400 just to indicate that the attempt was a "failure".
      * 
-     * PUT -> "/course"
+     * PUT /course
      * 
      * @param context
      * @throws JsonProcessingException
      */
     private void updateCourseHandler(Context context) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        Course course = mapper.readValue(context.body(), Course.class);
 
         try {
+            Course course = mapper.readValue(context.body(), Course.class);
+
             this.courseService.updateCourse(course);
             context.json("Successfully updated course!");
+        } catch (JsonParseException | JsonMappingException e) {
+            context.json("Invalid JSON data in the request body.");
+            context.status(400);
         } catch(ItemDoesNotExistException e) {
             e.printStackTrace();
             context.json(e.toString());
-            context.status(400);
+            context.status(404);
         }
     }
 
@@ -193,107 +213,126 @@ public class Controller {
      * nothing is deleted. The SQL request by default won't do anything and all is fine but we
      * show a 400 just to indicate that the attempt was a "failure".
      * 
-     * DELETE -> "/course/{id}"
+     * DELETE /course/{course_id}
      * 
      * @param context
      */
     private void deleteCourseHandler(Context context) {
-        int id = Integer.parseInt(context.pathParam("id"));
+        String input = context.pathParam("course_id");
 
         try {
-            this.courseService.deleteCourse(id);
+            int courseId = Integer.parseInt(input);
+
+            this.courseService.deleteCourse(courseId);
             context.json("Successfully deleted course!");
         } catch(ItemDoesNotExistException e) {
-            e.printStackTrace();
             context.json(e.toString());
+            context.status(404);
+        } catch (NumberFormatException e) {
+            context.html("Invalid input: '" + input + "' is not an integer!");
             context.status(400);
         }
     }
 
     /**
-     * CHECK
      * This handler gets all of the courses that a teacher is teaching.
      * The path parameter is the teacher's id.
      * 
-     * GET -> "/courses/teacher/{id}"
+     * GET /course/teacher/{teacher_id}
      * 
      * @param context
      */
     private void getCoursesByTeacherIdHandler(Context context) {
-        int teacherId = Integer.parseInt(context.pathParam("id"));
-        List<Course> courses = this.courseService.getCoursesByTeacherId(teacherId);
+        String input = context.pathParam("teacher_id");
 
-        /*
-        for(Course course : courses) {
-            if(course.getTeacherId() != teacherId) {
-                courses.remove(course);
-            }
+        try {
+            int teacherId = Integer.parseInt(input);
+            List<Course> courses = this.courseService.getCoursesByTeacherId(teacherId);
+
+            context.json(courses);
+        } catch (NumberFormatException e) {
+            context.html("Invalid input: '" + input + "' is not an integer!");
+            context.status(400);
         }
-        */
-
-        context.json(courses);
     }
 
     /**
      * This handler gets all of the courses that a student is taking.
      * The path parameter is the student's id.
      * 
-     * GET -> "/courses/student/{id}"
+     * GET /course/student/{student_id}
      * 
      * @param context
      */
-    private void getCoursesByStudentIdHandler(Context context) {
-        int studentId = Integer.parseInt(context.pathParam("id"));
+    private void getCoursesByStudentIdHandler(Context context) throws ItemDoesNotExistException {
+        String input = context.pathParam("student_id");
 
-        // TODO: Create a new service layer for doing this!
+        try {
+            int studentId = Integer.parseInt(input);
 
-        List<StudentCourses> entries = this.studentCoursesService.getAllCoursesByStudentId(studentId);
-        List<Course> courses = new ArrayList<Course>();
+            // TODO: Create a new service layer for doing this logic!
+            // We only want something like 'this.service.getAllCoursesByStudentId(studentId)' here
 
-        for(StudentCourses entry : entries) {
-            courses.add(this.courseService.getCourseById(entry.getCourseId()));
+            List<StudentCourses> entries = this.studentCoursesService.getAllCoursesByStudentId(studentId);
+            List<Course> courses = new ArrayList<Course>();
+
+            for(StudentCourses entry : entries) {
+                courses.add(this.courseService.getCourseById(entry.getCourseId()));
+            }
+
+            context.json(courses);
+        } catch (NumberFormatException e) {
+            context.html("Invalid input: '" + input + "' is not an integer!");
+            context.status(400);
         }
-
-        context.json(courses);
     }
 
     /**
-     * CHECK
      * This handler gets all of the courses that a specific teacher teaches given a student id.
      * That is, a student might want to know the other courses they are taking by a specific teacher.
      * 
-     * GET -> "/courses/student/{student_id}/teacher/{teacher_id}"
-     * GET -> "/courses?student={student_id}&teacher={teacher_id}"
+     * GET /course/student/{student_id}/teacher/{teacher_id}
+     * GET /course/student/{student_id}?teacher={teacher_id}
      * 
      * @param context
      */
-    private void getCoursesByStudentAndTeacherIdHandler(Context context) {
-        int studentId = Integer.parseInt(context.pathParam("student_id"));
-        int teacherId = Integer.parseInt(context.pathParam("teacher_id"));
+    private void getCoursesByStudentAndTeacherIdHandler(Context context) throws ItemDoesNotExistException {
+        String studentIdInput = context.pathParam("student_id");
+        String teacherIdInput = context.pathParam("teacher_id");
 
-        // TODO: Create a new service layer for doing this!
+        try {
+            int studentId = Integer.parseInt(studentIdInput);
+            int teacherId = Integer.parseInt(teacherIdInput);
 
-        List<StudentCourses> entries = this.studentCoursesService.getAllCoursesByStudentId(studentId);
-        List<Course> courses = new ArrayList<Course>();
+            // TODO: Create a new service layer for doing this!
+            // Might even just want to  combine this with the above
+            // method and use query params!
 
-        Course tempCourse;
+            List<StudentCourses> entries = this.studentCoursesService.getAllCoursesByStudentId(studentId);
+            List<Course> courses = new ArrayList<Course>();
 
-        for(StudentCourses entry : entries) {
-            tempCourse = this.courseService.getCourseById(entry.getCourseId());
+            Course tempCourse;
 
-            if(tempCourse.getTeacherId() == teacherId) {
-                courses.add(tempCourse);
+            for(StudentCourses entry : entries) {
+                tempCourse = this.courseService.getCourseById(entry.getCourseId());
+
+                if(tempCourse.getTeacherId() == teacherId) {
+                    courses.add(tempCourse);
+                }
             }
-        }
 
-        context.json(courses);
+            context.json(courses);
+        } catch (NumberFormatException e) {
+            context.html("Invalid input: '" + studentIdInput + "' or '" + teacherIdInput + "' is not an integer!");
+            context.status(400);
+        }
     }
 
     // ==================== STUDENTS HANDLERS ====================
     /**
      * This handler displays all of the students in the database.
      * 
-     * GET -> "/student"
+     * GET /student
      * 
      * @param context
      */
@@ -307,40 +346,51 @@ public class Controller {
      * database that is gotten by its id. If no student with the given id
      * exists then a 404 is returned.
      * 
-     * GET -> "/student/{id}"
+     * GET /student/{student_id}
      * 
      * @param context
      */
     private void getStudentByIdHandler(Context context) {
-        Student student = this.studentService.getStudentById(Integer.parseInt(context.pathParam("id")));
+        String input = context.pathParam("student_id");
 
-        if(student==null) {
-            context.html("No students with this id");
-            context.status(404);
-            return;
+        try {
+            int studentId = Integer.parseInt(input);
+
+            Student student = this.studentService.getStudentById(studentId);
+
+            if(student==null) {
+                context.html("No students with this id");
+                context.status(404);
+                return;
+            }
+
+            context.json(student);
+        } catch (NumberFormatException e) {
+            context.html("Invalid input: '" + input + "' is not an integer!");
+            context.status(400);
         }
-
-
-        context.json(student);
     }
 
     /**
      * This handler adds a new student to the database, given that it is a student with a
      * new unique id.
      * 
-     * POST -> "/student"
+     * POST /student
      * 
      * @param context
      * @throws JsonProcessingException
      */
     private void addNewStudentHandler(Context context) throws JsonProcessingException {
-        ObjectMapper om = new ObjectMapper();
-        Student student = om.readValue(context.body(), Student.class);
-
+        ObjectMapper mapper = new ObjectMapper();
 
         try {
+            Student student = mapper.readValue(context.body(), Student.class);
+
             studentService.addStudent(student);
             context.json("Student successfully added!");
+        } catch (JsonParseException | JsonMappingException e) {
+            context.json("Invalid JSON data in the request body.");
+            context.status(400);
         } catch(ItemAlreadyExistsException e) {
             e.printStackTrace();
             context.json(e.toString());
@@ -354,18 +404,22 @@ public class Controller {
      * nothing is updated. The SQL request by default won't do anything and all is fine but we
      * show a 400 just to indicate that the attempt was a "failure".
      * 
-     * PUT -> "/student"
+     * PUT /student
      * 
      * @param context
      * @throws JsonProcessingException
      */
     private void updateStudentHandler(Context context) throws JsonProcessingException {
-        ObjectMapper om = new ObjectMapper();
-        Student student = om.readValue(context.body(), Student.class);
-
+        ObjectMapper mapper = new ObjectMapper();
+        
         try {
+            Student student = mapper.readValue(context.body(), Student.class);
+
             studentService.updateStudent(student.getId(), student.getName(), student.getEmail());
             context.json("Updated successfully!");
+        } catch (JsonParseException | JsonMappingException e) {
+            context.json("Invalid JSON data in the request body.");
+            context.status(400);
         } catch(ItemDoesNotExistException e) {
             e.printStackTrace();
             context.json(e.toString());
@@ -379,19 +433,24 @@ public class Controller {
      * nothing is deleted. The SQL request by default won't do anything and all is fine but we
      * show a 400 just to indicate that the attempt was a "failure".
      * 
-     * DELETE -> "student/{id}"
+     * Endpoint: DELETE student/{student_id}
      * 
-     * @param context
+     * @param context The context object containing the HTTP request and response information.
      */
     private void deleteStudentHandler(Context context) {
-        int id = Integer.parseInt(context.pathParam("id"));
+        String input = context.pathParam("student_id");
 
         try {
-            this.studentService.deleteStudentById(id);
+            int studentId = Integer.parseInt(input);
+
+            this.studentService.deleteStudentById(studentId);
             context.json("Successfully deleted student!");
         } catch(ItemDoesNotExistException e) {
             e.printStackTrace();
             context.json(e.toString());
+            context.status(400);
+        } catch (NumberFormatException e) {
+            context.html("Invalid input: '" + input + "' is not an integer!");
             context.status(400);
         }
     }
@@ -400,42 +459,55 @@ public class Controller {
      * This handler gets all of the students that are registered for a
      * specific course.
      * 
-     * GET -> "/students/course/{id}"
+     * GET /student/course/{course_id}
      * 
      * @param context
      */
     private void getStudentsByCourseIdHandler(Context context) {
-        int courseId = Integer.parseInt(context.pathParam("id"));
+        String input = context.pathParam("course_id");
 
-        // TODO: Create a new service layer for doing this!
+        try {
+            int courseId = Integer.parseInt(input);
 
-        List<StudentCourses> entries = this.studentCoursesService.getAllStudentsByCourseId(courseId);
-        List<Student> students = new ArrayList<Student>();
+            // TODO: Create a new service layer for doing this!
 
-        for(StudentCourses entry : entries) {
-            students.add(this.studentService.getStudentById(entry.getStudentId()));
+            List<StudentCourses> entries = this.studentCoursesService.getAllStudentsByCourseId(courseId);
+            List<Student> students = new ArrayList<Student>();
+
+            for(StudentCourses entry : entries) {
+                students.add(this.studentService.getStudentById(entry.getStudentId()));
+            }
+
+            context.json(students);
+        } catch (NumberFormatException e) {
+            context.html("Invalid input: '" + input + "' is not an integer!");
+            context.status(400);
         }
-
-        context.json(students);
     }
 
     /**
      * This handler registers a specific student for a specific course.
      * 
-     * POST -> "/students/{student_id}/register/{course_id}"
+     * POST /student/{student_id}/register/{course_id}
      * 
      * @param context
      */
     private void registerForCourseHandler(Context context) {
-        int studentId = Integer.parseInt(context.pathParam("student_id"));
-        int courseId = Integer.parseInt(context.pathParam("course_id"));
+        String studentIdInput = context.pathParam("student_id");
+        String courseIdInput = context.pathParam("course_id");
 
         try {
+            int studentId = Integer.parseInt(studentIdInput);
+            int courseId = Integer.parseInt(courseIdInput);
+
             this.studentCoursesService.addNewEntry(studentId, courseId);
             context.json("Successfully registered student for the course!");
         } catch(ItemAlreadyExistsException e) {
             e.printStackTrace();
             context.json(e.toString());
+        } catch (NumberFormatException e) {
+            context.html("Invalid input: '" + studentIdInput + "' or '" + courseIdInput + "' is not an integer!");
+            context.status(400);
         }
     }
 
@@ -444,20 +516,26 @@ public class Controller {
      * This handler unregister's a specific student from a specific course
      * that they are currently registered for.
      * 
-     * PUT -> "/students/{student_id}/unregister/{course_id}"
+     * PUT /student/{student_id}/unregister/{course_id}
      * 
      * @param context
      */
     private void unregisterForCourseHandler(Context context) {
-        int studentId = Integer.parseInt(context.pathParam("student_id"));
-        int courseId = Integer.parseInt(context.pathParam("course_id"));
+        String studentIdInput = context.pathParam("student_id");
+        String courseIdInput = context.pathParam("course_id");
 
         try {
+            int studentId = Integer.parseInt(studentIdInput);
+            int courseId = Integer.parseInt(courseIdInput);
+
             this.studentCoursesService.deleteEntry(studentId, courseId);
             context.json("Successfully unregistered student for the course!");
         } catch(ItemDoesNotExistException e) {
             e.printStackTrace();
             context.json(e.toString());
+        } catch (NumberFormatException e) {
+            context.html("Invalid input: '" + studentIdInput + "' or '" + courseIdInput + "' is not an integer!");
+            context.status(400);
         }
     }
 
@@ -465,7 +543,7 @@ public class Controller {
     /**
      * This handler displays all of teachers in the database.
      * 
-     * GET -> "/teachers"
+     * GET /teacher
      * 
      * @param context
      */
@@ -479,40 +557,53 @@ public class Controller {
      * database that is gotten by its id. If no teacher with the given id
      * exists then a 404 is returned.
      * 
-     * GET -> "/teachers/{id}"
+     * GET /teacher/{teacher_id}
      * 
      * @param context
      * @throws ItemDoesNotExistException
      */
     private void getTeacherByIdHandler(Context context) throws ItemDoesNotExistException {
-        Teacher teacher  = this.teacherService.getTeacherById(
-                Integer.parseInt(context.pathParam("id")));
+        String input = context.pathParam("teacher_id");
 
-        if(teacher == null) {
-            context.html("No teacher with that id!");
-            context.status(404);
-            return;
+        try {
+            int teacherId = Integer.parseInt(input);
+
+            Teacher teacher  = this.teacherService.getTeacherById(teacherId);
+
+            if(teacher == null) {
+                context.html("No teacher with that id!");
+                context.status(404);
+                return;
+            }
+
+            context.json(teacher);
+        } catch (NumberFormatException e) {
+            context.html("Invalid input: '" + input + "' is not an integer!");
+            context.status(400);
         }
-
-        context.json(teacher);
+        
     }
 
     /**
      * This handler adds a new teacher to the database, given that it is a teacher with a
      * new unique id.
      * 
-     * POST -> "/teachers"
+     * POST /teacher
      * 
      * @param context
      * @throws JsonProcessingException
      */
     private void addNewTeacherHandler(Context context) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        Teacher teacher = mapper.readValue(context.body(), Teacher.class);
 
         try {
+            Teacher teacher = mapper.readValue(context.body(), Teacher.class);
+
             this.teacherService.addTeacher(teacher);
             context.json("Successfully added teacher!");
+        } catch (JsonParseException | JsonMappingException e) {
+            context.json("Invalid JSON data in the request body.");
+            context.status(400);
         } catch(ItemAlreadyExistsException e) {
             e.printStackTrace();
             context.json(e.toString());
@@ -526,18 +617,22 @@ public class Controller {
      * nothing is updated. The SQL request by default won't do anything and all is fine but we
      * show a 400 just to indicate that the attempt was a "failure".
      * 
-     * PUT -> "/teachers"
+     * PUT /teachers
      * 
      * @param context
      * @throws JsonProcessingException
      */
     private void updateTeacherHandler(Context context) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        Teacher teacher = mapper.readValue(context.body(), Teacher.class);
 
         try {
+            Teacher teacher = mapper.readValue(context.body(), Teacher.class);
+
             this.teacherService.updateTeacher(teacher.getId(), teacher.getName());
             context.json("Successfully updated teacher!");
+        } catch (JsonParseException | JsonMappingException e) {
+            context.json("Invalid JSON data in the request body.");
+            context.status(400);
         } catch(ItemDoesNotExistException e) {
             e.printStackTrace();
             context.json(e.toString());
@@ -551,30 +646,43 @@ public class Controller {
      * nothing is deleted. The SQL request by default won't do anything and all is fine but we
      * show a 400 just to indicate that the attempt was a "failure".
      * 
-     * DELETE -> "/teachers/{id}"
+     * DELETE /teacher/{teacher_id}
      * 
      * @param context
      */
     private void deleteTeacherHandler(Context context) {
-        int id = Integer.parseInt(context.pathParam("id"));
-
+        String input = context.pathParam("teacher_id");
+        
         try {
-            this.teacherService.deleteTeacher(id);
+            int teacherId = Integer.parseInt(input);
+
+            this.teacherService.deleteTeacher(teacherId);
             context.json("Successfully deleted teacher!");
         } catch(ItemDoesNotExistException e) {
             e.printStackTrace();
             context.json(e.toString());
             context.status(400);
+        } catch (NumberFormatException e) {
+            context.html("Invalid input: '" + input + "' is not an integer!");
+            context.status(400);
         }
     }
 
+    /**
+     * 
+     * 
+     * GET /teachers-courses/{teacher_name}
+     * 
+     * @param context
+     */
     private void getCoursesByTeacherHandler(Context context){
-        String name = context.pathParam("name");
-        log.info("name:{}",name);
+        String teacherName = context.pathParam("teacher_name");
+        log.info("teacherName:{}",teacherName);
+
         try {
-            List<Course> courses = this.teacherService.coursesByTeacherName(name);
+            List<Course> courses = this.teacherService.coursesByTeacherName(teacherName);
             context.json(courses);
-        }catch(ItemDoesNotExistException e){
+        } catch(ItemDoesNotExistException e) {
             context.json(e.toString());
             e.printStackTrace();
         }
