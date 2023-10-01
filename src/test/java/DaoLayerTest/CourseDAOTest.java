@@ -16,6 +16,12 @@ import java.util.List;
 public class CourseDAOTest {
     private CourseDAO courseDAO;
 
+    /**
+     * Sets up the test environment before each test case.
+     * 
+     * It resets the test database and initializes the `courseDAO` instance with a new database connection,
+     * providing a clean testing environment for each test.
+     */
     @Before
     public void setUp() {
         ConnectionSingleton.resetTestDatabase();
@@ -28,7 +34,6 @@ public class CourseDAOTest {
      * @Test verifies:
      *    ...that method provides an ArrayList populated by instances of Course class.
      */
-
     @Test
     public void getAllCoursesTest() {
         List<Course> expected = new ArrayList<Course>();
@@ -49,7 +54,7 @@ public class CourseDAOTest {
      *    ...that method provides an instances of Course class with a course.Id=3.
      */
     @Test
-    public void getCourseByIdSuccessfulTest() {
+    public void getCourseByIdSuccessfulTest() throws ItemDoesNotExistException {
         int id = 1;
         String courseSubject = "MATH";
         int courseNumber = 15000;
@@ -70,11 +75,47 @@ public class CourseDAOTest {
      *    ...that method return a Null value in attempting to get a course
      *    from Course table with a parameter id=-1.
      */
-
     @Test
-    public void getCourseByIdUnsuccessfulTest() {
-        Course actual = this.courseDAO.getCourseById(-1);
-        Assert.assertNull(actual);
+    public void getCourseByIdUnsuccessfulTest() throws ItemDoesNotExistException {
+        int id = -1;
+
+        Assert.assertThrows(ItemDoesNotExistException.class, () -> this.courseDAO.getCourseById(id));
+    }
+
+    /**
+     * Tests the getCoursesByTeacherId() method in the CourseDAO class when retrieving courses
+     * taught by a teacher with a valid teacher ID.
+     * 
+     * This test case verifies that the getCoursesByTeacherId() method returns the expected list of
+     * courses when provided with a valid teacher ID. It compares the expected list of courses to the
+     * actual list obtained from the database and asserts that they are equal.
+     */
+    @Test
+    public void getCoursesByTeacherIdSuccessfulTest() {
+        int teacherId = 3;
+
+        List<Course> expected = new ArrayList<Course>();
+        expected.add(new Course(4, "ENG", 20200, "Literary Interpretation", 3.000, 3));
+        expected.add(new Course(5, "ENG", 20400, "Introduction to Fiction", 3.000, 3));
+
+        List<Course> actual = this.courseDAO.getCoursesByTeacherId(teacherId);
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests the getCoursesByTeacherId() method in the CourseDAO class when retrieving courses
+     * taught by a nonexistent teacher with an invalid teacher ID.
+     * 
+     * This test case verifies that the getCoursesByTeacherId() method returns an empty list when
+     * provided with an invalid (nonexistent) teacher ID. It checks that the actual list obtained
+     * from the database is empty, indicating that no courses are associated with the given teacher ID.
+     */
+    @Test
+    public void getCoursesByTeacherIdNonexistentTeacherIdTest() {
+        int teacherId = -1;
+
+        List<Course> actual = this.courseDAO.getCoursesByTeacherId(teacherId);
+        Assert.assertTrue(actual.isEmpty());
     }
 
 
@@ -85,9 +126,8 @@ public class CourseDAOTest {
      *    ...that the method performs an INSERT operation of a new record to Course table.
      *    If the record with that id is already exist in a table it throws ItemAlreadyExistsException.
      */
-
     @Test
-    public void addNewCourseTest() throws ItemAlreadyExistsException {
+    public void addNewCourseTest() throws ItemAlreadyExistsException, ItemDoesNotExistException {
         int id = 6;
         String courseSubject = "CHEM";
         int courseNumber = 34100;
@@ -123,6 +163,26 @@ public class CourseDAOTest {
         Assert.assertThrows(ItemAlreadyExistsException.class, () -> courseDAO.addCourse(newCourse));
     }
 
+    /**
+     * Tests the addCourse() method in the CourseDAO class when adding a course with a nonexistent teacher ID.
+     * 
+     * This test case verifies that the addCourse() method correctly handles the scenario where a course
+     * is added with a teacher ID that does not exist in the database. It expects the method to throw an
+     * {@link ItemDoesNotExistException} due to the invalid teacher ID.
+     */
+    @Test
+    public void addCourseWithNonexistentTeacherIdTest() {
+        int id = 6;
+        String courseSubject = "CHEM";
+        int courseNumber = 34100;
+        String courseName = "Organic Chemistry I";
+        double creditHours = 5.000;
+        int teacherId = -1;
+
+        Course newCourse = new Course(id, courseSubject, courseNumber, courseName, creditHours, teacherId);
+
+        Assert.assertThrows(ItemDoesNotExistException.class, () -> courseDAO.addCourse(newCourse));
+    }
 
     /**
      * This test is testing the updateCourse() method in a CourseDAO class.
@@ -156,7 +216,7 @@ public class CourseDAOTest {
      *    a nonexistent record in the Courses table.
      **/
     @Test
-    public void updateNonexistentCourseNameTest() {
+    public void updateNonexistentCourseIdTest() {
         int id = -1;
         String courseSubject = "CHEM";
         int courseNumber = 34100;
@@ -181,8 +241,7 @@ public class CourseDAOTest {
         int id = 1;
 
         courseDAO.deleteCourse(id);
-        Course actual = courseDAO.getCourseById(id);
-        Assert.assertNull(actual);
+        Assert.assertThrows(ItemDoesNotExistException.class, () -> this.courseDAO.getCourseById(id));
     }
 
     /**
