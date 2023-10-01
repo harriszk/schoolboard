@@ -1,20 +1,13 @@
 package Service;
 
-import Model.Course;
-import Model.Student;
 import Model.StudentCourses;
-import Util.ConnectionSingleton;
 import DAO.StudentCoursesDAO;
 import Exception.ItemAlreadyExistsException;
 import Exception.ItemDoesNotExistException;
 
 import java.sql.Connection;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static Util.LogUtil.log;
-
 
 public class StudentCoursesService {
     private StudentCoursesDAO studentCoursesDAO;
