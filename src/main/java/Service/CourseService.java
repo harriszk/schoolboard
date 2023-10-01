@@ -6,13 +6,12 @@ import Exception.ItemAlreadyExistsException;
 import Exception.ItemDoesNotExistException;
 
 import java.sql.Connection;
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class CourseService {
     private CourseDAO courseDAO;
 
-    // TODO: Fill in comments!
     /**
      *
      * @param conn
@@ -41,30 +40,22 @@ public class CourseService {
 
     /**
      * 
-     * @param id
+     * @param teacherId
      * @return
      */
-    public List<Course> getCoursesByTeacherId(int id) {
-        List<Course> courses = this.courseDAO.getAllCourses();
-        List<Course> result = new ArrayList<Course>();
+    public List<Course> getCoursesByTeacherId(int teacherId) {
+        List<Course> courses = this.courseDAO.getCoursesByTeacherId(teacherId);
 
-        for(Course course : courses) {
-            if(course.getTeacherId() == id) {
-                result.add(course);
-            }
-        }
-
-        return result;
+        return courses;
     }
 
     /**
-     *
-     *
-     * @param id
+     * 
+     * @param courseId
      * @return
      */
-    public Course getCourseById(int id) {
-        return this.courseDAO.getCourseById(id);
+    public Course getCourseById(int courseId) throws ItemDoesNotExistException {
+        return this.courseDAO.getCourseById(courseId);
     }
 
     /**
@@ -72,23 +63,22 @@ public class CourseService {
      * @param course
      * @throws ItemAlreadyExistsException
      */
-    public void addCourse(Course course) throws ItemAlreadyExistsException {
+    public void addCourse(Course course) throws ItemAlreadyExistsException, ItemDoesNotExistException {
         this.courseDAO.addCourse(course);
     }
 
     /**
      * 
-     * @param id
+     * @param courseId
      * @throws ItemDoesNotExistException
      */
-    public void deleteCourse(int id) throws ItemDoesNotExistException {
-        this.courseDAO.deleteCourse(id);
+    public void deleteCourse(int courseId) throws ItemDoesNotExistException {
+        this.courseDAO.deleteCourse(courseId);
     }
 
     /**
      * 
-     * @param id
-     * @param courseName
+     * @param course
      * @throws ItemDoesNotExistException
      */
     public void updateCourse(Course course) throws ItemDoesNotExistException {
