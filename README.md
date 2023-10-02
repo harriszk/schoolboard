@@ -18,7 +18,7 @@
        <ul>
          <li><a href='#Courses-endpoints'>Courses endpoints</a></li>
          <li><a href='#Students-endpoints'>Students endpoints</a></li>
-         <li><a href='#Teacher-endpoints'>Teacher endpoints</a></li>
+         <li><a href='#Teachers-endpoints'>Teachers endpoints</a></li>
        </ul>
      </li>
      <li>Tests</li>
@@ -316,7 +316,7 @@ Errors
 - If the student_id or teacher_id are not parsable as integers then a status code of 400 is returned with a similar body as below.
 ```Invalid input: {student_id) or {teacher_id} is not an integer!```
 
-### Student endpoints
+### Students endpoints
 
 ----------------
 #### Get all of the students
@@ -509,7 +509,7 @@ Errors
 - If the body is not in the correct JSON format for a course then a status code of 400 is returned with the following body.
 ```Invalid JSON data in the request body.```
 
-### Teacher endpoints
+### Teachers endpoints
 
 ----------------
 #### Get all of  a teachers
