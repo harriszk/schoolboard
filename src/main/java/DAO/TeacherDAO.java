@@ -79,7 +79,7 @@ public class TeacherDAO {
      * @throws ItemDoesNotExistException
      */
     public Teacher getTeacherById(int teacherId) throws ItemDoesNotExistException{
-        Teacher teacher = new Teacher();
+        Teacher teacher = null;
         try{
             PreparedStatement ps = conn.prepareStatement("select * from teacher where teacher.id = ?");
             ps.setInt(1, teacherId);
@@ -90,7 +90,6 @@ public class TeacherDAO {
             if(rs.next()){
                 teacher = new Teacher(rs.getInt("id"), rs.getString("name"));
             }else {
-                teacher = null;
                 throw new ItemDoesNotExistException("Teacher");
             }
 

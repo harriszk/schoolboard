@@ -561,7 +561,7 @@ public class Controller {
      * @param context
      * @throws ItemDoesNotExistException
      */
-    private void getTeacherByIdHandler(Context context) throws ItemDoesNotExistException {
+    private void getTeacherByIdHandler(Context context)   {
         String input = context.pathParam("teacher_id");
 
         try {
@@ -569,14 +569,11 @@ public class Controller {
 
             Teacher teacher  = this.teacherService.getTeacherById(teacherId);
 
-            if(teacher == null) {
-                context.html("No teacher with that id!");
-                context.status(404);
-                return;
-            }
-
             context.json(teacher);
-        } catch (NumberFormatException e) {
+        } catch (ItemDoesNotExistException e) {
+            context.json(e.toString());
+            context.status(404);
+        } catch (NumberFormatException e){
             context.html("Invalid input: '" + input + "' is not an integer!");
             context.status(400);
         }

@@ -43,13 +43,7 @@ public class TeacherService {
      * @throws ItemDoesNotExistException
      */
     public Teacher getTeacherById(int id) throws ItemDoesNotExistException{
-        Teacher teacher = new Teacher();
-        try {
-             teacher = teacherDAO.getTeacherById(id);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return teacher;
+        return this.teacherDAO.getTeacherById(id);
     }
 
     /**
